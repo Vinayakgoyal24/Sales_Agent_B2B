@@ -1,0 +1,7 @@
+# Ignore Chroma DB files
+chroma_langchain_db/
+chroma_db/
+.env
+# Ignore SQLite files
+*.sqlite3
+*.bin
