@@ -4,3 +4,14 @@ openai
 tiktoken
 python-dotenv
 pandas
+langchain-community
+python-pptx
+langchain_chroma
+langgraph
+langchain-core
+beautifulsoup4
+chromadb
+numpy
+langchain-text-splitters
+cryptography
+reportlab
