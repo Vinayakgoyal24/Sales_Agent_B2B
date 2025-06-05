@@ -193,7 +193,7 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
             title_shape = slide.shapes.title
             title_shape.text_frame.paragraphs[0].font.underline = True
 
-    def add_quotation_slide(prs, title, table_data, price_qty_list, index):
+    def add_quotation_slide(prs, title, table_data, price_qty_list, inde):
         slide = prs.slides.add_slide(prs.slide_layouts[5])
         set_slide_bg_color(slide)
         shapes = slide.shapes
