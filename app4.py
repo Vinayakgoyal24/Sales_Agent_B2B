@@ -36,20 +36,6 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 # Add CORS middleware BEFORE defining your routes
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for development
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],  # Explicitly include OPTIONS
-    allow_headers=["*"],
-)
-
-@app.post("/query")
-async def query_endpoint(request_data: dict):
-    # Your existing code here
-    pass
-
-
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -481,10 +467,26 @@ initialize_vector_store()
 
 # --- API Endpoints ---
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],  # Explicitly include OPTIONS
+    allow_headers=["*"],
+)
+
 @app.get("/", response_model=HealthResponse)
 async def root():
     """Health check endpoint"""
     return HealthResponse(status="healthy", message="Hardware Sales Assistant API is running")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],  # Explicitly include OPTIONS
+    allow_headers=["*"],
+)
 
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
@@ -498,6 +500,14 @@ async def health_check():
         )
     except Exception as e:
         return HealthResponse(status="unhealthy", message=f"Error: {str(e)}")
+    
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],  # Explicitly include OPTIONS
+    allow_headers=["*"],
+)
 
 @app.post("/query", response_model=QueryResponse)
 async def process_query(request: QueryRequest):
@@ -531,6 +541,15 @@ async def process_query(request: QueryRequest):
         logger.error(f"Error processing query: {e}")
         raise HTTPException(status_code=500, detail=f"Error processing query: {str(e)}")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],  # Explicitly include OPTIONS
+    allow_headers=["*"],
+)
+
+
 @app.post("/generate-pdf")
 async def generate_pdf_endpoint(request: QueryRequest):
     """Generate PDF quotation from query"""
@@ -556,6 +575,15 @@ async def generate_pdf_endpoint(request: QueryRequest):
         logger.error(f"Error generating PDF: {e}")
         raise HTTPException(status_code=500, detail=f"Error generating PDF: {str(e)}")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],  # Explicitly include OPTIONS
+    allow_headers=["*"],
+)
+
+
 @app.post("/generate-slides")
 async def generate_slides_endpoint(request: QueryRequest):
     """Generate PowerPoint slides from query"""
@@ -580,6 +608,16 @@ async def generate_slides_endpoint(request: QueryRequest):
     except Exception as e:
         logger.error(f"Error generating slides: {e}")
         raise HTTPException(status_code=500, detail=f"Error generating slides: {str(e)}")
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],  # Explicitly include OPTIONS
+    allow_headers=["*"],
+)
+
 
 @app.post("/upload-csv", response_model=DocumentUploadResponse)
 async def upload_csv(file: UploadFile = File(...)):
@@ -620,6 +658,16 @@ async def upload_csv(file: UploadFile = File(...)):
     except Exception as e:
         logger.error(f"Error uploading CSV: {e}")
         raise HTTPException(status_code=500, detail=f"Error uploading CSV: {str(e)}")
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],  # Explicitly include OPTIONS
+    allow_headers=["*"],
+)
+
 
 @app.get("/vector-store/stats")
 async def get_vector_store_stats():

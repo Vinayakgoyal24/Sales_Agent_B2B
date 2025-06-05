@@ -1,6 +1,8 @@
 # Ignore Chroma DB files
 chroma_langchain_db/
 chroma_db/
+chat_logs/
+static/
 .env
 # Ignore SQLite files
 *.sqlite3

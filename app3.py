@@ -1,7 +1,10 @@
-import streamlit as st
 import os
+import re
 import pandas as pd
+import tiktoken
 from dotenv import load_dotenv
+from io import BytesIO
+import streamlit as st
 from langchain_community.document_loaders import TextLoader
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -10,8 +13,6 @@ from langchain_openai import AzureOpenAIEmbeddings, AzureChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langgraph.graph import START, StateGraph
 from typing_extensions import List, TypedDict
-import tiktoken
-from io import BytesIO
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -19,11 +20,15 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from datetime import datetime, timedelta
-import re
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.dml.color import RGBColor
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 
 
 # Load env vars
@@ -95,66 +100,141 @@ from PIL import Image as PILImage
 import io
 
 
-def get_slide_preview(pptx_bytes: BytesIO) -> BytesIO:
-    from comtypes import client
-    import tempfile
+def send_email_with_attachment(to_email: str, subject: str, body: str):
 
-    # Save .pptx to temp file
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pptx") as tmp:
-        tmp.write(pptx_bytes.read())
-        ppt_path = tmp.name
+    smtp_port = 587
+    smtp_server = "smtp.gmail.com"
+    sender_email = "vinayak.otsuka@gmail.com"
+    pswd = "djjvyfubleftjmwh"
 
-    # Export first slide to PNG (only works on Windows with PowerPoint installed)
-    powerpoint = client.CreateObject("Powerpoint.Application")
-    powerpoint.Visible = 1
-    deck = powerpoint.Presentations.Open(ppt_path)
-    tmp_img = ppt_path.replace(".pptx", "_1.png")
-    deck.SaveAs(tmp_img, 18)  # 18 for PNG
-    deck.Close()
-    powerpoint.Quit()
+    if not sender_email or not pswd:
+        return False, "Missing sender email or password in environment variables."
 
-    # Load PNG preview into BytesIO
-    with open(tmp_img, "rb") as img_file:
-        return BytesIO(img_file.read())
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = to_email
+    msg['Subject'] = subject
+
+    msg.attach(MIMEText(body, 'plain'))
+
+    filename = "static/hardware_quotation.pdf"
+    try:
+        with open(filename, 'rb') as attachment:
+            attachment_package = MIMEBase('application', 'octet-stream')
+            attachment_package.set_payload(attachment.read())
+            encoders.encode_base64(attachment_package)
+            attachment_package.add_header('Content-Disposition', f"attachment; filename={filename}")
+            msg.attach(attachment_package)
+    except FileNotFoundError:
+        return False, f"Attachment file not found: {filename}"
+
+    text = msg.as_string()
+
+    try:
+        print("Connecting to server...")
+        TIE_server = smtplib.SMTP(smtp_server, smtp_port)
+        TIE_server.starttls()
+        TIE_server.login(sender_email, pswd)
+        print("Successfully connected to server")
+
+        TIE_server.sendmail(sender_email, to_email, text)
+        TIE_server.quit()
+        return True, f"Email successfully sent to {to_email}"
+    except Exception as e:
+        return False, f"Failed to send email to {to_email}. Error: {e}"
 
 
-def generate_slides(quotation_text: str) -> BytesIO:
+from pptx.enum.text import PP_ALIGN
+from pptx.dml.color import RGBColor
+from pptx.util import Inches, Pt
+from pptx import Presentation
+from io import BytesIO
+import os
+import re
+from pptx.enum.shapes import MSO_SHAPE
+
+def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
     prs = Presentation()
     slide_width = prs.slide_width
     slide_height = prs.slide_height
+    bg_color = RGBColor(0xFF, 0xED, 0xEC)  # Soft pink
+
+    def set_slide_bg_color(slide):
+        fill = slide.background.fill
+        fill.solid()
+        fill.fore_color.rgb = bg_color
 
     def add_logo(slide):
         if os.path.exists("otsuka_im.png"):
-            LOGO_WIDTH_INCHES = 1.2  # Adjust width
+            LOGO_WIDTH_INCHES = 1.2
             LOGO_TOP_MARGIN = 0.2
             LOGO_RIGHT_MARGIN = 0.3
-
-        # Calculate position from right edge
             left = slide_width - Inches(LOGO_RIGHT_MARGIN + LOGO_WIDTH_INCHES)
             top = Inches(LOGO_TOP_MARGIN)
-
             slide.shapes.add_picture("otsuka_im.png", left, top, width=Inches(LOGO_WIDTH_INCHES))
+    
+    def add_quotation_slide(prs, title, table_data, price_qty_list):
+        slide = prs.slides.add_slide(prs.slide_layouts[5])
+        set_slide_bg_color(slide)
+        shapes = slide.shapes
+        shapes.title.text = title
 
+        rows = len(table_data)
+        cols = len(table_data[0])
+        left = Inches(0.5)
+        top = Inches(1.5)
+        width = Inches(9)
+        height = Inches(0.8 + 0.4 * rows)
 
-    # Title Slide
-    slide = prs.slides.add_slide(prs.slide_layouts[0])
+        table = shapes.add_table(rows, cols, left, top, width, height).table
+
+        for col_index in range(cols):
+            table.columns[col_index].width = Inches(2.2)
+
+        for r in range(rows):
+            for c in range(cols):
+                cell = table.cell(r, c)
+                cell.text = str(table_data[r][c])
+                para = cell.text_frame.paragraphs[0]
+                para.font.size = Pt(11)
+
+                if r == 0:  # Header row
+                    para.font.bold = True
+                    para.font.color.rgb = RGBColor(0, 0, 0)  # Black
+
+    # Total Price Text
+        total = sum(p * q for p, q in price_qty_list)
+        txBox = slide.shapes.add_textbox(Inches(0.5), top + height + Inches(0.3), Inches(5), Inches(1))
+        tf = txBox.text_frame
+        p = tf.add_paragraph()
+        p.text = f"- Total Price: ¥{total:,.0f}"
+        p.font.size = Pt(20)
+        p.font.bold = True
+        p.font.color.rgb = RGBColor(0, 112, 192)  # Blue
+
+        add_logo(slide)
+
+    # Slide: Title
+    slide = prs.slides.add_slide(prs.slide_layouts[5])
+    set_slide_bg_color(slide)
     slide.shapes.title.text = "Hardware Configuration Quotations"
-    slide.placeholders[1].text = "Generated by Otsuka Corporation's Sales Assistant"
     add_logo(slide)
 
-    # Client Info Slide
-    slide = prs.slides.add_slide(prs.slide_layouts[1])
-    slide.shapes.title.text = "📋 Client Information"
-    content = slide.placeholders[1]
-    content.text = "\n".join([
-        "Client Name: Acme Solutions Pvt. Ltd.",
-        "Client Address: 123, Innovation Tower, Marunouchi, Tokyo",
-        "Contact Person: John Doe",
-        "Email: john.doe@example.com",
-        "Phone: +81 90-1234-5678"
-    ])
+    # Slide: Client Information
+    slide = prs.slides.add_slide(prs.slide_layouts[5])
+    set_slide_bg_color(slide)
+    title = slide.shapes.title
+    title.text = "--- Client Information ---"
+    content_box = slide.shapes.add_textbox(Inches(0.5), Inches(1.5), Inches(8.5), Inches(4))
+    tf = content_box.text_frame
+    tf.word_wrap = True
+    for key, label in [("name", "1. Client Name"), ("2. Company", "Client Company"), ("3. Contact_Email", "Email"), ("4. Contact_Phone", "Phone")]:
+        p = tf.add_paragraph()
+        p.text = f"{label}: {client_info.get(key, '')}"
+        p.font.size = Pt(18)
     add_logo(slide)
 
+    # Slide Parsing Logic
     lines = quotation_text.strip().splitlines()
     current_quotation = ""
     recommendation_lines = []
@@ -201,63 +281,56 @@ def generate_slides(quotation_text: str) -> BytesIO:
     if table_data and inside_quote:
         add_quotation_slide(prs, current_quotation, table_data, price_qty_list)
 
-    # Recommendation Slide
+    # Slide: Recommendation
     if recommendation_lines:
-        slide = prs.slides.add_slide(prs.slide_layouts[1])
-        slide.shapes.title.text = "🎯 Recommendation"
-        content = slide.placeholders[1]
-        content.text = "\n".join(recommendation_lines)
-        add_logo(slide)
+        MAX_LINES_PER_SLIDE = 10
+        chunks = [recommendation_lines[i:i + MAX_LINES_PER_SLIDE] for i in range(0, len(recommendation_lines), MAX_LINES_PER_SLIDE)]
 
-    # Thank You Slide
-    slide = prs.slides.add_slide(prs.slide_layouts[1])
-    slide.shapes.title.text = "🙏 Thank You"
-    content = slide.placeholders[1]
-    content.text = "\n".join([
-        "Otsuka Corporation",
-        "Head Office: 2-18-4 Iidabashi, Chiyoda-ku, Tokyo 102-8573",
-        "Website: https://www.otsuka-shokai.co.jp"
-    ])
+        for chunk_index, chunk in enumerate(chunks):
+            slide = prs.slides.add_slide(prs.slide_layouts[5])
+            set_slide_bg_color(slide)
+            title_text = "Best Recommendation"
+            if len(chunks) > 1:
+                title_text += f" (Part {chunk_index + 1})"
+            slide.shapes.title.text = title_text
+
+            content_box = slide.shapes.add_textbox(Inches(0.5), Inches(1.5), Inches(8.5), Inches(4.5))
+            tf = content_box.text_frame
+            tf.word_wrap = True
+
+            # Dynamically scale font size
+            font_size = Pt(20 if len(chunk) <= 6 else 16 if len(chunk) <= 10 else 14)
+
+            for line in chunk:
+                bullet = tf.add_paragraph()
+                bullet.text = line
+                bullet.level = 0
+                bullet.font.size = font_size
+
+            add_logo(slide)
+
+    # Slide: Thank You
+    slide = prs.slides.add_slide(prs.slide_layouts[5])
+    set_slide_bg_color(slide)
+    slide.shapes.title.text = "--- Thank You ---"
+    content_box = slide.shapes.add_textbox(Inches(0.5), Inches(1.5), Inches(8.5), Inches(4.5))
+    tf = content_box.text_frame
+    for line in [
+        "1. Otsuka Corporation",
+        "2. Head Office: 2-18-4 Iidabashi, Chiyoda-ku, Tokyo 102-8573",
+        "3. Website: https://www.otsuka-shokai.co.jp"
+    ]:
+        p = tf.add_paragraph()
+        p.text = line
+        p.font.size = Pt(18)
     add_logo(slide)
 
-    # Save to buffer
     pptx_buffer = BytesIO()
     prs.save(pptx_buffer)
     pptx_buffer.seek(0)
     return pptx_buffer
 
-def add_quotation_slide(prs, title, table_data, price_qty_list):
-    slide = prs.slides.add_slide(prs.slide_layouts[5])
-    shapes = slide.shapes
-    shapes.title.text = title
-
-    rows = len(table_data)
-    cols = len(table_data[0])
-    left = Inches(0.5)
-    top = Inches(1.5)
-    width = Inches(9)
-    height = Inches(0.8 + 0.4 * rows)
-
-    table = shapes.add_table(rows, cols, left, top, width, height).table
-
-    for col_index in range(cols):
-        table.columns[col_index].width = Inches(2.2)
-
-    for r in range(rows):
-        for c in range(cols):
-            cell = table.cell(r, c)
-            cell.text = str(table_data[r][c])
-            cell.text_frame.paragraphs[0].font.size = Pt(11)
-
-    total = sum(p * q for p, q in price_qty_list)
-    txBox = slide.shapes.add_textbox(Inches(0.5), top + height + Inches(0.3), Inches(5), Inches(1))
-    tf = txBox.text_frame
-    p = tf.add_paragraph()
-    p.text = f"Total Price: ¥{total:,.0f}"
-    p.font.size = Pt(14)
-    p.font.bold = True
-    p.font.color.rgb = RGBColor(0, 112, 192)
-def generate_pdf(quotation_text: str) -> BytesIO:
+def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer,
                             pagesize=A4,
@@ -283,7 +356,7 @@ def generate_pdf(quotation_text: str) -> BytesIO:
     elements.append(Spacer(1, 12))
 
     # --- Quotation Info ---
-    elements.append(Paragraph("<b>🧾 Quotation</b>", styles["Heading2"]))
+    elements.append(Paragraph("<b>--- Quotation ---</b>", styles["Heading2"]))
     today = datetime.now()
     validity = today + timedelta(days=7)
     elements.append(Paragraph(f"Date of Issue: {today.strftime('%Y-%m-%d')}", styles["Normal"]))
@@ -291,13 +364,13 @@ def generate_pdf(quotation_text: str) -> BytesIO:
     elements.append(Spacer(1, 12))
 
     # --- Client Info (Dummy) ---
-    elements.append(Paragraph("<b>📋 Client Information</b>", styles["Heading3"]))
+    elements.append(Paragraph("<b>--- Client Information ---</b>", styles["Heading3"]))
     client_info = [
-        "Client Name: Acme Solutions Pvt. Ltd.",
-        "Client Address: 123, Innovation Tower, Marunouchi, Tokyo",
-        "Contact Person: John Doe",
-        "Email: john.doe@example.com",
-        "Phone: +81 90-1234-5678"
+        "1. Client Name: "+ client_info.get("name",""),
+        "2. Client Company:"+ client_info.get("company",""),
+        "3. Contact Person: John Doe",
+        "4. Email: "+ client_info.get("email",""),
+        "5. Phone: "+ client_info.get("phone","")
     ]
     for line in client_info:
         elements.append(Paragraph(line, styles["Normal"]))
@@ -415,6 +488,9 @@ def generate_pdf(quotation_text: str) -> BytesIO:
 
     doc.build(elements)
     buffer.seek(0)
+
+    with open("static/hardware_quotation.pdf", "wb") as f:
+        f.write(buffer.getvalue())
     return buffer
 
 # --- LangGraph App Logic ---
@@ -442,6 +518,21 @@ st.title("💻 Computer Hardware Sales Assistant")
 if "result" not in st.session_state:
     st.session_state.result = None
 
+st.header("--- Client Information ---")
+
+client_name = st.text_input("Client Name", placeholder="e.g., John Doe")
+client_company = st.text_input("Company Name", placeholder="e.g., ABC Corp")
+client_email = st.text_input("Email", placeholder="e.g., john@example.com")
+client_phone = st.text_input("Phone Number", placeholder="e.g., +1-234-567-890")
+
+# Optionally store in session
+st.session_state.client_info = {
+    "name": client_name,
+    "company": client_company,
+    "email": client_email,
+    "phone": client_phone
+}
+
 user_query = st.text_input("Enter your query:", placeholder="E.g., Best PC setup for video editing...")
 
 if user_query and st.button("💬 Get Recommendation"):
@@ -457,7 +548,7 @@ if st.session_state.result:
     output_tokens = len(enc.encode(st.session_state.result["answer"]))
     st.markdown(f"🔢 Input tokens: {input_tokens} | Output tokens: {output_tokens} | Total: {input_tokens + output_tokens}")
 
-    pdf_bytes = generate_pdf(st.session_state.result["answer"])
+    pdf_bytes = generate_pdf(st.session_state.result["answer"], st.session_state.client_info)
     st.download_button(
         label="📄 Download Quotation as PDF",
         data=pdf_bytes,
@@ -465,9 +556,7 @@ if st.session_state.result:
         mime="application/pdf"
     )
 
-
-
-    slide_bytes = generate_slides(st.session_state.result["answer"])
+    slide_bytes = generate_slides(st.session_state.result["answer"], st.session_state.client_info)
     st.download_button(
         label="📊 Download Slides (PPTX)",
         data=slide_bytes,
@@ -475,12 +564,28 @@ if st.session_state.result:
         mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
     )
 
-    # OPTIONAL: Show slide preview (first slide)
-    try:
-        preview_image = get_slide_preview(BytesIO(slide_bytes.read()))
-        st.image(preview_image, caption="📽️ Slide Preview", use_column_width=True)
-    except Exception as e:
-        st.warning("Could not render slide preview. (Only works on Windows with PowerPoint installed.)")
+    st.markdown("### 📤 Send Quotation via Email")
 
+    send_email_btn = st.button("Send Email")
+    if send_email_btn:
+        if not client_email:
+            st.error("Please enter the client's email above.")
+        else:
+            with st.spinner("Sending email..."):
+                success, msg = send_email_with_attachment(
+                    to_email=client_email,
+                    subject="Hardware Quotation from Otsuka Corporation",
+                    body=f"Dear {client_name},\n\nPlease find attached your hardware quotation.\n\nRegards,\nOtsuka Corporation"
+                    #attachment_bytes=pdf_bytes,
+                    #filename="hardware_quotation.pdf"
+                )
+                st.success(msg) if success else st.error(msg)
 
+    pdf_path = "static/hardware_quotation.pdf"
+    with open(pdf_path, "wb") as f:
+        f.write(pdf_bytes.getvalue())
+
+# Construct URL (adjust this to your deployed Streamlit domain)
+    base_url = os.getenv("APP_BASE_URL", "http://localhost:8501")  # Override in prod
+    pdf_url = f"{base_url}/static/hardware_quotation.pdf"
 
