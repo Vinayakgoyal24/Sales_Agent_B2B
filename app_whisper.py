@@ -24,9 +24,29 @@ from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.dml.color import RGBColor
-from streamlit_mic_recorder import mic_recorder
+
+from streamlit_webrtc import webrtc_streamer, AudioProcessorBase
+import av
+import numpy as np
+import soundfile as sf
 import tempfile
-import whisper 
+import whisper
+
+class AudioProcessor(AudioProcessorBase):
+    def __init__(self):
+        self.frames = []
+        self.sample_rate = 16000
+        self.name = "AudioProcessor"  # ✅ Prevent .name bug
+
+    def recv(self, frame: av.AudioFrame) -> av.AudioFrame:
+        audio = frame.to_ndarray().flatten()
+        self.frames.append(audio)
+        return frame
+
+    def get_audio(self):
+        return np.concatenate(self.frames, axis=0)
+
+
 
 # Load env vars
 load_dotenv()
@@ -445,6 +465,29 @@ if "result" not in st.session_state:
     st.session_state.result = None
 
 user_query = st.text_input("Enter your query:", placeholder="E.g., Best PC setup for video editing...")
+
+st.markdown("### Or use voice input")
+
+
+ctx = webrtc_streamer(
+    key="voice_input",
+    mode="sendonly",
+    audio_receiver_size=1024,
+    media_stream_constraints={"video": False, "audio": True},
+    audio_processor_factory=AudioProcessor,
+)
+
+
+if ctx.state.playing and isinstance(ctx.audio_processor, AudioProcessor):
+    if st.button("🧠 Transcribe Audio"):
+        audio_data = ctx.audio_processor.get_audio()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
+            sf.write(f.name, audio_data, 16000)
+            whisper_model = whisper.load_model("base")
+            result = whisper_model.transcribe(f.name)
+            user_query = result["text"]
+            st.text_area("Transcribed Query", user_query)
+
 
 if user_query and st.button("💬 Get Recommendation"):
     with st.spinner("Processing your query..."):

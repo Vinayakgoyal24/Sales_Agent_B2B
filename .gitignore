@@ -5,3 +5,6 @@ chroma_db/
 # Ignore SQLite files
 *.sqlite3
 *.bin
+data/
+venv/
+

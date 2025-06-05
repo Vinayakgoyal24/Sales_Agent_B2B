@@ -24,9 +24,16 @@ from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.dml.color import RGBColor
-from streamlit_mic_recorder import mic_recorder
-import tempfile
-import whisper 
+from io import BytesIO
+from streamlit_mic_recorder import mic_recorder        # ← NEW
+import tempfile                                        # ← NEW
+import whisper                                         # ← NEW
+from gtts import gTTS                                  # ← NEW
+import torch
+
+import shutil, os, streamlit as st
+st.sidebar.write("ffmpeg on PATH →", shutil.which("ffmpeg"))
+st.sidebar.write("first 500 chars of PATH →", os.environ["PATH"][:500])
 
 # Load env vars
 load_dotenv()
@@ -68,6 +75,78 @@ if vector_store._collection.count() == 0:
         splits = splitter.split_documents(docs)
         vector_store.add_documents(splits)
         vector_store.persist()
+
+
+# --- Initialize Whisper Model ---
+@st.cache_resource(show_spinner="Loading Whisper model…")
+def load_whisper_local(model_name: str = "base"):
+    return whisper.load_model(
+        model_name,
+        device="cuda" if torch.cuda.is_available() else "cpu"
+    )
+
+def transcribe_audio(wav_input) -> str:
+    """
+    Accepts either the dict returned by mic_recorder or raw bytes.
+    Returns the Whisper transcription string.
+    """
+    # ── 1. normalise to raw bytes ──────────────────────────────────────────
+    if isinstance(wav_input, dict):            # mic_recorder style
+        wav_bytes = wav_input.get("bytes", b"")
+    else:                                      # already bytes
+        wav_bytes = wav_input
+
+    if not wav_bytes:
+        return ""                              # nothing to transcribe
+
+    # ── 2. write to temp file and run Whisper ──────────────────────────────
+    model = load_whisper_local()
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+        tmp.write(wav_bytes)
+        tmp_path = tmp.name
+    try:
+        result = model.transcribe(tmp_path)    # {'text': '...'}
+        return result["text"].strip()
+    finally:
+        os.remove(tmp_path)
+
+
+def _preprocess_for_tts(raw: str) -> str:
+    """
+    Prepare text for gTTS:
+    • Remove leading markdown symbols (##, bullets) but keep the wording.
+    • Collapse multiple lines into full sentences separated by a pause.
+    """
+    cleaned_lines = []
+    for line in raw.splitlines():
+        line = line.strip()
+
+        # Keep heading wording but drop the hashes, e.g. "## Quotation 1"
+        if line.startswith("##"):
+            line = line.lstrip("#").strip()
+
+        # Remove common bullet prefixes
+        line = re.sub(r"^[\-\*\•]\s*", "", line)
+
+        if line:                       # skip empty lines
+            cleaned_lines.append(line)
+
+    # Join with a double space so gTTS inserts a brief pause
+    return ".  ".join(cleaned_lines)
+
+
+
+def tts_stream(text: str, lang: str = "en", tld: str = "co.uk") -> BytesIO:
+    """
+    Convert *text* to speech with gTTS and return an MP3 BytesIO.
+    • `tld` picks the Google voice accent ─ try 'com', 'co.uk', 'com.au', etc.
+    """
+    processed = _preprocess_for_tts(text)
+    mp3 = BytesIO()
+    gTTS(text=processed, lang=lang, tld=tld, slow=False).write_to_fp(mp3)
+    mp3.seek(0)
+    return mp3
+
 
 # --- Prompt Template ---
 prompt = ChatPromptTemplate.from_messages([
@@ -444,22 +523,146 @@ st.title("💻 Computer Hardware Sales Assistant")
 if "result" not in st.session_state:
     st.session_state.result = None
 
-user_query = st.text_input("Enter your query:", placeholder="E.g., Best PC setup for video editing...")
+if "text_query" not in st.session_state:
+    st.session_state.text_query = ""
 
+
+# user_query = st.text_input(
+#     "Enter your query:",
+#     placeholder="E.g., Best PC setup for video editing…",
+#     key="text_query"
+# )
+
+# ── TEXT + MIC ROW ──────────────────────────────────────────────────────────
+# Put the text box and the mic icon on the same line
+# col_text, col_mic = st.columns([8, 1])
+
+# with col_text:
+#     # keep the shared key so both voice and typing update the same value
+#     user_query = st.text_input(
+#         "Enter your query:",
+#         placeholder="E.g., Best PC setup for video editing…",
+#         key="text_query"
+#     )
+
+# with col_mic:
+#     # mic_recorder shows a round mic icon when start_prompt/stop_prompt = None
+#     audio_bytes = mic_recorder(
+#         start_prompt=None,      # default mic icon
+#         stop_prompt=None,       # default stop icon
+#         key="recorder_button"
+#     )
+
+# # If the user just finished talking, transcribe → populate the text box
+# if audio_bytes:
+#     with st.spinner("Transcribing…"):
+#         spoken_text = transcribe_audio(audio_bytes)
+#         if spoken_text:
+#             st.success(f"You said: {spoken_text}")
+#             # write into the text box and refresh the page so it appears there
+#             st.session_state.text_query = spoken_text
+#             st.experimental_rerun()
+
+
+# if user_query and st.button("💬 Get Recommendation"):
+#     with st.spinner("Processing your query..."):
+#         st.session_state.result = graph.invoke({"question": user_query})
+
+# if st.session_state.result:
+#     st.subheader("💡 Suggested Answer")
+#     st.write(st.session_state.result["answer"])
+
+#     enc = tiktoken.encoding_for_model("gpt-4")
+#     input_tokens = len(enc.encode(user_query))
+#     output_tokens = len(enc.encode(st.session_state.result["answer"]))
+#     st.markdown(f"🔢 Input tokens: {input_tokens} | Output tokens: {output_tokens} | Total: {input_tokens + output_tokens}")
+
+#     pdf_bytes = generate_pdf(st.session_state.result["answer"])
+#     st.download_button(
+#         label="📄 Download Quotation as PDF",
+#         data=pdf_bytes,
+#         file_name="hardware_quotation.pdf",
+#         mime="application/pdf"
+#     )
+
+
+
+#     slide_bytes = generate_slides(st.session_state.result["answer"])
+#     st.download_button(
+#         label="📊 Download Slides (PPTX)",
+#         data=slide_bytes,
+#         file_name="hardware_quotation.pptx",
+#         mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+#     )
+
+#     # OPTIONAL: Show slide preview (first slide)
+#     try:
+#         preview_image = get_slide_preview(BytesIO(slide_bytes.read()))
+#         st.image(preview_image, caption="📽️ Slide Preview", use_column_width=True)
+#     except Exception as e:
+#         st.warning("Could not render slide preview. (Only works on Windows with PowerPoint installed.)")
+
+#     if st.button("🔊 Speak this quotation"):
+#         with st.spinner("Generating speech…"):
+#             mp3 = tts_stream(st.session_state.result["answer"])
+#             st.audio(mp3.read(), format="audio/mp3")
+
+
+# ───────────────────────────────────────────────────────────────────────────────
+# MIC + TRANSCRIPTION + TEXT INPUT (replace your existing block with this)
+# ───────────────────────────────────────────────────────────────────────────────
+
+# 1) Ensure the flag exists
+if "just_transcribed" not in st.session_state:
+    st.session_state.just_transcribed = False
+
+# 2) Mic recorder icon
+audio_bytes = mic_recorder(
+    start_prompt="🎤",   # show a mic emoji
+    stop_prompt="⏹️",
+    key="recorder_button"
+)
+
+# 3) Only transcribe once per “spoken” event
+if audio_bytes and not st.session_state.just_transcribed:
+    with st.spinner("Transcribing…"):
+        spoken_text = transcribe_audio(audio_bytes)
+        if spoken_text:
+            st.success(f"You said: {spoken_text}")
+            st.session_state.text_query = spoken_text
+            st.session_state.just_transcribed = True
+
+# 4) Define a callback to allow manual edits to reset the flag
+def reset_transcription_flag():
+    st.session_state.just_transcribed = False
+
+# 5) The text_input uses the same key "text_query" and resets the flag on edit
+user_query = st.text_input(
+    "Enter your query:",
+    placeholder="E.g., Best PC setup for video editing…",
+    key="text_query",
+    on_change=reset_transcription_flag
+)
+# ───────────────────────────────────────────────────────────────────────────────
+
+
+# 3) “Get Recommendation” button
 if user_query and st.button("💬 Get Recommendation"):
     with st.spinner("Processing your query..."):
         st.session_state.result = graph.invoke({"question": user_query})
 
+# 4) Show result + downloads + TTS
 if st.session_state.result:
+    answer = st.session_state.result["answer"]
     st.subheader("💡 Suggested Answer")
-    st.write(st.session_state.result["answer"])
+    st.write(answer)
 
     enc = tiktoken.encoding_for_model("gpt-4")
     input_tokens = len(enc.encode(user_query))
-    output_tokens = len(enc.encode(st.session_state.result["answer"]))
+    output_tokens = len(enc.encode(answer))
     st.markdown(f"🔢 Input tokens: {input_tokens} | Output tokens: {output_tokens} | Total: {input_tokens + output_tokens}")
 
-    pdf_bytes = generate_pdf(st.session_state.result["answer"])
+    pdf_bytes = generate_pdf(answer)
     st.download_button(
         label="📄 Download Quotation as PDF",
         data=pdf_bytes,
@@ -467,9 +670,7 @@ if st.session_state.result:
         mime="application/pdf"
     )
 
-
-
-    slide_bytes = generate_slides(st.session_state.result["answer"])
+    slide_bytes = generate_slides(answer)
     st.download_button(
         label="📊 Download Slides (PPTX)",
         data=slide_bytes,
@@ -477,12 +678,14 @@ if st.session_state.result:
         mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
     )
 
-    # OPTIONAL: Show slide preview (first slide)
     try:
         preview_image = get_slide_preview(BytesIO(slide_bytes.read()))
         st.image(preview_image, caption="📽️ Slide Preview", use_column_width=True)
-    except Exception as e:
-        st.warning("Could not render slide preview. (Only works on Windows with PowerPoint installed.)")
+    except Exception:
+        pass
 
-
+    if st.button("🔊 Speak this quotation"):
+        with st.spinner("Generating speech…"):
+            mp3 = tts_stream(answer)
+            st.audio(mp3.read(), format="audio/mp3")
 

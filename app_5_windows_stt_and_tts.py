@@ -1,4 +1,5 @@
-import streamlit as st
+import streamlit as st, queue
+import threading  
 import os
 import pandas as pd
 from dotenv import load_dotenv
@@ -24,9 +25,15 @@ from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.dml.color import RGBColor
-from streamlit_mic_recorder import mic_recorder
-import tempfile
-import whisper 
+from stt import voice_in                     # ← queue from step 3
+from tts import speaker 
+
+# ---------- Voice helpers ----------
+def speak_async(text: str) -> None:
+    """Speak on a background thread so Streamlit doesn’t block."""
+    threading.Thread(target=lambda: speaker.Speak(text),
+                     daemon=True).start()
+# -----------------------------------
 
 # Load env vars
 load_dotenv()
@@ -441,21 +448,54 @@ graph = graph_builder.compile()
 # --- Streamlit UI ---
 st.title("💻 Computer Hardware Sales Assistant")
 
+# ---------- Voice state ----------
+if "listening" not in st.session_state:
+    st.session_state.listening = False
+if "last_spoken" not in st.session_state:
+    st.session_state.last_spoken = None
+# ---------------------------------
+
+start_btn, stop_btn = st.columns(2)
+if start_btn.button("🎤 Start Listening", disabled=st.session_state.listening):
+    st.session_state.listening = True
+if stop_btn.button("🛑 Stop Listening", disabled=not st.session_state.listening):
+    st.session_state.listening = False
+
+
 if "result" not in st.session_state:
     st.session_state.result = None
 
 user_query = st.text_input("Enter your query:", placeholder="E.g., Best PC setup for video editing...")
 
+voice_query = None
+if st.session_state.listening and not voice_in.empty():
+    voice_query = voice_in.get().strip()
+    if voice_query:
+        st.markdown(f"**👤 (voice):** {voice_query}")
+
+# Text query
 if user_query and st.button("💬 Get Recommendation"):
     with st.spinner("Processing your query..."):
         st.session_state.result = graph.invoke({"question": user_query})
+
+# Voice query (fires automatically once recognised)
+if voice_query:
+    with st.spinner("Processing your voice query..."):
+        st.session_state.result = graph.invoke({"question": voice_query})
 
 if st.session_state.result:
     st.subheader("💡 Suggested Answer")
     st.write(st.session_state.result["answer"])
 
+    # Speak once per unique answer
+    if st.session_state.result["answer"] != st.session_state.last_spoken:
+        speak_async(st.session_state.result["answer"])
+        st.session_state.last_spoken = st.session_state.result["answer"]
+
+
     enc = tiktoken.encoding_for_model("gpt-4")
-    input_tokens = len(enc.encode(user_query))
+    q_text = voice_query if voice_query else user_query
+    input_tokens = len(enc.encode(q_text))
     output_tokens = len(enc.encode(st.session_state.result["answer"]))
     st.markdown(f"🔢 Input tokens: {input_tokens} | Output tokens: {output_tokens} | Total: {input_tokens + output_tokens}")
 
@@ -477,12 +517,14 @@ if st.session_state.result:
         mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
     )
 
+
     # OPTIONAL: Show slide preview (first slide)
     try:
         preview_image = get_slide_preview(BytesIO(slide_bytes.read()))
         st.image(preview_image, caption="📽️ Slide Preview", use_column_width=True)
     except Exception as e:
         st.warning("Could not render slide preview. (Only works on Windows with PowerPoint installed.)")
+
 
 
 
