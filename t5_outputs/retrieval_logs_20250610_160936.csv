@@ -1,0 +1,186 @@
+question,retrieval_stage,rank,content
+help me choose a processor with integrated graphics,dense,1,"name: Intel Core i9-14900K
+price: 544.99
+core_count: 24
+core_clock: 3.2
+boost_clock: 6.0
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+help me choose a processor with integrated graphics,dense,2,"name: AMD Ryzen 5 7600X
+price: 204.99
+core_count: 6
+core_clock: 4.7
+boost_clock: 5.3
+tdp: 105
+graphics: Radeon
+smt: True"
+help me choose a processor with integrated graphics,dense,3,"name: AMD Ryzen 7 7800X3D
+price: 339.0
+core_count: 8
+core_clock: 4.2
+boost_clock: 5.0
+tdp: 120
+graphics: Radeon
+smt: True"
+help me choose a processor with integrated graphics,dense,4,"name: AMD Ryzen 5 7600
+price: 185.0
+core_count: 6
+core_clock: 3.8
+boost_clock: 5.1
+tdp: 65
+graphics: Radeon
+smt: True"
+help me choose a processor with integrated graphics,dense,5,"name: MSI B760 GAMING PLUS WIFI
+price: 159.99
+socket: LGA1700
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black / Silver"
+help me choose a processor with integrated graphics,dense,6,"name: AMD Ryzen 5 5600X
+price: 144.31
+core_count: 6
+core_clock: 3.7
+boost_clock: 4.6
+tdp: 65
+graphics: nan
+smt: True"
+help me choose a processor with integrated graphics,dense,7,"name: MSI PRO Z790-A MAX WIFI
+price: 239.99
+socket: LGA1700
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Silver / Black"
+help me choose a processor with integrated graphics,dense,8,"name: MSI B650 GAMING PLUS WIFI
+price: 169.99
+socket: AM5
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black"
+help me choose a processor with integrated graphics,dense,9,"name: MSI G244F
+price: 104.99
+screen_size: 23.8
+resolution: 1920,1080
+refresh_rate: 170
+response_time: 1.0
+panel_type: IPS
+aspect_ratio: 16:9"
+help me choose a processor with integrated graphics,dense,10,"name: Asus ROG STRIX B650-A GAMING WIFI
+price: 199.99
+socket: AM5
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black / Silver"
+help me choose a processor with integrated graphics,dense,11,"name: Gigabyte WINDFORCE OC
+price: 581.19
+chipset: GeForce RTX 4070
+memory: 12
+core_clock: 1920
+boost_clock: 2490
+color: Black
+length: 261"
+help me choose a processor with integrated graphics,dense,12,"name: MSI B550 GAMING GEN3
+price: 99.99
+socket: AM4
+form_factor: ATX
+max_memory: 128
+memory_slots: 4
+color: Black"
+help me choose a processor with integrated graphics,dense,13,"name: Gigabyte WINDFORCE OC
+price: 799.99
+chipset: GeForce RTX 4070 Ti SUPER
+memory: 16
+core_clock: 2340
+boost_clock: 2625
+color: Black
+length: 261"
+help me choose a processor with integrated graphics,dense,14,"name: Creative Labs Sound Blaster Z SE
+price: 95.99
+channels: 5.1
+digital_audio: 24
+snr: 116
+sample_rate: 192
+chipset: Sound Core3D
+interface: PCIe x1"
+help me choose a processor with integrated graphics,dense,15,"name: Asus DUAL OC
+price: 309.99
+chipset: GeForce RTX 4060
+memory: 8
+core_clock: 1830
+boost_clock: 2535
+color: Black
+length: 227"
+help me choose a processor with integrated graphics,dense,16,"name: Asus ROG STRIX GAMING OC
+price: 1979.99
+chipset: GeForce RTX 4090
+memory: 24
+core_clock: 2235
+boost_clock: 2640
+color: Black
+length: 358"
+help me choose a processor with integrated graphics,dense,17,"name: MSI GeForce RTX 3060 Ventus 2X 12G
+price: 288.0
+chipset: GeForce RTX 3060 12GB
+memory: 12
+core_clock: 1320
+boost_clock: 1777
+color: Black
+length: 235"
+help me choose a processor with integrated graphics,dense,18,"name: Asus Xonar SE
+price: 39.99
+channels: 5.1
+digital_audio: 24
+snr: 120
+sample_rate: 192
+chipset: nan
+interface: PCIe x1"
+help me choose a processor with integrated graphics,dense,19,"name: Creative Labs Sound Blaster Audigy Rx
+price: 58.99
+channels: 7.1
+digital_audio: 24
+snr: 106
+sample_rate: 192
+chipset: Creative E-MU
+interface: PCIe x1"
+help me choose a processor with integrated graphics,dense,20,"name: Intel X540-T2
+price: 75.89
+interface: PCIe x8
+color: nan"
+help me choose a processor with integrated graphics,reranked,1,"name: MSI GeForce RTX 3060 Ventus 2X 12G
+price: 288.0
+chipset: GeForce RTX 3060 12GB
+memory: 12
+core_clock: 1320
+boost_clock: 1777
+color: Black
+length: 235"
+help me choose a processor with integrated graphics,reranked,2,"name: Creative Labs Sound Blaster Z SE
+price: 95.99
+channels: 5.1
+digital_audio: 24
+snr: 116
+sample_rate: 192
+chipset: Sound Core3D
+interface: PCIe x1"
+help me choose a processor with integrated graphics,reranked,3,"name: MSI B760 GAMING PLUS WIFI
+price: 159.99
+socket: LGA1700
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black / Silver"
+help me choose a processor with integrated graphics,reranked,4,"name: Asus ROG STRIX B650-A GAMING WIFI
+price: 199.99
+socket: AM5
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black / Silver"
+help me choose a processor with integrated graphics,reranked,5,"name: Intel X540-T2
+price: 75.89
+interface: PCIe x8
+color: nan"

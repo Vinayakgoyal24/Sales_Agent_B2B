@@ -1,0 +1,82 @@
+[
+  {
+    "question": "suggest a good i5 processor",
+    "contexts": [
+      "Name: Intel Core i5-12400F\nPrice: 128\nCores: 6\nBase Clock: 2.5GHz\nBoost Clock: 4.4GHz\nTDP: 65W\nGraphics: None\nSMT: True",
+      "Name: AMD Ryzen 5 5600X\nPrice: 144.31\nCores: 6\nBase Clock: 3.7GHz\nBoost Clock: 4.6GHz\nTDP: 65W\nGraphics: None\nSMT: True"
+    ],
+    "ground_truth": "Both are strong mid-range CPUs, but AMD Ryzen 5 5600X offers slightly higher clock speeds for similar price."
+  },
+  {
+    "question": "recommend a wireless gaming mouse",
+    "contexts": [
+      "Name: Logitech G305 LIGHTSPEED\nPrice: 48\nTracking: Optical\nConnection: Wired, Wireless\nMax DPI: 12000\nOrientation: Right\nColor: White",
+      "Name: Logitech G502 LIGHTSPEED\nPrice: 89.99\nTracking: Optical\nConnection: Wireless\nMax DPI: 25600\nOrientation: Right\nColor: Black"
+    ],
+    "ground_truth": "Logitech G502 LIGHTSPEED offers better DPI and is optimized for performance, while G305 is a more budget-friendly option."
+  },
+  {
+    "question": "i need a 4k webcam for video conferencing",
+    "contexts": [
+      "Name: Logitech BRIO Ultra HD Pro\nPrice: 124.99\nResolutions: 4k,1080p,720p\nConnection: USB 3.2 Gen 1 Type-A\nFocus: Auto\nOS: Windows, OS X, ChromeOS\nFOV: 82",
+      "Name: Razer Kiyo Pro Ultra\nPrice: 299.99\nResolutions: 4k,2k,1080p,720p\nConnection: USB 3.2 Gen 1 Type-A\nFocus: Auto\nOS: Windows\nFOV: 82"
+    ],
+    "ground_truth": "Logitech BRIO is great for value, but Kiyo Pro Ultra gives you better low-light performance at a higher price."
+  },
+  {
+    "question": "recommend a compact mechanical keyboard",
+    "contexts": [
+      "Name: Razer Huntsman Mini\nPrice: 99.99\nStyle: Mini\nSwitches: Razer Purple Optical Clicky\nBacklit: RGB\nTenkeyless: True\nConnection: Wired\nColor: White",
+      "Name: RK Royal Kludge RK61\nPrice: 49.99\nStyle: Mini\nSwitches: RK Red\nBacklit: White\nTenkeyless: True\nConnection: Wired, Wireless, Bluetooth\nColor: White"
+    ],
+    "ground_truth": "RK61 is better for budget and wireless connectivity; Huntsman Mini offers premium switches and RGB effects."
+  },
+  {
+    "question": "best RGB gaming keyboard under $150",
+    "contexts": [
+      "Name: Corsair K70 RGB PRO\nPrice: 129.99\nStyle: Gaming\nSwitches: Cherry MX Red\nBacklit: RGB\nTenkeyless: False\nConnection: Wired\nColor: Black",
+      "Name: Logitech G915 Lightspeed\nPrice: 199.97\nStyle: Gaming\nSwitches: Logitech GL Tactile\nBacklit: RGB\nTenkeyless: False\nConnection: Wireless\nColor: Black"
+    ],
+    "ground_truth": "Corsair K70 RGB PRO fits the budget and offers Cherry MX Red switches, suitable for gaming responsiveness."
+  },
+  {
+    "question": "which processor is good for video editing?",
+    "contexts": [
+      "Name: AMD Ryzen 7 7800X3D\nPrice: 339\nCores: 8\nBase Clock: 4.2GHz\nBoost Clock: 5GHz\nTDP: 120W\nGraphics: Radeon\nSMT: True",
+      "Name: Intel Core i9-14900K\nPrice: 544.99\nCores: 24\nBase Clock: 3.2GHz\nBoost Clock: 6GHz\nTDP: 125W\nGraphics: Intel UHD Graphics 770\nSMT: True"
+    ],
+    "ground_truth": "Intel Core i9-14900K is more powerful with 24 cores, ideal for heavy rendering and multitasking."
+  },
+  {
+    "question": "recommend a good value webcam",
+    "contexts": [
+      "Name: Anker PowerConf C200\nPrice: 59.99\nResolutions: 2k,1080p,720p\nConnection: USB 3.2 Gen 1 Type-C\nFocus: Auto\nOS: Windows, OS X\nFOV: 95",
+      "Name: Logitech C920s HD Pro\nPrice: 64.99\nResolutions: 1080p,720p\nConnection: USB 2.0 Type-A\nFocus: Auto\nOS: Windows, OS X, ChromeOS, Android\nFOV: 78"
+    ],
+    "ground_truth": "Anker C200 offers better resolution and field of view for slightly lower price; suitable for most users."
+  },
+  {
+    "question": "suggest me a budget gaming mouse",
+    "contexts": [
+      "Name: Razer DeathAdder Essential\nPrice: 21.99\nTracking: Optical\nConnection: Wired\nMax DPI: 6400\nOrientation: Right\nColor: White",
+      "Name: Logitech G305 LIGHTSPEED\nPrice: 48\nTracking: Optical\nConnection: Wired, Wireless\nMax DPI: 12000\nOrientation: Right\nColor: White"
+    ],
+    "ground_truth": "Razer DeathAdder Essential is cheaper and reliable, ideal for basic gaming on a budget."
+  },
+  {
+    "question": "can you suggest an ergonomic mechanical keyboard",
+    "contexts": [
+      "Name: Logitech G915 Lightspeed\nPrice: 199.97\nStyle: Gaming\nSwitches: Logitech GL Tactile\nBacklit: RGB\nTenkeyless: False\nConnection: Wireless\nColor: Black",
+      "Name: Microsoft Natural Desktop 7000\nPrice: 769.95\nStyle: Ergonomic\nBacklit: No\nConnection: Wireless\nColor: Black/Silver"
+    ],
+    "ground_truth": "Microsoft Natural Desktop 7000 is more ergonomic, while Logitech G915 excels in gaming functionality."
+  },
+  {
+    "question": "help me choose a processor with integrated graphics",
+    "contexts": [
+      "Name: AMD Ryzen 7 7800X3D\nPrice: 339\nCores: 8\nBase Clock: 4.2GHz\nBoost Clock: 5GHz\nTDP: 120W\nGraphics: Radeon\nSMT: True",
+      "Name: Intel Core i9-14900K\nPrice: 544.99\nCores: 24\nBase Clock: 3.2GHz\nBoost Clock: 6GHz\nTDP: 125W\nGraphics: Intel UHD Graphics 770\nSMT: True"
+    ],
+    "ground_truth": "Both CPUs have integrated graphics; Intel UHD Graphics 770 on i9-14900K is generally more feature-rich."
+  }
+]

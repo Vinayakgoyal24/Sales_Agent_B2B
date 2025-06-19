@@ -1,0 +1,121 @@
+question,retrieval_stage,rank,content
+can you suggest an ergonomic mechanical keyboard,dense,1,"name: Microsoft Natural Desktop 7000
+price: 769.95
+style: Ergonomic
+switches: nan
+backlit: nan
+tenkeyless: False
+connection_type: Wireless
+color: Black / Silver"
+can you suggest an ergonomic mechanical keyboard,dense,2,"name: Microsoft WTA-00001
+price: 765.0
+style: Ergonomic
+switches: nan
+backlit: nan
+tenkeyless: False
+connection_type: Wireless
+color: Black / Silver"
+can you suggest an ergonomic mechanical keyboard,dense,3,"name: G.Skill KM360
+price: 49.99
+style: Standard
+switches: Cherry MX Red
+backlit: White
+tenkeyless: True
+connection_type: Wired
+color: White"
+can you suggest an ergonomic mechanical keyboard,dense,4,"name: Razer DeathStalker V2 Pro
+price: 249.99
+style: Gaming
+switches: Razer Purple Low-Profile Optical Clicky
+backlit: RGB
+tenkeyless: False
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: White"
+can you suggest an ergonomic mechanical keyboard,dense,5,"name: Logitech PRO X
+price: 199.0
+style: Gaming
+switches: Logitech GX Brown Tactile
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wired, Wireless, Bluetooth Wireless
+color: White"
+can you suggest an ergonomic mechanical keyboard,dense,6,"name: Logitech G715
+price: 161.88
+style: Gaming
+switches: GX Brown
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: White"
+can you suggest an ergonomic mechanical keyboard,dense,7,"name: Microsoft CXD-00001
+price: nan
+style: Ergonomic
+switches: nan
+backlit: nan
+tenkeyless: False
+connection_type: Bluetooth Wireless
+color: Black"
+can you suggest an ergonomic mechanical keyboard,dense,8,"name: Cooler Master SK620
+price: 24.99
+style: Gaming
+switches: TTC Blue
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Gray / Black"
+can you suggest an ergonomic mechanical keyboard,dense,9,"name: Corsair K100 AIR Wireless
+price: 199.99
+style: Gaming
+switches: Cherry MX Ultra Low Profile Tactile
+backlit: RGB
+tenkeyless: False
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+can you suggest an ergonomic mechanical keyboard,dense,10,"name: Logitech G PRO
+price: 99.99
+style: Gaming
+switches: GX Blue
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Black"
+can you suggest an ergonomic mechanical keyboard,reranked,1,"name: Razer DeathStalker V2 Pro
+price: 249.99
+style: Gaming
+switches: Razer Purple Low-Profile Optical Clicky
+backlit: RGB
+tenkeyless: False
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: White"
+can you suggest an ergonomic mechanical keyboard,reranked,2,"name: Microsoft Natural Desktop 7000
+price: 769.95
+style: Ergonomic
+switches: nan
+backlit: nan
+tenkeyless: False
+connection_type: Wireless
+color: Black / Silver"
+can you suggest an ergonomic mechanical keyboard,reranked,3,"name: Corsair K100 AIR Wireless
+price: 199.99
+style: Gaming
+switches: Cherry MX Ultra Low Profile Tactile
+backlit: RGB
+tenkeyless: False
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+can you suggest an ergonomic mechanical keyboard,reranked,4,"name: G.Skill KM360
+price: 49.99
+style: Standard
+switches: Cherry MX Red
+backlit: White
+tenkeyless: True
+connection_type: Wired
+color: White"
+can you suggest an ergonomic mechanical keyboard,reranked,5,"name: Cooler Master SK620
+price: 24.99
+style: Gaming
+switches: TTC Blue
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Gray / Black"

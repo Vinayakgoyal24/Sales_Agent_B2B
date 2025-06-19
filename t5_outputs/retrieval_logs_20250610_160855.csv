@@ -1,0 +1,161 @@
+question,retrieval_stage,rank,content
+suggest a good i5 processor,dense,1,"name: Intel Core i9-14900K
+price: 544.99
+core_count: 24
+core_clock: 3.2
+boost_clock: 6.0
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+suggest a good i5 processor,dense,2,"name: AMD Ryzen 5 7600X
+price: 204.99
+core_count: 6
+core_clock: 4.7
+boost_clock: 5.3
+tdp: 105
+graphics: Radeon
+smt: True"
+suggest a good i5 processor,dense,3,"name: AMD Ryzen 5 7600
+price: 185.0
+core_count: 6
+core_clock: 3.8
+boost_clock: 5.1
+tdp: 65
+graphics: Radeon
+smt: True"
+suggest a good i5 processor,dense,4,"name: AMD Ryzen 5 5600X
+price: 144.31
+core_count: 6
+core_clock: 3.7
+boost_clock: 4.6
+tdp: 65
+graphics: nan
+smt: True"
+suggest a good i5 processor,dense,5,"name: AMD Ryzen 7 7800X3D
+price: 339.0
+core_count: 8
+core_clock: 4.2
+boost_clock: 5.0
+tdp: 120
+graphics: Radeon
+smt: True"
+suggest a good i5 processor,dense,6,"name: MSI B760 GAMING PLUS WIFI
+price: 159.99
+socket: LGA1700
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black / Silver"
+suggest a good i5 processor,dense,7,"name: MSI PRO Z790-A MAX WIFI
+price: 239.99
+socket: LGA1700
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Silver / Black"
+suggest a good i5 processor,dense,8,"name: MSI B650 GAMING PLUS WIFI
+price: 169.99
+socket: AM5
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black"
+suggest a good i5 processor,dense,9,"name: Microsoft Windows 10 Pro (64-bit)
+price: nan
+mode: 64
+max_memory: 2048"
+suggest a good i5 processor,dense,10,"name: Asus ROG STRIX B650-A GAMING WIFI
+price: 199.99
+socket: AM5
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black / Silver"
+suggest a good i5 processor,dense,11,"name: Microsoft Windows 11 Pro (64-bit)
+price: 159.99
+mode: 64
+max_memory: 2048"
+suggest a good i5 processor,dense,12,"name: Microsoft Windows 10 Home (64-bit)
+price: nan
+mode: 64
+max_memory: 128"
+suggest a good i5 processor,dense,13,"name: Microsoft Windows 11 Home (64-bit)
+price: 109.99
+mode: 64
+max_memory: 128"
+suggest a good i5 processor,dense,14,"name: Intel AX200
+price: 20.99
+protocol: Wi-Fi 6
+interface: M.2
+color: nan"
+suggest a good i5 processor,dense,15,"name: Creative Labs Sound Blaster Z SE
+price: 95.99
+channels: 5.1
+digital_audio: 24
+snr: 116
+sample_rate: 192
+chipset: Sound Core3D
+interface: PCIe x1"
+suggest a good i5 processor,dense,16,"name: G.Skill Trident Z5 RGB 32 GB
+price: 117.99
+speed: 5,6000
+modules: 2,16
+price_per_gb: 3.687
+color: Black
+first_word_latency: 12.0
+cas_latency: 36"
+suggest a good i5 processor,dense,17,"name: Intel X540-T2
+price: 75.89
+interface: PCIe x8
+color: nan"
+suggest a good i5 processor,dense,18,"name: Microsoft Windows 11 Home (64-bit)
+price: 138.99
+mode: 64
+max_memory: 128"
+suggest a good i5 processor,dense,19,"name: Creative Labs Sound BlasterX AE-5 Plus
+price: 139.99
+channels: 5.1
+digital_audio: 32
+snr: 122
+sample_rate: 384
+chipset: Sound Core3D
+interface: PCIe x1"
+suggest a good i5 processor,dense,20,"name: Arctic Silver 5 High-Density Polysynthetic Silver
+price: 5.77
+amount: 3.5"
+suggest a good i5 processor,reranked,1,"name: AMD Ryzen 5 7600X
+price: 204.99
+core_count: 6
+core_clock: 4.7
+boost_clock: 5.3
+tdp: 105
+graphics: Radeon
+smt: True"
+suggest a good i5 processor,reranked,2,"name: AMD Ryzen 5 7600
+price: 185.0
+core_count: 6
+core_clock: 3.8
+boost_clock: 5.1
+tdp: 65
+graphics: Radeon
+smt: True"
+suggest a good i5 processor,reranked,3,"name: AMD Ryzen 5 5600X
+price: 144.31
+core_count: 6
+core_clock: 3.7
+boost_clock: 4.6
+tdp: 65
+graphics: nan
+smt: True"
+suggest a good i5 processor,reranked,4,"name: Microsoft Windows 11 Home (64-bit)
+price: 109.99
+mode: 64
+max_memory: 128"
+suggest a good i5 processor,reranked,5,"name: Creative Labs Sound BlasterX AE-5 Plus
+price: 139.99
+channels: 5.1
+digital_audio: 32
+snr: 122
+sample_rate: 384
+chipset: Sound Core3D
+interface: PCIe x1"

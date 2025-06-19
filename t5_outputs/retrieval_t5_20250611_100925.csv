@@ -1,0 +1,121 @@
+question,retrieval_stage,rank,content
+recommend a compact mechanical keyboard,dense,1,"name: Cooler Master SK620
+price: 24.99
+style: Gaming
+switches: TTC Blue
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Gray / Black"
+recommend a compact mechanical keyboard,dense,2,"name: G.Skill KM360
+price: 49.99
+style: Standard
+switches: Cherry MX Red
+backlit: White
+tenkeyless: True
+connection_type: Wired
+color: White"
+recommend a compact mechanical keyboard,dense,3,"name: Razer Huntsman Mini
+price: 95.0
+style: Mini
+switches: Razer Red Optical Linear
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Black"
+recommend a compact mechanical keyboard,dense,4,"name: RK Royal Kludge RK61
+price: 49.99
+style: Mini
+switches: RK Red
+backlit: White
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+recommend a compact mechanical keyboard,dense,5,"name: SteelSeries Apex Pro Mini
+price: 139.99
+style: Gaming
+switches: SteelSeries OmniPoint 2.0
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Black"
+recommend a compact mechanical keyboard,dense,6,"name: RK Royal Kludge RK61
+price: 49.99
+style: Mini
+switches: RK Red
+backlit: White
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: White"
+recommend a compact mechanical keyboard,dense,7,"name: Asus ROG Azoth
+price: 169.99
+style: Mini
+switches: ROG NX Red
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+recommend a compact mechanical keyboard,dense,8,"name: Razer Huntsman Mini
+price: 90.99
+style: Mini
+switches: Razer Purple Optical Clicky
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Black"
+recommend a compact mechanical keyboard,dense,9,"name: Razer Huntsman Mini
+price: 99.99
+style: Mini
+switches: Razer Purple Optical Clicky
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: White"
+recommend a compact mechanical keyboard,dense,10,"name: Asceny One
+price: 19.98
+style: Mini
+switches: Gateron Blue Optical
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Black"
+recommend a compact mechanical keyboard,reranked,1,"name: G.Skill KM360
+price: 49.99
+style: Standard
+switches: Cherry MX Red
+backlit: White
+tenkeyless: True
+connection_type: Wired
+color: White"
+recommend a compact mechanical keyboard,reranked,2,"name: Razer Huntsman Mini
+price: 99.99
+style: Mini
+switches: Razer Purple Optical Clicky
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: White"
+recommend a compact mechanical keyboard,reranked,3,"name: Razer Huntsman Mini
+price: 95.0
+style: Mini
+switches: Razer Red Optical Linear
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Black"
+recommend a compact mechanical keyboard,reranked,4,"name: RK Royal Kludge RK61
+price: 49.99
+style: Mini
+switches: RK Red
+backlit: White
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: White"
+recommend a compact mechanical keyboard,reranked,5,"name: Asceny One
+price: 19.98
+style: Mini
+switches: Gateron Blue Optical
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Black"

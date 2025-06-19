@@ -3,7 +3,11 @@ chroma_langchain_db/
 chroma_db/
 chat_logs/
 static/
+data/
 .env
 # Ignore SQLite files
 *.sqlite3
 *.bin
+
+
+tech-sales-whisperer-bot/

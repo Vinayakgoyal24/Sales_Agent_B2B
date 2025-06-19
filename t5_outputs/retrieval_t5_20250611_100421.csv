@@ -1,0 +1,121 @@
+question,retrieval_stage,rank,content
+suggest a good i5 processor,dense,1,"name: Intel Core i5-14600K
+price: 295.99
+core_count: 14
+core_clock: 3.5
+boost_clock: 5.3
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+suggest a good i5 processor,dense,2,"name: Intel Core i5-13600K
+price: 283.99
+core_count: 14
+core_clock: 3.5
+boost_clock: 5.1
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+suggest a good i5 processor,dense,3,"name: Intel Core i5-13600KF
+price: 249.99
+core_count: 14
+core_clock: 3.5
+boost_clock: 5.1
+tdp: 125
+graphics: nan
+smt: True"
+suggest a good i5 processor,dense,4,"name: Intel Core i5-14600KF
+price: 293.99
+core_count: 14
+core_clock: 3.5
+boost_clock: 5.3
+tdp: 125
+graphics: nan
+smt: True"
+suggest a good i5 processor,dense,5,"name: Intel Core i5-12600K
+price: 175.74
+core_count: 10
+core_clock: 3.7
+boost_clock: 4.9
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+suggest a good i5 processor,dense,6,"name: Intel Core i5-14400F
+price: 199.99
+core_count: 10
+core_clock: 2.5
+boost_clock: 4.7
+tdp: 65
+graphics: nan
+smt: True"
+suggest a good i5 processor,dense,7,"name: Intel Core i5-10400F
+price: 97.99
+core_count: 6
+core_clock: 2.9
+boost_clock: 4.3
+tdp: 65
+graphics: nan
+smt: True"
+suggest a good i5 processor,dense,8,"name: Intel Core i7-12700K
+price: 248.0
+core_count: 12
+core_clock: 3.6
+boost_clock: 5.0
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+suggest a good i5 processor,dense,9,"name: Intel Core i5-13400F
+price: 185.99
+core_count: 10
+core_clock: 2.5
+boost_clock: 4.6
+tdp: 65
+graphics: nan
+smt: True"
+suggest a good i5 processor,dense,10,"name: Intel Core i5-12600KF
+price: 159.13
+core_count: 10
+core_clock: 3.7
+boost_clock: 4.9
+tdp: 125
+graphics: nan
+smt: True"
+suggest a good i5 processor,reranked,1,"name: Intel Core i5-13600KF
+price: 249.99
+core_count: 14
+core_clock: 3.5
+boost_clock: 5.1
+tdp: 125
+graphics: nan
+smt: True"
+suggest a good i5 processor,reranked,2,"name: Intel Core i5-10400F
+price: 97.99
+core_count: 6
+core_clock: 2.9
+boost_clock: 4.3
+tdp: 65
+graphics: nan
+smt: True"
+suggest a good i5 processor,reranked,3,"name: Intel Core i5-13400F
+price: 185.99
+core_count: 10
+core_clock: 2.5
+boost_clock: 4.6
+tdp: 65
+graphics: nan
+smt: True"
+suggest a good i5 processor,reranked,4,"name: Intel Core i5-14600K
+price: 295.99
+core_count: 14
+core_clock: 3.5
+boost_clock: 5.3
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+suggest a good i5 processor,reranked,5,"name: Intel Core i5-12600KF
+price: 159.13
+core_count: 10
+core_clock: 3.7
+boost_clock: 4.9
+tdp: 125
+graphics: nan
+smt: True"

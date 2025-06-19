@@ -1,0 +1,174 @@
+question,retrieval_stage,rank,content
+recommend a good value webcam,dense,1,"name: Logitech BRIO Ultra HD Pro
+price: 124.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS
+fov: 82.0"
+recommend a good value webcam,dense,2,"name: Elgato Facecam Pro
+price: 299.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 90.0"
+recommend a good value webcam,dense,3,"name: Razer Kiyo Pro Ultra
+price: 299.99
+resolutions: 4k,2k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows
+fov: 82.0"
+recommend a good value webcam,dense,4,"name: Anker PowerConf C200
+price: 59.99
+resolutions: 2k,1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 95.0"
+recommend a good value webcam,dense,5,"name: OBSBOT Tiny 2
+price: 296.0
+resolutions: 4k,2k,1080p,720p,480p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows,OS X
+fov: 85.5"
+recommend a good value webcam,dense,6,"name: Logitech G502 Hero
+price: 39.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 25600
+hand_orientation: Right
+color: Black"
+recommend a good value webcam,dense,7,"name: Logitech G305 LIGHTSPEED
+price: 39.99
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 12000
+hand_orientation: Right
+color: Black"
+recommend a good value webcam,dense,8,"name: Logitech PRO X Superlight 2
+price: 149.0
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 32000
+hand_orientation: Right
+color: Black"
+recommend a good value webcam,dense,9,"name: Logitech Pro X
+price: 99.99
+type: Circumaural
+frequency_response: 20,20
+microphone: True
+wireless: False
+enclosure_type: Closed
+color: Black"
+recommend a good value webcam,dense,10,"name: Creative Labs Sound Blaster Audigy Rx
+price: 58.99
+channels: 7.1
+digital_audio: 24
+snr: 106
+sample_rate: 192
+chipset: Creative E-MU
+interface: PCIe x1"
+recommend a good value webcam,dense,11,"name: Creative Labs Sound Blaster Z SE
+price: 95.99
+channels: 5.1
+digital_audio: 24
+snr: 116
+sample_rate: 192
+chipset: Sound Core3D
+interface: PCIe x1"
+recommend a good value webcam,dense,12,"name: Creative Labs Pebble 2.0
+price: 18.99
+configuration: 2.0
+wattage: 4.4
+frequency_response: 100,17
+color: Black"
+recommend a good value webcam,dense,13,"name: Razer Basilisk V3
+price: 49.98
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 26000
+hand_orientation: Right
+color: Black"
+recommend a good value webcam,dense,14,"name: Asus Xonar SE
+price: 39.99
+channels: 5.1
+digital_audio: 24
+snr: 120
+sample_rate: 192
+chipset: nan
+interface: PCIe x1"
+recommend a good value webcam,dense,15,"name: Creative Labs Pebble 2.0
+price: 18.99
+configuration: 2.0
+wattage: 4.4
+frequency_response: 100,17
+color: White"
+recommend a good value webcam,dense,16,"name: TP-Link TG-3468
+price: 14.99
+interface: PCIe x1
+color: nan"
+recommend a good value webcam,dense,17,"name: Creative Labs Sound Blaster AE-9
+price: 332.49
+channels: 7.1
+digital_audio: 32
+snr: 129
+sample_rate: 384
+chipset: Sound Core3D
+interface: PCIe x1"
+recommend a good value webcam,dense,18,"name: MSI G244F
+price: 104.99
+screen_size: 23.8
+resolution: 1920,1080
+refresh_rate: 170
+response_time: 1.0
+panel_type: IPS
+aspect_ratio: 16:9"
+recommend a good value webcam,dense,19,"name: TP-Link TX201
+price: 26.99
+interface: PCIe x1
+color: Black / Gold"
+recommend a good value webcam,dense,20,"name: Gigabyte GC-WBAX210
+price: 39.99
+protocol: Wi-Fi 6E
+interface: PCIe x1
+color: Black / Silver"
+recommend a good value webcam,reranked,1,"name: Creative Labs Sound Blaster Audigy Rx
+price: 58.99
+channels: 7.1
+digital_audio: 24
+snr: 106
+sample_rate: 192
+chipset: Creative E-MU
+interface: PCIe x1"
+recommend a good value webcam,reranked,2,"name: Anker PowerConf C200
+price: 59.99
+resolutions: 2k,1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 95.0"
+recommend a good value webcam,reranked,3,"name: OBSBOT Tiny 2
+price: 296.0
+resolutions: 4k,2k,1080p,720p,480p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows,OS X
+fov: 85.5"
+recommend a good value webcam,reranked,4,"name: Creative Labs Sound Blaster AE-9
+price: 332.49
+channels: 7.1
+digital_audio: 32
+snr: 129
+sample_rate: 384
+chipset: Sound Core3D
+interface: PCIe x1"
+recommend a good value webcam,reranked,5,"name: Elgato Facecam Pro
+price: 299.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 90.0"

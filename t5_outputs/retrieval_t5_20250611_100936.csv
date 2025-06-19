@@ -1,0 +1,159 @@
+question,retrieval_stage,rank,content
+which processor is good for video editing?,dense,1,"name: Intel Core i5-13600K
+price: 283.99
+core_count: 14
+core_clock: 3.5
+boost_clock: 5.1
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+which processor is good for video editing?,dense,2,"name: Intel Core i5-14600K
+price: 295.99
+core_count: 14
+core_clock: 3.5
+boost_clock: 5.3
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+which processor is good for video editing?,dense,3,"images: ['https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX679_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX522_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX425_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX466_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX569_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX355_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX450_.jpg']
+price: $1,859.13 
+tags: ['content creation']
+title: HP - Envy 16"" Laptop - QHD(2560 × 1600) Touch-Display - Intel Core i7-13700H - NVIDIA GeForce RTX 4060-2 x Thunderbolt (32GB RAM | 1TB PCIe SSD)
+url: https://www.amazon.com/HP-Touch-Display-i7-13700H-GeForce-Thunderbolt/dp/B0CBZYC7SF/ref=sr_1_13
+ram: 32
+series: ENVY
+computer memory type: DDR5 RAM
+item model number: i7-13700H
+customer reviews: nan
+best sellers rank: 17,224 in Electronics (See Top 100 in Electronics)  65 in Traditional Laptops
+wireless type: Bluetooth"
+which processor is good for video editing?,dense,4,"item model number: i7-13700H
+customer reviews: nan
+best sellers rank: 17,224 in Electronics (See Top 100 in Electronics)  65 in Traditional Laptops
+wireless type: Bluetooth
+graphics coprocessor: NVIDIA GeForce RTX 4060
+hard drive: nan
+item dimensions  lxwxh: nan
+item weight: nan
+number of processors: nan
+operating system: nan
+processor: nan
+chipset brand: nan
+color: nan
+hard drive interface: USB
+max screen resolution: nan
+screen resolution: nan
+number of usb 3.0 ports: 1.0
+standing screen display size: 16 Inches
+brand: HP
+processor brand: Intel
+product dimensions: 35.74 x 25.25 x 1.98 cm; 4.16 kg
+Unnamed: 29: nan
+Unnamed: 30: nan"
+which processor is good for video editing?,dense,5,"name: Intel Core i7-13700K
+price: 359.0
+core_count: 16
+core_clock: 3.4
+boost_clock: 5.4
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+which processor is good for video editing?,dense,6,"name: Intel Core i7-14700K
+price: 399.99
+core_count: 20
+core_clock: 3.4
+boost_clock: 5.6
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+which processor is good for video editing?,dense,7,"name: Intel Core i9-14900K
+price: 544.99
+core_count: 24
+core_clock: 3.2
+boost_clock: 6.0
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+which processor is good for video editing?,dense,8,"name: Intel Core i7-12700K
+price: 248.0
+core_count: 12
+core_clock: 3.6
+boost_clock: 5.0
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+which processor is good for video editing?,dense,9,"name: Intel Core i5-13600KF
+price: 249.99
+core_count: 14
+core_clock: 3.5
+boost_clock: 5.1
+tdp: 125
+graphics: nan
+smt: True"
+which processor is good for video editing?,dense,10,"name: Intel Core i7-13700KF
+price: 303.49
+core_count: 16
+core_clock: 3.4
+boost_clock: 5.4
+tdp: 125
+graphics: nan
+smt: True"
+which processor is good for video editing?,reranked,1,"item model number: i7-13700H
+customer reviews: nan
+best sellers rank: 17,224 in Electronics (See Top 100 in Electronics)  65 in Traditional Laptops
+wireless type: Bluetooth
+graphics coprocessor: NVIDIA GeForce RTX 4060
+hard drive: nan
+item dimensions  lxwxh: nan
+item weight: nan
+number of processors: nan
+operating system: nan
+processor: nan
+chipset brand: nan
+color: nan
+hard drive interface: USB
+max screen resolution: nan
+screen resolution: nan
+number of usb 3.0 ports: 1.0
+standing screen display size: 16 Inches
+brand: HP
+processor brand: Intel
+product dimensions: 35.74 x 25.25 x 1.98 cm; 4.16 kg
+Unnamed: 29: nan
+Unnamed: 30: nan"
+which processor is good for video editing?,reranked,2,"name: Intel Core i7-13700KF
+price: 303.49
+core_count: 16
+core_clock: 3.4
+boost_clock: 5.4
+tdp: 125
+graphics: nan
+smt: True"
+which processor is good for video editing?,reranked,3,"name: Intel Core i7-13700K
+price: 359.0
+core_count: 16
+core_clock: 3.4
+boost_clock: 5.4
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+which processor is good for video editing?,reranked,4,"images: ['https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX679_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX522_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX425_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX466_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX569_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX355_.jpg', 'https://m.media-amazon.com/images/I/71UGe2I9ULL._AC_SX450_.jpg']
+price: $1,859.13 
+tags: ['content creation']
+title: HP - Envy 16"" Laptop - QHD(2560 × 1600) Touch-Display - Intel Core i7-13700H - NVIDIA GeForce RTX 4060-2 x Thunderbolt (32GB RAM | 1TB PCIe SSD)
+url: https://www.amazon.com/HP-Touch-Display-i7-13700H-GeForce-Thunderbolt/dp/B0CBZYC7SF/ref=sr_1_13
+ram: 32
+series: ENVY
+computer memory type: DDR5 RAM
+item model number: i7-13700H
+customer reviews: nan
+best sellers rank: 17,224 in Electronics (See Top 100 in Electronics)  65 in Traditional Laptops
+wireless type: Bluetooth"
+which processor is good for video editing?,reranked,5,"name: Intel Core i9-14900K
+price: 544.99
+core_count: 24
+core_clock: 3.2
+boost_clock: 6.0
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"

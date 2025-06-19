@@ -1,0 +1,106 @@
+question,retrieval_stage,rank,content
+i need a 4k webcam for video conferencing,dense,1,"name: Logitech BRIO Ultra HD Pro
+price: 124.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS
+fov: 82.0"
+i need a 4k webcam for video conferencing,dense,2,"name: Logitech C920s HD Pro
+price: 64.99
+resolutions: 1080p,720p
+connection: USB 2.0 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS,Android
+fov: 78.0"
+i need a 4k webcam for video conferencing,dense,3,"name: Elgato Facecam Pro
+price: 299.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 90.0"
+i need a 4k webcam for video conferencing,dense,4,"name: Logitech MX BRIO
+price: 199.99
+resolutions: 4k,1080p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,ChromeOS
+fov: 90.0"
+i need a 4k webcam for video conferencing,dense,5,"name: Logitech MX BRIO
+price: 199.99
+resolutions: 4k,1080p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,ChromeOS
+fov: 90.0"
+i need a 4k webcam for video conferencing,dense,6,"name: Logitech MX BRIO
+price: 199.99
+resolutions: 4k,1080p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,ChromeOS
+fov: 90.0"
+i need a 4k webcam for video conferencing,dense,7,"name: Razer Kiyo Pro Ultra
+price: 299.99
+resolutions: 4k,2k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows
+fov: 82.0"
+i need a 4k webcam for video conferencing,dense,8,"name: Logitech StreamCam Plus
+price: 139.99
+resolutions: 1080p,720p,480p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: nan"
+i need a 4k webcam for video conferencing,dense,9,"name: Logitech C920 HD Pro
+price: nan
+resolutions: 1080p,720p
+connection: USB 2.0 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS,Android
+fov: 78.0"
+i need a 4k webcam for video conferencing,dense,10,"name: Logitech StreamCam
+price: 131.78
+resolutions: 1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 78.0"
+i need a 4k webcam for video conferencing,reranked,1,"name: Elgato Facecam Pro
+price: 299.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 90.0"
+i need a 4k webcam for video conferencing,reranked,2,"name: Razer Kiyo Pro Ultra
+price: 299.99
+resolutions: 4k,2k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows
+fov: 82.0"
+i need a 4k webcam for video conferencing,reranked,3,"name: Logitech MX BRIO
+price: 199.99
+resolutions: 4k,1080p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,ChromeOS
+fov: 90.0"
+i need a 4k webcam for video conferencing,reranked,4,"name: Logitech MX BRIO
+price: 199.99
+resolutions: 4k,1080p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,ChromeOS
+fov: 90.0"
+i need a 4k webcam for video conferencing,reranked,5,"name: Logitech MX BRIO
+price: 199.99
+resolutions: 4k,1080p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,ChromeOS
+fov: 90.0"

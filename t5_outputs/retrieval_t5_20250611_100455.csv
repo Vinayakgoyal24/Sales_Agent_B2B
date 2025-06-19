@@ -1,0 +1,106 @@
+question,retrieval_stage,rank,content
+recommend a good value webcam,dense,1,"name: Logitech C310
+price: 64.95
+resolutions: 720p
+connection: USB 2.0 Type-A
+focus_type: Fixed
+os: Windows,OS X,ChromeOS,Android
+fov: 60.0"
+recommend a good value webcam,dense,2,"name: Microsoft LifeCam HD-3000
+price: 29.99
+resolutions: 720p
+connection: USB 2.0 Type-A
+focus_type: Fixed
+os: Windows,OS X
+fov: nan"
+recommend a good value webcam,dense,3,"name: Logitech C505
+price: 37.99
+resolutions: 720p
+connection: USB 2.0 Type-A
+focus_type: Fixed
+os: Windows,OS X,ChromeOS
+fov: 60.0"
+recommend a good value webcam,dense,4,"name: Logitech C270
+price: 24.94
+resolutions: 720p
+connection: USB 2.0 Type-A
+focus_type: Fixed
+os: Windows,OS X,ChromeOS,Android
+fov: 60.0"
+recommend a good value webcam,dense,5,"name: Logitech C920s HD Pro
+price: 64.99
+resolutions: 1080p,720p
+connection: USB 2.0 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS,Android
+fov: 78.0"
+recommend a good value webcam,dense,6,"name: Logitech C920 HD Pro
+price: nan
+resolutions: 1080p,720p
+connection: USB 2.0 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS,Android
+fov: 78.0"
+recommend a good value webcam,dense,7,"name: Logitech B525
+price: 49.99
+resolutions: 1080p,720p
+connection: USB 2.0 Type-A
+focus_type: Auto
+os: Windows,OS X
+fov: 69.0"
+recommend a good value webcam,dense,8,"name: Logitech C910
+price: nan
+resolutions: 1080p,720p
+connection: USB 2.0 Type-A
+focus_type: Auto
+os: Windows,OS X
+fov: 78.0"
+recommend a good value webcam,dense,9,"name: Logitech StreamCam
+price: 131.78
+resolutions: 1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 78.0"
+recommend a good value webcam,dense,10,"name: Logitech C505e
+price: 25.0
+resolutions: 720p
+connection: USB 2.0 Type-A
+focus_type: Fixed
+os: Windows,OS X,ChromeOS
+fov: 60.0"
+recommend a good value webcam,reranked,1,"name: Logitech C920 HD Pro
+price: nan
+resolutions: 1080p,720p
+connection: USB 2.0 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS,Android
+fov: 78.0"
+recommend a good value webcam,reranked,2,"name: Logitech C505
+price: 37.99
+resolutions: 720p
+connection: USB 2.0 Type-A
+focus_type: Fixed
+os: Windows,OS X,ChromeOS
+fov: 60.0"
+recommend a good value webcam,reranked,3,"name: Logitech B525
+price: 49.99
+resolutions: 1080p,720p
+connection: USB 2.0 Type-A
+focus_type: Auto
+os: Windows,OS X
+fov: 69.0"
+recommend a good value webcam,reranked,4,"name: Logitech C505e
+price: 25.0
+resolutions: 720p
+connection: USB 2.0 Type-A
+focus_type: Fixed
+os: Windows,OS X,ChromeOS
+fov: 60.0"
+recommend a good value webcam,reranked,5,"name: Logitech C910
+price: nan
+resolutions: 1080p,720p
+connection: USB 2.0 Type-A
+focus_type: Auto
+os: Windows,OS X
+fov: 78.0"

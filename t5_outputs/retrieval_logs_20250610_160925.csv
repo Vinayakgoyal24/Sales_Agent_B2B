@@ -1,0 +1,188 @@
+question,retrieval_stage,rank,content
+suggest me a budget gaming mouse,dense,1,"name: Logitech G305 LIGHTSPEED
+price: 39.99
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 12000
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,dense,2,"name: Razer Basilisk V3
+price: 49.98
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 26000
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,dense,3,"name: Logitech G502 Hero
+price: 39.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 25600
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,dense,4,"name: FinalMouse Air58 Ninja
+price: 574.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 3200
+hand_orientation: Right
+color: Blue"
+suggest me a budget gaming mouse,dense,5,"name: Logitech PRO X Superlight 2
+price: 149.0
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 32000
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,dense,6,"name: HP HyperX Alloy Core
+price: 39.99
+style: Gaming
+switches: nan
+backlit: RGB
+tenkeyless: False
+connection_type: Wired
+color: Black"
+suggest me a budget gaming mouse,dense,7,"name: Razer Huntsman Mini
+price: 99.99
+style: Mini
+switches: Razer Purple Optical Clicky
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: White"
+suggest me a budget gaming mouse,dense,8,"name: SteelSeries Apex Pro TKL (2023)
+price: 249.99
+style: Gaming
+switches: SteelSeries OmniPoint 2.0
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+suggest me a budget gaming mouse,dense,9,"name: Microsoft Natural Desktop 7000
+price: 769.95
+style: Ergonomic
+switches: nan
+backlit: nan
+tenkeyless: False
+connection_type: Wireless
+color: Black / Silver"
+suggest me a budget gaming mouse,dense,10,"name: Razer BlackShark V2 X
+price: 48.99
+type: Circumaural
+frequency_response: 12,28
+microphone: True
+wireless: False
+enclosure_type: Closed
+color: Black / Green"
+suggest me a budget gaming mouse,dense,11,"name: Razer Kiyo Pro Ultra
+price: 299.99
+resolutions: 4k,2k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows
+fov: 82.0"
+suggest me a budget gaming mouse,dense,12,"name: RK Royal Kludge RK61
+price: 49.99
+style: Mini
+switches: RK Red
+backlit: White
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: White"
+suggest me a budget gaming mouse,dense,13,"name: Logitech BRIO Ultra HD Pro
+price: 124.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS
+fov: 82.0"
+suggest me a budget gaming mouse,dense,14,"name: Razer RZ34-02140700-R3M1
+price: 49.99
+channels: 8
+channel_wattage: nan
+pwm: True
+form_factor: nan
+color: Black"
+suggest me a budget gaming mouse,dense,15,"name: Asus TUF Gaming VG27AQ
+price: 299.89
+screen_size: 27.0
+resolution: 2560,1440
+refresh_rate: 165
+response_time: 1.0
+panel_type: IPS
+aspect_ratio: 16:9"
+suggest me a budget gaming mouse,dense,16,"name: Logitech Pro X
+price: 99.99
+type: Circumaural
+frequency_response: 20,20
+microphone: True
+wireless: False
+enclosure_type: Closed
+color: Black"
+suggest me a budget gaming mouse,dense,17,"name: MSI B760 GAMING PLUS WIFI
+price: 159.99
+socket: LGA1700
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black / Silver"
+suggest me a budget gaming mouse,dense,18,"name: SteelSeries Arctis Nova Pro Wireless for PC, PS5, and PS4
+price: 298.52
+type: Circumaural
+frequency_response: 10,40
+microphone: True
+wireless: True
+enclosure_type: Closed
+color: Black"
+suggest me a budget gaming mouse,dense,19,"name: MSI B650 GAMING PLUS WIFI
+price: 169.99
+socket: AM5
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black"
+suggest me a budget gaming mouse,dense,20,"name: HP HyperX Cloud II
+price: 79.98
+type: Circumaural
+frequency_response: 15,25
+microphone: True
+wireless: False
+enclosure_type: Closed
+color: Black / Red"
+suggest me a budget gaming mouse,reranked,1,"name: MSI B760 GAMING PLUS WIFI
+price: 159.99
+socket: LGA1700
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black / Silver"
+suggest me a budget gaming mouse,reranked,2,"name: SteelSeries Apex Pro TKL (2023)
+price: 249.99
+style: Gaming
+switches: SteelSeries OmniPoint 2.0
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+suggest me a budget gaming mouse,reranked,3,"name: Logitech BRIO Ultra HD Pro
+price: 124.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS
+fov: 82.0"
+suggest me a budget gaming mouse,reranked,4,"name: MSI B650 GAMING PLUS WIFI
+price: 169.99
+socket: AM5
+form_factor: ATX
+max_memory: 192
+memory_slots: 4
+color: Black"
+suggest me a budget gaming mouse,reranked,5,"name: Logitech Pro X
+price: 99.99
+type: Circumaural
+frequency_response: 20,20
+microphone: True
+wireless: False
+enclosure_type: Closed
+color: Black"

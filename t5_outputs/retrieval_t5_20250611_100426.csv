@@ -1,0 +1,106 @@
+question,retrieval_stage,rank,content
+recommend a wireless gaming mouse,dense,1,"name: Razer DeathAdder V2 X HyperSpeed
+price: 48.0
+tracking_method: Optical
+connection_type: Wireless, Bluetooth Wireless
+max_dpi: 14000.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,2,"name: Logitech G700s
+price: 299.99
+tracking_method: Laser
+connection_type: Wireless
+max_dpi: 8200.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,3,"name: Razer Basilisk X HyperSpeed
+price: 59.99
+tracking_method: Optical
+connection_type: Wireless
+max_dpi: 16000.0
+hand_orientation: Right
+color: Black / Green"
+recommend a wireless gaming mouse,dense,4,"name: Logitech G502 LIGHTSPEED
+price: 89.99
+tracking_method: Optical
+connection_type: Wireless
+max_dpi: 25600.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,5,"name: Razer DeathAdder V3 Pro
+price: 141.99
+tracking_method: Optical
+connection_type: Wireless
+max_dpi: 30000.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,6,"name: Razer DeathAdder V3 Pro
+price: 132.74
+tracking_method: Optical
+connection_type: Wireless
+max_dpi: 30000.0
+hand_orientation: Right
+color: White"
+recommend a wireless gaming mouse,dense,7,"name: Logitech G305 LIGHTSPEED
+price: 39.99
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 12000.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,8,"name: Razer Naga V2 Pro
+price: 179.99
+tracking_method: Optical
+connection_type: Wired, Wireless, Bluetooth Wireless
+max_dpi: 30000.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,9,"name: Logitech G305 LIGHTSPEED
+price: 48.0
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 12000.0
+hand_orientation: Right
+color: White"
+recommend a wireless gaming mouse,dense,10,"name: Asus ROG Keris II WL Ace
+price: 139.99
+tracking_method: Optical
+connection_type: Wired, Wireless, Bluetooth Wireless
+max_dpi: 42000.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,reranked,1,"name: Razer DeathAdder V3 Pro
+price: 141.99
+tracking_method: Optical
+connection_type: Wireless
+max_dpi: 30000.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,reranked,2,"name: Razer DeathAdder V3 Pro
+price: 132.74
+tracking_method: Optical
+connection_type: Wireless
+max_dpi: 30000.0
+hand_orientation: Right
+color: White"
+recommend a wireless gaming mouse,reranked,3,"name: Razer DeathAdder V2 X HyperSpeed
+price: 48.0
+tracking_method: Optical
+connection_type: Wireless, Bluetooth Wireless
+max_dpi: 14000.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,reranked,4,"name: Razer Naga V2 Pro
+price: 179.99
+tracking_method: Optical
+connection_type: Wired, Wireless, Bluetooth Wireless
+max_dpi: 30000.0
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,reranked,5,"name: Razer Basilisk X HyperSpeed
+price: 59.99
+tracking_method: Optical
+connection_type: Wireless
+max_dpi: 16000.0
+hand_orientation: Right
+color: Black / Green"

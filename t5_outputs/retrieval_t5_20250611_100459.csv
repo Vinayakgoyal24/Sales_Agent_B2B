@@ -1,0 +1,106 @@
+question,retrieval_stage,rank,content
+suggest me a budget gaming mouse,dense,1,"name: Logitech G700s
+price: 299.99
+tracking_method: Laser
+connection_type: Wireless
+max_dpi: 8200.0
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,dense,2,"name: Razer Basilisk X HyperSpeed
+price: 59.99
+tracking_method: Optical
+connection_type: Wireless
+max_dpi: 16000.0
+hand_orientation: Right
+color: Black / Green"
+suggest me a budget gaming mouse,dense,3,"name: Logitech G305 LIGHTSPEED
+price: 39.99
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 12000.0
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,dense,4,"name: Corsair M65 RGB ELITE
+price: 44.21
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 17997.0
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,dense,5,"name: Redragon COBRA M711
+price: 19.98
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 10000.0
+hand_orientation: Right
+color: Black / Multicolor"
+suggest me a budget gaming mouse,dense,6,"name: Razer DeathAdder Essential
+price: 23.8
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 6400.0
+hand_orientation: Right
+color: Black / Green"
+suggest me a budget gaming mouse,dense,7,"name: Razer DeathAdder Essential
+price: 27.93
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 6400.0
+hand_orientation: Right
+color: Black / Green"
+suggest me a budget gaming mouse,dense,8,"name: Logitech G102 LIGHTSYNC RGB
+price: 24.13
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 8000.0
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,dense,9,"name: Razer Naga V2 Pro
+price: 179.99
+tracking_method: Optical
+connection_type: Wired, Wireless, Bluetooth Wireless
+max_dpi: 30000.0
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,dense,10,"name: Razer DeathAdder Essential
+price: 21.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 6400.0
+hand_orientation: Right
+color: White"
+suggest me a budget gaming mouse,reranked,1,"name: Razer DeathAdder Essential
+price: 23.8
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 6400.0
+hand_orientation: Right
+color: Black / Green"
+suggest me a budget gaming mouse,reranked,2,"name: Razer Basilisk X HyperSpeed
+price: 59.99
+tracking_method: Optical
+connection_type: Wireless
+max_dpi: 16000.0
+hand_orientation: Right
+color: Black / Green"
+suggest me a budget gaming mouse,reranked,3,"name: Razer DeathAdder Essential
+price: 21.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 6400.0
+hand_orientation: Right
+color: White"
+suggest me a budget gaming mouse,reranked,4,"name: Logitech G700s
+price: 299.99
+tracking_method: Laser
+connection_type: Wireless
+max_dpi: 8200.0
+hand_orientation: Right
+color: Black"
+suggest me a budget gaming mouse,reranked,5,"name: Redragon COBRA M711
+price: 19.98
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 10000.0
+hand_orientation: Right
+color: Black / Multicolor"

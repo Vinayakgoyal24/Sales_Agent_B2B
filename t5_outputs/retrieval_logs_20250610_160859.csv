@@ -1,0 +1,182 @@
+question,retrieval_stage,rank,content
+recommend a wireless gaming mouse,dense,1,"name: Logitech G305 LIGHTSPEED
+price: 39.99
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 12000
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,2,"name: Logitech PRO X Superlight 2
+price: 149.0
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 32000
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,3,"name: FinalMouse Air58 Ninja
+price: 574.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 3200
+hand_orientation: Right
+color: Blue"
+recommend a wireless gaming mouse,dense,4,"name: Razer Basilisk V3
+price: 49.98
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 26000
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,5,"name: Logitech G502 Hero
+price: 39.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 25600
+hand_orientation: Right
+color: Black"
+recommend a wireless gaming mouse,dense,6,"name: Microsoft Natural Desktop 7000
+price: 769.95
+style: Ergonomic
+switches: nan
+backlit: nan
+tenkeyless: False
+connection_type: Wireless
+color: Black / Silver"
+recommend a wireless gaming mouse,dense,7,"name: SteelSeries Apex Pro TKL (2023)
+price: 249.99
+style: Gaming
+switches: SteelSeries OmniPoint 2.0
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+recommend a wireless gaming mouse,dense,8,"name: Razer Huntsman Mini
+price: 99.99
+style: Mini
+switches: Razer Purple Optical Clicky
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: White"
+recommend a wireless gaming mouse,dense,9,"name: HP HyperX Alloy Core
+price: 39.99
+style: Gaming
+switches: nan
+backlit: RGB
+tenkeyless: False
+connection_type: Wired
+color: Black"
+recommend a wireless gaming mouse,dense,10,"name: SteelSeries Arctis Nova Pro Wireless for PC, PS5, and PS4
+price: 298.52
+type: Circumaural
+frequency_response: 10,40
+microphone: True
+wireless: True
+enclosure_type: Closed
+color: Black"
+recommend a wireless gaming mouse,dense,11,"name: RK Royal Kludge RK61
+price: 49.99
+style: Mini
+switches: RK Red
+backlit: White
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: White"
+recommend a wireless gaming mouse,dense,12,"name: Razer BlackShark V2 X
+price: 48.99
+type: Circumaural
+frequency_response: 12,28
+microphone: True
+wireless: False
+enclosure_type: Closed
+color: Black / Green"
+recommend a wireless gaming mouse,dense,13,"name: Razer RZ34-02140700-R3M1
+price: 49.99
+channels: 8
+channel_wattage: nan
+pwm: True
+form_factor: nan
+color: Black"
+recommend a wireless gaming mouse,dense,14,"name: Logitech Pro X
+price: 99.99
+type: Circumaural
+frequency_response: 20,20
+microphone: True
+wireless: False
+enclosure_type: Closed
+color: Black"
+recommend a wireless gaming mouse,dense,15,"name: Asus PCE-AX3000
+price: 34.99
+protocol: Wi-Fi 6
+interface: PCIe x1
+color: Black"
+recommend a wireless gaming mouse,dense,16,"name: Gigabyte GC-WBAX210
+price: 39.99
+protocol: Wi-Fi 6E
+interface: PCIe x1
+color: Black / Silver"
+recommend a wireless gaming mouse,dense,17,"name: Razer Kiyo Pro Ultra
+price: 299.99
+resolutions: 4k,2k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows
+fov: 82.0"
+recommend a wireless gaming mouse,dense,18,"name: Logitech BRIO Ultra HD Pro
+price: 124.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS
+fov: 82.0"
+recommend a wireless gaming mouse,dense,19,"name: HP HyperX Cloud II
+price: 79.98
+type: Circumaural
+frequency_response: 15,25
+microphone: True
+wireless: False
+enclosure_type: Closed
+color: Black / Red"
+recommend a wireless gaming mouse,dense,20,"name: TP-Link TL-WN881ND
+price: 14.99
+protocol: Wi-Fi 4
+interface: PCIe x1
+color: nan"
+recommend a wireless gaming mouse,reranked,1,"name: Microsoft Natural Desktop 7000
+price: 769.95
+style: Ergonomic
+switches: nan
+backlit: nan
+tenkeyless: False
+connection_type: Wireless
+color: Black / Silver"
+recommend a wireless gaming mouse,reranked,2,"name: SteelSeries Apex Pro TKL (2023)
+price: 249.99
+style: Gaming
+switches: SteelSeries OmniPoint 2.0
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+recommend a wireless gaming mouse,reranked,3,"name: SteelSeries Arctis Nova Pro Wireless for PC, PS5, and PS4
+price: 298.52
+type: Circumaural
+frequency_response: 10,40
+microphone: True
+wireless: True
+enclosure_type: Closed
+color: Black"
+recommend a wireless gaming mouse,reranked,4,"name: FinalMouse Air58 Ninja
+price: 574.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 3200
+hand_orientation: Right
+color: Blue"
+recommend a wireless gaming mouse,reranked,5,"name: Razer Basilisk V3
+price: 49.98
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 26000
+hand_orientation: Right
+color: Black"

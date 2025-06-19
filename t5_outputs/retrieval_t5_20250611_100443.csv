@@ -1,0 +1,121 @@
+question,retrieval_stage,rank,content
+best RGB gaming keyboard under $150,dense,1,"name: Logitech G715
+price: 161.88
+style: Gaming
+switches: GX Brown
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: White"
+best RGB gaming keyboard under $150,dense,2,"name: Corsair K70 RGB PRO
+price: 129.99
+style: Gaming
+switches: Cherry MX Red
+backlit: RGB
+tenkeyless: False
+connection_type: Wired
+color: Black"
+best RGB gaming keyboard under $150,dense,3,"name: Corsair K70 RGB PRO
+price: 179.99
+style: Gaming
+switches: Corsair OPX
+backlit: RGB
+tenkeyless: False
+connection_type: Wired
+color: White"
+best RGB gaming keyboard under $150,dense,4,"name: Logitech PRO X
+price: 199.0
+style: Gaming
+switches: Logitech GX Brown Tactile
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wired, Wireless, Bluetooth Wireless
+color: White"
+best RGB gaming keyboard under $150,dense,5,"name: Razer BlackWidow V3
+price: 99.99
+style: Gaming
+switches: Razer Green
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Black"
+best RGB gaming keyboard under $150,dense,6,"name: Logitech G PRO
+price: 99.99
+style: Gaming
+switches: GX Blue
+backlit: RGB
+tenkeyless: True
+connection_type: Wired
+color: Black"
+best RGB gaming keyboard under $150,dense,7,"name: Corsair K100 AIR Wireless
+price: 199.99
+style: Gaming
+switches: Cherry MX Ultra Low Profile Tactile
+backlit: RGB
+tenkeyless: False
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+best RGB gaming keyboard under $150,dense,8,"name: Corsair K100 RGB
+price: 174.99
+style: Gaming
+switches: Corsair OPX
+backlit: RGB
+tenkeyless: False
+connection_type: Wired
+color: Black"
+best RGB gaming keyboard under $150,dense,9,"name: G.Skill KM360
+price: 49.99
+style: Standard
+switches: Cherry MX Red
+backlit: White
+tenkeyless: True
+connection_type: Wired
+color: White"
+best RGB gaming keyboard under $150,dense,10,"name: Redragon DEVARAIAS K556 RGB
+price: 59.99
+style: Gaming
+switches: Outemu Brown
+backlit: RGB
+tenkeyless: False
+connection_type: Wired
+color: Black"
+best RGB gaming keyboard under $150,reranked,1,"name: Redragon DEVARAIAS K556 RGB
+price: 59.99
+style: Gaming
+switches: Outemu Brown
+backlit: RGB
+tenkeyless: False
+connection_type: Wired
+color: Black"
+best RGB gaming keyboard under $150,reranked,2,"name: Corsair K100 AIR Wireless
+price: 199.99
+style: Gaming
+switches: Cherry MX Ultra Low Profile Tactile
+backlit: RGB
+tenkeyless: False
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: Black"
+best RGB gaming keyboard under $150,reranked,3,"name: Logitech G715
+price: 161.88
+style: Gaming
+switches: GX Brown
+backlit: RGB
+tenkeyless: True
+connection_type: Wired, Wireless, Bluetooth Wireless
+color: White"
+best RGB gaming keyboard under $150,reranked,4,"name: G.Skill KM360
+price: 49.99
+style: Standard
+switches: Cherry MX Red
+backlit: White
+tenkeyless: True
+connection_type: Wired
+color: White"
+best RGB gaming keyboard under $150,reranked,5,"name: Corsair K70 RGB PRO
+price: 129.99
+style: Gaming
+switches: Cherry MX Red
+backlit: RGB
+tenkeyless: False
+connection_type: Wired
+color: Black"

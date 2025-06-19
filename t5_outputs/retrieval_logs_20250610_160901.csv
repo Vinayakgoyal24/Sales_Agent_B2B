@@ -1,0 +1,179 @@
+question,retrieval_stage,rank,content
+i need a 4k webcam for video conferencing,dense,1,"name: Logitech BRIO Ultra HD Pro
+price: 124.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows,OS X,ChromeOS
+fov: 82.0"
+i need a 4k webcam for video conferencing,dense,2,"name: Elgato Facecam Pro
+price: 299.99
+resolutions: 4k,1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 90.0"
+i need a 4k webcam for video conferencing,dense,3,"name: Razer Kiyo Pro Ultra
+price: 299.99
+resolutions: 4k,2k,1080p,720p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows
+fov: 82.0"
+i need a 4k webcam for video conferencing,dense,4,"name: Anker PowerConf C200
+price: 59.99
+resolutions: 2k,1080p,720p
+connection: USB 3.2 Gen 1 Type-C
+focus_type: Auto
+os: Windows,OS X
+fov: 95.0"
+i need a 4k webcam for video conferencing,dense,5,"name: OBSBOT Tiny 2
+price: 296.0
+resolutions: 4k,2k,1080p,720p,480p
+connection: USB 3.2 Gen 1 Type-A
+focus_type: Auto
+os: Windows,OS X
+fov: 85.5"
+i need a 4k webcam for video conferencing,dense,6,"name: StarTech ST10GPEXNDPI
+price: 436.22
+interface: PCIe x4
+color: Black / Silver"
+i need a 4k webcam for video conferencing,dense,7,"name: Asus XG-C100C
+price: 93.52
+interface: PCIe x4
+color: nan"
+i need a 4k webcam for video conferencing,dense,8,"name: Logitech PRO X Superlight 2
+price: 149.0
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 32000
+hand_orientation: Right
+color: Black"
+i need a 4k webcam for video conferencing,dense,9,"name: MSI G244F
+price: 104.99
+screen_size: 23.8
+resolution: 1920,1080
+refresh_rate: 170
+response_time: 1.0
+panel_type: IPS
+aspect_ratio: 16:9"
+i need a 4k webcam for video conferencing,dense,10,"name: Logitech Pro X
+price: 99.99
+type: Circumaural
+frequency_response: 20,20
+microphone: True
+wireless: False
+enclosure_type: Closed
+color: Black"
+i need a 4k webcam for video conferencing,dense,11,"name: Asus ROG STRIX GAMING OC
+price: 1979.99
+chipset: GeForce RTX 4090
+memory: 24
+core_clock: 2235
+boost_clock: 2640
+color: Black
+length: 358"
+i need a 4k webcam for video conferencing,dense,12,"name: Razer Basilisk V3
+price: 49.98
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 26000
+hand_orientation: Right
+color: Black"
+i need a 4k webcam for video conferencing,dense,13,"name: Intel Core i9-14900K
+price: 544.99
+core_count: 24
+core_clock: 3.2
+boost_clock: 6.0
+tdp: 125
+graphics: Intel UHD Graphics 770
+smt: True"
+i need a 4k webcam for video conferencing,dense,14,"name: Logitech G502 Hero
+price: 39.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 25600
+hand_orientation: Right
+color: Black"
+i need a 4k webcam for video conferencing,dense,15,"name: Asus TUF Gaming VG27AQ
+price: 299.89
+screen_size: 27.0
+resolution: 2560,1440
+refresh_rate: 165
+response_time: 1.0
+panel_type: IPS
+aspect_ratio: 16:9"
+i need a 4k webcam for video conferencing,dense,16,"name: Logitech G305 LIGHTSPEED
+price: 39.99
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 12000
+hand_orientation: Right
+color: Black"
+i need a 4k webcam for video conferencing,dense,17,"name: KOORUI 24E3
+price: 115.99
+screen_size: 24.0
+resolution: 1920,1080
+refresh_rate: 165
+response_time: 1.0
+panel_type: IPS
+aspect_ratio: 16:9"
+i need a 4k webcam for video conferencing,dense,18,"name: Western Digital My Book Duo
+price: 1199.99
+type: Desktop
+interface: USB Type-A 3.2 Gen 1, USB Type-C 3.2 Gen 1
+capacity: 44000
+price_per_gb: 0.027
+color: Black"
+i need a 4k webcam for video conferencing,dense,19,"name: Creative Labs Sound Blaster AE-9
+price: 332.49
+channels: 7.1
+digital_audio: 32
+snr: 129
+sample_rate: 384
+chipset: Sound Core3D
+interface: PCIe x1"
+i need a 4k webcam for video conferencing,dense,20,"name: Gigabyte WINDFORCE OC
+price: 799.99
+chipset: GeForce RTX 4070 Ti SUPER
+memory: 16
+core_clock: 2340
+boost_clock: 2625
+color: Black
+length: 261"
+i need a 4k webcam for video conferencing,reranked,1,"name: Razer Basilisk V3
+price: 49.98
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 26000
+hand_orientation: Right
+color: Black"
+i need a 4k webcam for video conferencing,reranked,2,"name: Western Digital My Book Duo
+price: 1199.99
+type: Desktop
+interface: USB Type-A 3.2 Gen 1, USB Type-C 3.2 Gen 1
+capacity: 44000
+price_per_gb: 0.027
+color: Black"
+i need a 4k webcam for video conferencing,reranked,3,"name: Creative Labs Sound Blaster AE-9
+price: 332.49
+channels: 7.1
+digital_audio: 32
+snr: 129
+sample_rate: 384
+chipset: Sound Core3D
+interface: PCIe x1"
+i need a 4k webcam for video conferencing,reranked,4,"name: Logitech G502 Hero
+price: 39.99
+tracking_method: Optical
+connection_type: Wired
+max_dpi: 25600
+hand_orientation: Right
+color: Black"
+i need a 4k webcam for video conferencing,reranked,5,"name: Logitech PRO X Superlight 2
+price: 149.0
+tracking_method: Optical
+connection_type: Wired, Wireless
+max_dpi: 32000
+hand_orientation: Right
+color: Black"
