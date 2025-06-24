@@ -4,6 +4,7 @@ import pandas as pd
 import tiktoken
 from dotenv import load_dotenv
 from io import BytesIO
+import time
 import streamlit as st
 from langchain_community.document_loaders import TextLoader
 from langchain_core.documents import Document
@@ -44,6 +45,7 @@ import os
 import re
 
 def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
+    starttimeppt= time.time()
     prs = Presentation()
     slide_width = prs.slide_width
     slide_height = prs.slide_height
@@ -301,4 +303,6 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
     pptx_buffer = BytesIO()
     prs.save(pptx_buffer)
     pptx_buffer.seek(0)
+    elapsedppt=time.time()-starttimeppt
+    print(f"PPT time: {elapsedppt}")
     return pptx_buffer

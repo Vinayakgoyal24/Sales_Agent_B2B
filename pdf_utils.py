@@ -1,4 +1,5 @@
 import os
+import time
 import re
 import pandas as pd
 import tiktoken
@@ -54,6 +55,7 @@ from gtts import gTTS
 
 
 def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
+    startpdf=time.time()
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer,
                             pagesize=A4,
@@ -158,21 +160,22 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
             price_qty_list = []
             inside_quote = True
 
-        elif line.startswith("Product Name:"):
+        if line.startswith("Product Name:"):
             pname = line.split(":", 1)[1].strip()
+            specs, price, qty = "", 0.0, 0  # reset
 
         elif line.startswith("Specs:"):
             specs = line.split(":", 1)[1].strip()
 
         elif line.startswith("Price:"):
             raw = line.split(":", 1)[1].strip()
-            # strip out anything but digits and dot
             clean = re.sub(r"[^\d\.]", "", raw)
-            price = float(clean)
-
+            price = float(clean) if clean else 0.0
 
         elif line.startswith("Quantity:"):
-            qty = int(line.split(":", 1)[1].strip())
+            qty_raw = line.split(":", 1)[1].strip()
+            qty = int(qty_raw) if qty_raw.isdigit() else 0
+    # append only when all fields have been collected
             table_data.append([pname, specs, f"{price:,.0f}", str(qty)])
             price_qty_list.append((price, qty))
 
@@ -213,4 +216,6 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
 
     with open("static/hardware_quotation.pdf", "wb") as f:
         f.write(buffer.getvalue())
+    elapsedp=time.time()-startpdf
+    print(f"pdf download: {elapsedp}")
     return buffer

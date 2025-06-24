@@ -14,7 +14,7 @@ from query_handler import update_collected_info, get_next_question, session_stor
 from ppt_utils import generate_slides# Make sure you import it
 from fastapi.responses import StreamingResponse
 from io import BytesIO
-
+from langdetect import detect
 
 
 app = FastAPI()
@@ -102,39 +102,58 @@ def smart_query_handler(req: ChatQueryRequest):
     info = req.collected_info or {}
     user_input = req.question.lower()
 
-    # Define the sequence of questions
     steps = ["name", "company", "email", "contact", "requirement", "quantity"]
     prompts = {
         "name": "May I know your name?",
-        "company": "Can you please share your xompany name?",
+        "company": "Can you please share your company name?",
         "email": "Thanks for sharing! Please provide your email address.",
         "contact": "Great, Thanks! Can I know your contact number?",
         "requirement": "Thanks for the information! Please tell me what products you are looking for?",
-        "quantity": "Great! I will definitly help you get the best quotation! How many units do you need by the way?",
+        "quantity": "Great! I will definitely help you get the best quotation! How many units do you need by the way?",
     }
 
-    # Determine the current step
     current_step = req.step or steps[0]
+    lang_instruction =""
+    if current_step == "requirement":
+        if req.question and len(req.question.strip()) >= 3:
+            try:
+                user_lang = detect(req.question.strip())
+                print(f"📍 Detected language: {user_lang}")
+                if user_lang == "ja":
+                    lang_instruction = "\n\nPlease reply in Japanese text only."
+            except Exception as e:
+                print("⚠️ Language detection failed, falling back to English.")
+    # ✅ Check if all info is already collected
+    all_info_collected = all(k in info for k in steps)
+    
+    if all_info_collected:
+        # Treat input as feedback and regenerate quotation
+        full_query = f"{info['requirement']} - Quantity: {info['quantity']}"
+        context = retrieve_relevant_chunks(full_query, req.question)  # using feedback here
+        response_text = generate_answer(full_query, context, req.question,user_lang)
 
-    # Save the current response
+        return {
+            "response": response_text,
+            "has_quotation": True,
+            "done": True,
+            "collected_info": info,
+        }
+
+    # 🔽 Normal flow below (collecting info step-by-step)
     if current_step in steps:
         info[current_step] = req.question
 
     next_index = steps.index(current_step) + 1 if current_step in steps else 0
 
-    # Check if all info is collected
     if next_index >= len(steps):
-        # All data collected, now run RAG
         full_query = f"{info['requirement']} - Quantity: {info['quantity']}"
         context = retrieve_relevant_chunks(full_query, "")
-        response_text = generate_answer(full_query, context, "")
-
-        print(info)
+        response_text = generate_answer(full_query, context, "" + lang_instruction)
         return {
             "response": response_text,
             "has_quotation": True,
             "done": True,
-            "collected_info": info
+            "collected_info": info,
         }
     else:
         next_step = steps[next_index]
@@ -143,10 +162,8 @@ def smart_query_handler(req: ChatQueryRequest):
             "has_quotation": False,
             "step": next_step,
             "collected_info": info,
-            "done": False
+            "done": False,
         }
-
-
 
 class PDFRequest(BaseModel):
     quotation_text: str
