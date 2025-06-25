@@ -1,20 +1,22 @@
 from fastapi import FastAPI, Form
 from pydantic import BaseModel, EmailStr
-from typing import Dict
+from typing import List, Dict, Optional
 from rag_module import retrieve_relevant_chunks, generate_answer
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, validator
 from pdf_utils import generate_pdf # Replace with actual import
 from email_utils import send_email_with_attachment
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
-from typing import Dict
 from query_handler import update_collected_info, get_next_question, session_store
 from ppt_utils import generate_slides# Make sure you import it
 from fastapi.responses import StreamingResponse
 from io import BytesIO
-from langdetect import detect
+import csv
+import os
+from fastapi import Body
+from datetime import datetime
+
 
 
 app = FastAPI()
@@ -44,8 +46,6 @@ class GenerateResponse(BaseModel):
 
 class QueryRequest(BaseModel):
     question: str
-
-from typing import Optional
 
 import re
 import json
@@ -113,24 +113,15 @@ def smart_query_handler(req: ChatQueryRequest):
     }
 
     current_step = req.step or steps[0]
-    lang_instruction =""
-    if current_step == "requirement":
-        if req.question and len(req.question.strip()) >= 3:
-            try:
-                user_lang = detect(req.question.strip())
-                print(f"📍 Detected language: {user_lang}")
-                if user_lang == "ja":
-                    lang_instruction = "\n\nPlease reply in Japanese text only."
-            except Exception as e:
-                print("⚠️ Language detection failed, falling back to English.")
+
     # ✅ Check if all info is already collected
     all_info_collected = all(k in info for k in steps)
-    
+
     if all_info_collected:
         # Treat input as feedback and regenerate quotation
         full_query = f"{info['requirement']} - Quantity: {info['quantity']}"
         context = retrieve_relevant_chunks(full_query, req.question)  # using feedback here
-        response_text = generate_answer(full_query, context, req.question,user_lang)
+        response_text = generate_answer(full_query, context, req.question)
 
         return {
             "response": response_text,
@@ -148,7 +139,7 @@ def smart_query_handler(req: ChatQueryRequest):
     if next_index >= len(steps):
         full_query = f"{info['requirement']} - Quantity: {info['quantity']}"
         context = retrieve_relevant_chunks(full_query, "")
-        response_text = generate_answer(full_query, context, "" + lang_instruction)
+        response_text = generate_answer(full_query, context, "")
         return {
             "response": response_text,
             "has_quotation": True,
@@ -214,5 +205,3 @@ def send_email_endpoint(email_data: EmailRequest):
     )
     status = "success" if success else "error"
     return {"status": status, "message": message}
-
-
