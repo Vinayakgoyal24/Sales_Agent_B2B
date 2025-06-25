@@ -15,3 +15,11 @@ numpy
 langchain-text-splitters
 cryptography
 reportlab
+streamlit
+langchain-openai
+torch
+faster-whisper
+gTTS
+streamlit-mic-recorder
+phonenumbers
+email_validator

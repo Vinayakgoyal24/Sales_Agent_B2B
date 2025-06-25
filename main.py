@@ -106,7 +106,7 @@ def smart_query_handler(req: ChatQueryRequest):
     steps = ["name", "company", "email", "contact", "requirement", "quantity"]
     prompts = {
         "name": "May I know your name?",
-        "company": "Can you please share your xompany name?",
+        "company": "Can you please share your company name?",
         "email": "Thanks for sharing! Please provide your email address.",
         "contact": "Great, Thanks! Can I know your contact number?",
         "requirement": "Thanks for the information! Please tell me what products you are looking for?",
