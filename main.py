@@ -19,6 +19,8 @@ from datetime import datetime
 
 
 
+
+
 app = FastAPI()
 
 app.add_middleware(
@@ -160,11 +162,11 @@ class PDFRequest(BaseModel):
     quotation_text: str
     client_info: Dict[str, str]
 
-
 class EmailRequest(BaseModel):
-    to_email: EmailStr
+    to_emails: List[str]
     subject: str
     body: str
+
 
 
 from fastapi.responses import StreamingResponse
@@ -199,9 +201,10 @@ def generate_slides_endpoint(data: PDFRequest):
 @app.post("/send-email")
 def send_email_endpoint(email_data: EmailRequest):
     success, message = send_email_with_attachment(
-        email_data.to_email,
+        email_data.to_emails,
         email_data.subject,
         email_data.body
     )
     status = "success" if success else "error"
     return {"status": status, "message": message}
+

@@ -4,6 +4,7 @@ chroma_db/
 chat_logs/
 static/
 data/
+statics/
 .env
 # Ignore SQLite files
 *.sqlite3

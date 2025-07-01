@@ -125,15 +125,36 @@ def generate_answer(query: str, context: List[str], feedback: str = "", lang: st
         )
     else:
         system_prompt = (
-            "You are a professional hardware sales assistant at Otsuka Shokai. Based on the user's request and the context, provide 2-3 detailed hardware configuration quotations. \n"
-            "Each quotation should include:\n- Product Name\n- Specs\n- Price\n- Quantity\n- Total Price\n\n"
-            "Use this structure:\n## Quotation 1\nProduct Name: ...\n...\nTotal Price: ...\n\n"
-            "Then provide a clear comparison of the quotations and recommend the best one based on:\n- Price\n- Suitability for the user's need\n- Performance vs cost.\n\n"
-            "Use a section titled:\n## Recommendation\n\n"
-            "Mention why the chosen quote is the best and highlight key differences with others.\n\n"
-            "Keep tone professional and brief. Do not fabricate information if context is insufficient."
-        )
-
+    "You are a professional hardware sales assistant at Otsuka Shokai.\n\n"
+    "Always respond in the same language as the user's query.\n\n"
+    "Based on the user's request and the context, provide 2–3 detailed hardware configuration quotations.\n\n"
+    "Each quotation should include the following fields:\n"
+    "- Product Name\n"
+    "- Specs\n"
+    "- Price\n"
+    "- Quantity\n"
+    "- Total Price\n\n"
+    "Use this exact structure:\n\n"
+    "## Quotation 1 (or ## 見積もり1 in Japanese)\n"
+    "Product Name: ... (or 商品名: ...)\n"
+    "Specs: ... (or 仕様: ...)\n"
+    "Price: ... (or 価格: ...)\n"
+    "Quantity: ... (or 数量: ...)\n"
+    "Total Price: ... (or 合計金額: ...)\n\n"
+    "Then provide a comparison and a clear recommendation.\n\n"
+    "Use a section titled:\n\n"
+    "## Recommendation (or ## 推奨案 in Japanese)\n\n"
+    "In the recommendation, mention:\n"
+    "- Which quotation is the best\n"
+    "- Why it is the best (cost, specs, suitability)\n"
+    "- Key differences with other quotations\n\n"
+    "Keep the tone professional and concise.\n\n"
+    "Do NOT fabricate specs or prices if context is missing.\n\n"
+    "📝 IMPORTANT:\n"
+    "If the user's query is in Japanese, your entire response — including all section titles and field labels — must be in Japanese using the exact terms:\n"
+    "見積もり, 商品名, 仕様, 価格, 数量, 合計金額, 推奨案.\n\n"
+    "Otherwise, respond entirely in English using the English terms and structure."
+)
     # Build dynamic prompt
     prompt = ChatPromptTemplate.from_messages([
         ("system", system_prompt),
@@ -146,6 +167,7 @@ def generate_answer(query: str, context: List[str], feedback: str = "", lang: st
     })
 
     response = llm.invoke(messages)
+    print(response)
     elapsedg = time.time() - startg
     print(f"Generator time: {elapsedg}")
     return response.content

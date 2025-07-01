@@ -43,16 +43,16 @@ from pptx.enum.text import PP_ALIGN
 from io import BytesIO
 import os
 import re
+from reportlab.platypus import PageBreak
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.enums import TA_LEFT
 
-# --- STT and TTS libraries ---
-from io import BytesIO
-import threading
-import tempfile
-import torch
-from faster_whisper import WhisperModel
-from streamlit_mic_recorder import mic_recorder
-from gtts import gTTS
+pdfmetrics.registerFont(TTFont("NotoSansJP-Regular", "statics/fonts/NotoSansJP-VariableFont_wght.ttf"))
+pdfmetrics.registerFont(TTFont("NotoSansJP", "statics/fonts/NotoSansJP-Bold.ttf"))
 
+def contains_japanese(text):
+    return bool(re.search(r"[\u3040-\u30FF\u4E00-\u9FFF]", text))
 
 def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
     startpdf=time.time()
@@ -62,8 +62,18 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
                             rightMargin=30, leftMargin=30,
                             topMargin=30, bottomMargin=30)
     styles = getSampleStyleSheet()
-    title_style = ParagraphStyle(name="TitleCenter", parent=styles["Title"], alignment=TA_CENTER)
-    highlight_style = ParagraphStyle(name="Highlight", parent=styles["Normal"], textColor=colors.black, fontSize=12)
+
+    has_japanese= contains_japanese(quotation_text)
+    font_regular = "NotoSansJP-Regular" if has_japanese else "Helvetica"
+    font_bold = "NotoSansJP" if has_japanese else "Helvetica-Bold"
+    # Styles
+    title_style = ParagraphStyle(name="TitleCenter", parent=styles["Title"], alignment=TA_CENTER, fontName=font_bold)
+    normal_style = ParagraphStyle(name="NormalText", parent=styles["Normal"], fontName=font_regular, fontSize=12, leading=12, alignment=TA_LEFT)
+    highlight_style = ParagraphStyle(name="Highlight", parent=styles["Normal"], fontName=font_regular, textColor=colors.black, fontSize=12)
+    heading2_style = ParagraphStyle(name="Heading2", parent=styles["Heading2"], fontName=font_bold)
+    heading3_style = ParagraphStyle(name="Heading3", parent=styles["Heading3"], fontName=font_bold)
+    heading4_style = ParagraphStyle(name="Heading4", parent=styles["Heading4"], fontName=font_bold)
+
 
     elements = []
 
@@ -81,23 +91,33 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
     elements.append(Spacer(1, 12))
 
     # --- Quotation Info ---
-    elements.append(Paragraph("<b>--- Quotation ---</b>", styles["Heading2"]))
+    header_text = "--- 見積もり ---" if has_japanese else "--- Quotation ---"
+    elements.append(Paragraph(f"<b>{header_text}</b>", heading2_style))
     today = datetime.now()
     validity = today + timedelta(days=7)
-    elements.append(Paragraph(f"Date of Issue: {today.strftime('%Y-%m-%d')}", styles["Normal"]))
-    elements.append(Paragraph(f"Validity: {validity.strftime('%Y-%m-%d')} (7 days)", styles["Normal"]))
-    elements.append(Spacer(1, 12))
+    elements.append(Paragraph(f"{'1. 発行日' if has_japanese else '1. Date of Issue'}: {today.strftime('%Y-%m-%d')}", normal_style))
+    elements.append(Paragraph(f"{'2. 有効期限' if has_japanese else '2. Validity'}: {validity.strftime('%Y-%m-%d')} (7 days)", normal_style))
 
     # --- Client Info (Dummy) ---
-    elements.append(Paragraph("<b>--- Client Information ---</b>", styles["Heading3"]))
-    client_info = [
-        "1. Client Name: "+ client_info.get("name",""),
-        "2. Client Company:"+ client_info.get("company",""),
-        "3. Email: "+ client_info.get("email",""),
-        "4. Phone: "+ client_info.get("contact","")
+    client_header = "--- クライアント情報 ---" if has_japanese else "--- Client Information ---"
+    elements.append(Paragraph(f"<b>{client_header}</b>", heading3_style))
+    if has_japanese:
+        client_info_lines = [
+        f"<b>1. クライアント名:</b> {client_info.get('name', '')}",
+        f"<b>2. 会社名:</b> {client_info.get('company', '')}",
+        f"<b>3. メール:</b> {client_info.get('email', '')}",
+        f"<b>4. 電話番号:</b> {client_info.get('contact', '')}",
     ]
-    for line in client_info:
-        elements.append(Paragraph(line, styles["Normal"]))
+    else:
+        client_info_lines = [
+        f"<b>1. Client Name:</b> {client_info.get('name', '')}",
+        f"<b>2. Client Company:</b> {client_info.get('company', '')}",
+        f"<b>3. Email:</b> {client_info.get('email', '')}",
+        f"<b>4. Phone:</b> {client_info.get('contact', '')}",
+    ]
+
+    for line in client_info_lines:
+        elements.append(Paragraph(line, normal_style))
     elements.append(Spacer(1, 12))
 
     # --- Parse LLM output and build tables ---
@@ -110,112 +130,84 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
     inside_quote = False
 
     def build_table(title, data, bg_color):
-        table_style = styles = getSampleStyleSheet()
-        cell_style = styles["Normal"]
-        font_name = "Helvetica"
-        font_size = 10
-
-        # Convert data cells to Paragraphs (except header)
-        tbl = [data[0]]
-        for row in data[1:]:
-            tbl.append([Paragraph(str(cell), cell_style) for cell in row])
-
-        # Dynamic column widths
-        transposed = list(zip(*data))
-        col_widths = []
-        for col in transposed:
-            max_w = max(stringWidth(str(item), font_name, font_size) for item in col)
-            col_widths.append(min(max_w + 20, 200))
-
+        tbl = [data[0]] + [[Paragraph(str(cell), normal_style) for cell in row] for row in data[1:]]
+        col_widths = [min(max(stringWidth(str(item), font_regular, 10) + 20 for item in col), 200) for col in zip(*data)]
         table = Table(tbl, hAlign="LEFT", colWidths=col_widths)
         table.setStyle(TableStyle([
             ("BACKGROUND", (0, 0), (-1, 0), bg_color),
             ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
             ("GRID", (0, 0), (-1, -1), 0.7, colors.black),
-            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-            ("FONTSIZE", (0, 0), (-1, -1), font_size),
+            ("FONTNAME", (0, 0), (-1, -1), font_regular),
+            ("FONTSIZE", (0, 0), (-1, -1), 10),
             ("ALIGN", (2, 1), (2, -1), "RIGHT"),
             ("ALIGN", (3, 1), (3, -1), "CENTER"),
             ("VALIGN", (0, 1), (-1, -1), "TOP"),
         ]))
-
-        elements.append(Paragraph(f"<b>{title}</b>", styles["Heading4"]))
+        elements.append(Paragraph(f"<b>{title}</b>", heading4_style))
         elements.append(table)
 
     for line in lines:
         line = line.strip()
-
-        if line.startswith("## Quotation"):
-            # flush previous quote
+        if line.startswith("## Quotation") or line.startswith("## 見積もり"):
             if table_data:
                 subtotal = sum(p * q for p, q in price_qty_list)
-                subtotal_str = f"{subtotal:,.0f}"
-                build_table(current_quotation, table_data, bg_color=colors.HexColor("#4472C4"))
-                elements.append(Paragraph(f"<b>Total Price ({current_quotation}):</b> ¥{subtotal_str}", styles["Normal"]))
-                total_prices.append((current_quotation, subtotal_str))
+                build_table(current_quotation, table_data, colors.HexColor("#4472C4"))
+                elements.append(Paragraph(f"<b>- Total Price ({current_quotation}):</b> ¥{subtotal:,.0f}", normal_style))
                 elements.append(Spacer(1, 10))
-
+                total_prices.append((current_quotation, f"{subtotal:,.0f}"))
             current_quotation = line.replace("##", "").strip()
-            table_data = [["Product Name", "Specs", "Price ($)", "Qty"]]
+            table_data = [["商品名", "仕様", "価格", "数量"]] if has_japanese else [["Product Name", "Specs", "Price", "Qty"]]
             price_qty_list = []
             inside_quote = True
-
-        if line.startswith("Product Name:"):
+        elif line.startswith("Product Name:") or line.startswith("商品名:"):
             pname = line.split(":", 1)[1].strip()
-            specs, price, qty = "", 0.0, 0  # reset
-
-        elif line.startswith("Specs:"):
+        elif line.startswith("Specs:") or line.startswith("仕様:"):
             specs = line.split(":", 1)[1].strip()
-
-        elif line.startswith("Price:"):
-            raw = line.split(":", 1)[1].strip()
-            clean = re.sub(r"[^\d\.]", "", raw)
-            price = float(clean) if clean else 0.0
-
-        elif line.startswith("Quantity:"):
-            qty_raw = line.split(":", 1)[1].strip()
-            qty = int(qty_raw) if qty_raw.isdigit() else 0
-    # append only when all fields have been collected
+        elif line.startswith("Price:") or line.startswith("価格:"):
+            price = float(re.sub(r"[^\d.]", "", line.split(":", 1)[1].strip()) or 0)
+        elif line.startswith("Quantity:") or line.startswith("数量:"):
+            qty = int(line.split(":", 1)[1].strip() or 0)
             table_data.append([pname, specs, f"{price:,.0f}", str(qty)])
             price_qty_list.append((price, qty))
-
-        elif line.startswith("## Recommendation"):
-            # flush last quote before recommendation
+        elif line.startswith("## Recommendation") or line.startswith("## 推奨案"):
             if table_data and inside_quote:
                 subtotal = sum(p * q for p, q in price_qty_list)
-                subtotal_str = f"{subtotal:,.0f}"
-                build_table(current_quotation, table_data, bg_color=colors.HexColor("#4472C4"))
-                elements.append(Paragraph(f"<b>Total Price ({current_quotation}):</b> ¥{subtotal_str}", styles["Normal"]))
-                total_prices.append((current_quotation, subtotal_str))
+                build_table(current_quotation, table_data, colors.HexColor("#4472C4"))
+                elements.append(Paragraph(f"<b>Total Price ({current_quotation}):</b> ¥{subtotal:,.0f}", normal_style))
                 elements.append(Spacer(1, 10))
+                total_prices.append((current_quotation, f"{subtotal:,.0f}"))
             inside_quote = False
-            elements.append(Paragraph("<b>🎯 Recommendation</b>", styles["Heading3"]))
-
         elif not inside_quote and line:
             recommendation_lines.append(line)
 
-    # Summary tables if any left unflushed
     if table_data and inside_quote:
-        build_table(current_quotation, table_data, bg_color=colors.HexColor("#4472C4"))
+        subtotal = sum(p * q for p, q in price_qty_list)
+        build_table(current_quotation, table_data, colors.HexColor("#4472C4"))
+        elements.append(Paragraph(f"<b>Total Price ({current_quotation}):</b> ¥{subtotal:,.0f}", normal_style))
+        total_prices.append((current_quotation, f"{subtotal:,.0f}"))
 
-    # Pricing Summary
+    # Summary & Recommendation
     elements.append(Spacer(1, 12))
-    elements.append(Paragraph("<b>📊 Pricing Summary</b>", styles["Heading3"]))
+    elements.append(Paragraph(f"<b>{'--- 価格まとめ ---' if has_japanese else '--- Pricing Summary ---'}</b>", heading3_style))
     for qname, tprice in total_prices:
-        elements.append(Paragraph(f"• {qname}: ¥{tprice}", styles["Normal"]))
+        elements.append(Paragraph(f"• {qname}: ¥{tprice}", normal_style))
 
-    # Recommendation Section
     if recommendation_lines:
+        elements.append(PageBreak())
         elements.append(Spacer(1, 12))
-        elements.append(Paragraph("<b>✅ Best Recommendation</b>", styles["Heading3"]))
+        rec_header = "--- ベスト推奨案 ---" if contains_japanese(quotation_text) else "--- Best Recommendation ---"
+        elements.append(Paragraph(f"<b>{rec_header}</b>", title_style))
+
         for line in recommendation_lines:
-            elements.append(Paragraph(line, highlight_style))
+            if contains_japanese(line):
+                elements.append(Paragraph(line, highlight_style))
+            else:
+                elements.append(Paragraph(line, normal_style))
+
 
     doc.build(elements)
     buffer.seek(0)
-
     with open("static/hardware_quotation.pdf", "wb") as f:
         f.write(buffer.getvalue())
-    elapsedp=time.time()-startpdf
-    print(f"pdf download: {elapsedp}")
+    print(f"pdf download: {time.time() - startpdf:.2f} seconds")
     return buffer
