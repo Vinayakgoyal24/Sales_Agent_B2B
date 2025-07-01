@@ -75,6 +75,114 @@ vector_store = Chroma(
     persist_directory="./chroma_langchain_db",
 )
 
+
+LANGUAGES = {"English": "en", "日本語": "ja"}
+DEFAULT_LANG = "English"
+
+TRANSLATE = {
+    "title":            {"en": "💻 Computer Hardware Sales Assistant",
+                         "ja": "💻 コンピュータハードウェア販売アシスタント"},
+    "help_header":      {"en": "How can I help you today? 😊",
+                         "ja": "本日はいかがいたしましょうか？ 😊"},
+    "query_placeholder": {"en": "E.g., Best PC setup for video editing…",
+                          "ja": "例: 動画編集に最適な PC セットアップ…"},
+    "get_reco":         {"en": "💬 Get Recommendation",
+                         "ja": "💬 見積もりを取得"},
+    "sample1":          {"en": "💼 Lightweight business laptop",
+                         "ja": "💼 軽量ビジネスノート"},
+    "sample2":          {"en": "🎮 Good gaming mouse",
+                         "ja": "🎮 高性能ゲーミングマウス"},
+    "sample3":          {"en": "📸 4K webcam for reels",
+                         "ja": "📸 リール用 4K ウェブカメラ"},
+    "quotation_header": {"en": "💡Quotation tailored to your needs",
+                         "ja": "💡 お客様のニーズに合わせたお見積もり"},
+    "client_expander":  {"en": "📋 Fill Client Information",
+                         "ja": "📋 顧客情報を入力"},
+    "name_ph":          {"en": "e.g., John Doe",
+                         "ja": "例: 田中 太郎"},
+    "email_ph":         {"en": "e.g., john@example.com",
+                         "ja": "例: taro@example.com"},
+    "company_ph":       {"en": "e.g., ABC Corp",
+                         "ja": "例: 株式会社ABC"},
+    "phone_ph":         {"en": "e.g., +1-234-567-890",
+                         "ja": "例: 03-1234-5678"},
+    "speak_btn":        {"en": "🔊 Speak this quotation",
+                         "ja": "🔊 見積もりを読み上げ"},
+    "export_pdf":       {"en": "📄 Download PDF",
+                         "ja": "📄 PDF をダウンロード"},
+    "export_ppt":       {"en": "📊 Download PPTX",
+                         "ja": "📊 PPTX をダウンロード"},
+    "email_quote":      {"en": "📧 Email Quotation",
+                         "ja": "📧 見積もりをメール送信"},
+    "email_err":        {"en": "Please enter the client's email above.",
+                         "ja": "上記に顧客のメールアドレスを入力してください。"},
+    "email_body":       {"en": "Dear {name},\n\nPlease find attached your hardware quotation.\n\nRegards,\nOtsuka Shokai",
+                         "ja": "{name} 様\n\nハードウェアのお見積書を添付いたしましたのでご確認ください。\n\nよろしくお願いいたします。\n大塚商会"},
+    "feedback_header":  {"en": "Any changes or feedback?",
+                         "ja": "修正点やご要望はございますか？"},
+    "feedback_placeholder": {"en": "Suggest changes or type 'thanks' to finalize:",
+                             "ja": "修正内容を入力、もしくは「thanks」と入力して確定してください:"},
+    "save_chat":        {"en": "💾 Save This Chat Session",
+                         "ja": "💾 このチャットを保存"},
+    "no_chat_warning":  {"en": "No chat history to save.",
+                         "ja": "保存するチャット履歴がありません。"},
+    "session_saved":    {"en": "Session saved as {file}",
+                         "ja": "{file} として保存しました"},
+    "restart":          {"en": "🔄 Restart Session",
+                         "ja": "🔄 セッションをリスタート"},
+    "export_header":    {"en": "### 📎 Export Options",
+                         "ja": "### 📎 エクスポートオプション"},
+    "submit_feedback":  {"en": "🔁 Submit Feedback",
+                         "ja": "🔁 フィードバック送信"},
+    "revised_quotation":    {"en": "💡 Revised Quotation",
+                             "ja": "💡 修正後の見積もり"},
+    "transcribing":     {"en": "Transcribing…",
+                         "ja": "文字起こし中…"},
+    "transcribing_fb":  {"en": "Transcribing feedback…",
+                         "ja": "フィードバックを文字起こし中…"},
+    "finding":          {"en": "Finding the best products for you",
+                         "ja": "最適な製品を探しています"},
+    "audio_wait":       {"en": "Audio is still being prepared – please try again in a moment.",
+                         "ja": "音声を準備中です。しばらくしてからお試しください。"},
+    
+    "sending_email":     {"en": "Sending email...",       "ja": "メール送信中…"},
+    "total_lbl":         {"en": "Total: ${val}",          "ja": "合計: ¥{val}"},
+    "best_reco":         {"en": "Best Recommendation",    "ja": "最適な提案"},
+    "client_info_hdr":   {"en": "Client Information",     "ja": "顧客情報"},
+    "quotation_hdr":     {"en": "Hardware Configuration Quotations",
+                          "ja": "ハードウェア構成見積書"},
+    "thank_you":         {"en": "Thank You",              "ja": "ありがとうございます"},
+
+    "sidebar_sessions":      {"en": "📁 Chat Sessions",          "ja": "📁 チャットセッション"},
+    "load_session":          {"en": "Load previous session",     "ja": "以前のセッションを読み込む"},
+    "loaded_data_hdr":       {"en": "### 🗂 Loaded Session Data","ja": "### 🗂 読み込んだセッション"},
+    # runtime & spinners
+    "indexing_docs":         {"en": "Indexing documents...",     "ja": "ドキュメントをインデックス中…"},
+    "incorporating":         {"en": "Incorporating your feedback...",
+                              "ja": "フィードバックを反映中…"},
+    "thank_finalized":       {"en": "🎉 Thank you! Quotation finalized.",
+                              "ja": "🎉 ありがとうございます！ 見積もりを確定しました。"},
+    # PDF/PPT headings left over
+    "recommendation_hdr":    {"en": "Recommendation",            "ja": "おすすめ"},
+    "pricing_summary":       {"en": "Pricing Summary",           "ja": "価格サマリー"},
+    "total_price":           {"en": "Total Price",               "ja": "合計金額"},
+    # footer / slide
+    "footer_by":             {"en": "by Otsuka Shokai",          "ja": "大塚商会"},
+    "page_lbl":              {"en": "Page {idx}",                "ja": "ページ {idx}"}
+
+
+}
+
+def t(key: str) -> str:
+    """Return the UI string for the current language."""
+    code = st.session_state.get("lang_code", LANGUAGES[DEFAULT_LANG])
+    return TRANSLATE[key][code]
+
+def _l(en: str, ja: str) -> str:
+    """Return ja when UI is Japanese, else en – used inside PDF/PPT helpers."""
+    return ja if st.session_state.get("lang_code", "en") == "ja" else en
+
+
 # --- Load CSVs and Create Documents ---
 def load_csv_as_documents(folder_path="data"):
     documents = []
@@ -87,30 +195,59 @@ def load_csv_as_documents(folder_path="data"):
     return documents
 
 if vector_store._collection.count() == 0:
-    with st.spinner("Indexing documents..."):
+    with st.spinner(t("indexing_docs")):
         docs = load_csv_as_documents("data")
         splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         splits = splitter.split_documents(docs)
         vector_store.add_documents(splits)
         vector_store.persist()
 
-# --- Prompt Template ---
-prompt = ChatPromptTemplate.from_messages([
-    ("system",
-     "You are a professional hardware sales assistant at Otsuka Shokai. Based on the user's request and the context, provide 2–3 detailed hardware configuration quotations. "
-     "Each quotation should include:\n"
-     "- Product Name\n- Specs\n- Price\n- Quantity\n- Total Price\n\n"
-     "Use this structure:\n"
-     "## Quotation 1\nProduct Name: ...\nSpecs: ...\nPrice: ...\nQuantity: ...\n...\nTotal Price: ...\n"
-     "## Quotation 2 ...\n\n"
-     "Then provide a clear comparison of the quotations and recommend the best one based on:\n"
-     "- Price\n- Suitability for the user's need\n- Performance vs cost.\n"
-     "Use a section titled:\n"
-     "## Recommendation\n"
-     "Mention why the chosen quote is the best and highlight key differences with others.\n\n"
-     "Keep tone professional and brief. Do not fabricate information if context is insufficient."),
-    ("human", "Question: {question}\n\nContext:\n{context}")
-])
+# ────────────────────────────────────────────────────────────────────────────────
+# Prompt Templates (EN / JA)
+# ────────────────────────────────────────────────────────────────────────────────
+SYSTEM_PROMPT_EN = (
+    "You are a professional hardware sales assistant at Otsuka Shokai. "
+    "Based on the user's request and the context, provide 2–3 detailed hardware configuration quotations. "
+    "Each quotation should include:\n"
+    "- Product Name\n- Specs\n- Price\n- Quantity\n- Total Price\n\n"
+    "Use this structure:\n"
+    "## Quotation 1\nProduct Name: ...\nSpecs: ...\nPrice: ...\nQuantity: ...\n...\nTotal Price: ...\n"
+    "## Quotation 2 ...\n\n"
+    "Then provide a clear comparison of the quotations and recommend the best one based on:\n"
+    "- Price\n- Suitability for the user's need\n- Performance vs cost.\n"
+    "Use a section titled:\n"
+    "## Recommendation\n"
+    "Mention why the chosen quote is the best and highlight key differences with others.\n\n"
+    "Keep tone professional and brief. Do not fabricate information if context is insufficient."
+)
+
+SYSTEM_PROMPT_JA = (
+    "あなたは大塚商会のプロフェッショナルなハードウェア営業アシスタントです。"
+    "ユーザーの要望と文脈に基づき、2〜3件の詳細なハードウェア構成見積もりを提示してください。\n"
+    "各見積もりには以下を含めます:\n"
+    "- 製品名\n- 仕様\n- 価格\n- 数量\n- 合計金額\n\n"
+    "フォーマット例:\n"
+    "## Quotation 1\nProduct Name: ...\nSpecs: ...\nPrice: ...\nQuantity: ...\n...\nTotal Price: ...\n"
+    "## Quotation 2 ...\n\n"
+    "最後に見積もりを比較し、以下に基づき最適なものを推薦してください:\n"
+    "- 価格\n- ユーザー要件への適合性\n- パフォーマンスとコストのバランス\n"
+    "セクションタイトル:\n"
+    "## Recommendation\n"
+    "選定理由と他案との主な相違点を簡潔に述べてください。\n\n"
+    "プロフェッショナルかつ簡潔な口調を維持し、文脈が不足している場合は情報を捏造しないでください。"
+)
+
+def build_prompt() -> ChatPromptTemplate:
+    if st.session_state.lang_code == "ja":
+        sys_msg  = SYSTEM_PROMPT_JA + "\n\n回答は必ず日本語で。"
+        human_fmt = "質問: {question}\n\nコンテキスト:\n{context}"
+    else:
+        sys_msg  = SYSTEM_PROMPT_EN
+        human_fmt = "Question: {question}\n\nContext:\n{context}"
+    return ChatPromptTemplate.from_messages([
+        ("system", sys_msg),
+        ("human",  human_fmt)
+    ])
 
 def send_email_with_attachment(to_email: str, subject: str, body: str):
 
@@ -188,7 +325,7 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
             Inches(0.3), slide_height - margin_bottom - textbox_height, Inches(3), textbox_height
         )
         p = footer.text_frame.add_paragraph()
-        p.text = "by Otsuka Shokai"
+        p.text = t("footer_by")
         p.font.size = Pt(10)
         p.font.italic = True
         p.font.color.rgb = RGBColor(120, 120, 120)
@@ -198,7 +335,7 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
             slide_width - Inches(1), slide_height - margin_bottom - textbox_height, Inches(0.7), textbox_height
         )
         p2 = page_num.text_frame.add_paragraph()
-        p2.text = f"Page {index}"
+        p2.text = t("page_lbl").format(idx=index)
         p2.font.size = Pt(10)
         p2.font.color.rgb = RGBColor(120, 120, 120)
 
@@ -243,7 +380,7 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
         txBox = slide.shapes.add_textbox(Inches(6.5), top + height + Inches(0.3), Inches(2.5), Inches(0.8))
         tf = txBox.text_frame
         p = tf.add_paragraph()
-        p.text = f"Total: ¥{total:,.0f}"
+        p.text = t("total_lbl").format(val=f"{total:,.0f}")
         p.font.size = Pt(22)
         p.font.bold = True
         p.font.color.rgb = RGBColor(0, 112, 192)
@@ -263,13 +400,15 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
     box = slide.shapes.add_textbox(Inches(1), Inches(2), Inches(8), Inches(2))
     tf = box.text_frame
     p = tf.add_paragraph()
-    p.text = "Hardware Configuration Quotations"
+    p.text = t("quotation_hdr")   
     p.font.size = Pt(40)
     p.font.bold = True
     p.font.color.rgb = RGBColor(0, 51, 102)
 
     subtitle = tf.add_paragraph()
-    subtitle.text = "Generated by Otsuka Shokai AI Sales Agent"
+    subtitle.text = _l(
+    "Generated by Otsuka Shokai AI Sales Agent",
+    "大塚商会 AI セールスエージェント生成")
     subtitle.font.size = Pt(18)
     subtitle.font.color.rgb = RGBColor(100, 100, 100)
 
@@ -281,15 +420,19 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
     slide = prs.slides.add_slide(prs.slide_layouts[5])
 
     set_slide_bg_color(slide)
-    slide.shapes.title.text = "Client Information"
+    slide.shapes.title.text = t("client_info_hdr")
     underline_title(slide)
 
     box = slide.shapes.add_textbox(Inches(0.8), Inches(1.5), Inches(8), Inches(4))
     tf = box.text_frame
     tf.word_wrap = True
-    for key, label in [("name", "Client Name"), ("company", "Company"), ("email", "Contact Email"), ("phone", "Contact Phone")]:
+    for key, en, ja in [
+            ("name",    "Client Name",   "顧客名"),
+            ("company", "Company",       "会社名"),
+            ("email",   "Contact Email", "メールアドレス"),
+            ("phone",   "Contact Phone", "電話番号")]:
         p = tf.add_paragraph()
-        p.text = f"{label}: {client_info.get(key, '')}"
+        p.text = f"{_l(en, ja)}: {client_info.get(key,'')}"
         p.font.size = Pt(18)
         p.font.color.rgb = RGBColor(50, 50, 50)
 
@@ -312,7 +455,10 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
                 add_quotation_slide(prs, current_quotation, table_data, price_qty_list, slide_index)
                 slide_index += 1
             current_quotation = line.replace("##", "").strip()
-            table_data = [["Product Name", "Specs", "Price", "Qty"]]
+            table_data = [[ _l("Product Name","製品名"),
+                _l("Specs","仕様"),
+                _l("Price","価格"),
+                _l("Qty","数量") ]]
             price_qty_list = []
             inside_quote = True
         elif line.startswith("Product Name:"):
@@ -359,7 +505,7 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
         for idx, chunk in enumerate(chunks):
             slide = prs.slides.add_slide(prs.slide_layouts[5])
             set_slide_bg_color(slide)
-            title = "Best Recommendation" + (f" (Part {idx+1})" if len(chunks) > 1 else "")
+            title = t("best_reco") + (f" (Part {idx+1})" if len(chunks) > 1 else "")
             slide.shapes.title.text = title
             underline_title(slide)
 
@@ -386,7 +532,7 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
     # Centered "Thank You"
     box = slide.shapes.add_textbox(Inches(2), Inches(1.8), Inches(6), Inches(1))
     p = box.text_frame.paragraphs[0]
-    p.text = "Thank You"
+    p.text = t("thank_you")
     p.font.size = Pt(32)
     p.font.bold = True
     p.font.underline = True
@@ -396,8 +542,10 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
     info_box = slide.shapes.add_textbox(Inches(1.5), Inches(3), Inches(7), Inches(2.5))
     tf = info_box.text_frame
     lines = [
-        "We appreciate your interest in Otsuka Shokai.",
-        "For any inquiries, reach out at:",
+        _l("We appreciate your interest in Otsuka Shokai.",
+        "大塚商会にご関心をお寄せいただきありがとうございます。"),
+        _l("For any inquiries, reach out at:",
+        "ご不明点は下記までご連絡ください:"),
         "📧 support@otsuka-shokai.co.jp",
         "🌐 www.otsuka-shokai.co.jp"
     ]
@@ -442,7 +590,7 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
     elements.append(Spacer(1, 12))
 
     # --- Quotation Info ---
-    elements.append(Paragraph("<b>--- Quotation ---</b>", styles["Heading2"]))
+    elements.append(Paragraph(f"<b>{_l('--- Quotation ---','--- 見積書 ---')}</b>", styles["Heading2"]))
     today = datetime.now()
     validity = today + timedelta(days=7)
     elements.append(Paragraph(f"Date of Issue: {today.strftime('%Y-%m-%d')}", styles["Normal"]))
@@ -450,7 +598,7 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
     elements.append(Spacer(1, 12))
 
     # --- Client Info (Dummy) ---
-    elements.append(Paragraph("<b>--- Client Information ---</b>", styles["Heading3"]))
+    elements.append(Paragraph(f"<b>{_l('--- Client Information ---','--- 顧客情報 ---')}</b>", styles["Heading3"]))
     client_info = [
         "1. Client Name: "+ client_info.get("name",""),
         "2. Client Company:"+ client_info.get("company",""),
@@ -517,7 +665,10 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
                 elements.append(Spacer(1, 10))
 
             current_quotation = line.replace("##", "").strip()
-            table_data = [["Product Name", "Specs", "Price ($)", "Qty"]]
+            table_data = [[ _l("Product Name","製品名"),
+                _l("Specs","仕様"),
+                _l("Price ($)","価格 ($)"),
+                _l("Qty","数量") ]]
             price_qty_list = []
             inside_quote = True
 
@@ -545,11 +696,11 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
                 subtotal = sum(p * q for p, q in price_qty_list)
                 subtotal_str = f"{subtotal:,.0f}"
                 build_table(current_quotation, table_data, bg_color=colors.HexColor("#4472C4"))
-                elements.append(Paragraph(f"<b>Total Price ({current_quotation}):</b> ¥{subtotal_str}", styles["Normal"]))
+                elements.append(Paragraph(f"<b>{t('total_price')} ({current_quotation}):</b> ¥{subtotal_str}", styles["Normal"]))
                 total_prices.append((current_quotation, subtotal_str))
                 elements.append(Spacer(1, 10))
             inside_quote = False
-            elements.append(Paragraph("<b>🎯 Recommendation</b>", styles["Heading3"]))
+            elements.append(Paragraph("<b>🎯 "+t("recommendation_hdr")+"</b>", styles["Heading3"]))
 
         elif not inside_quote and line:
             recommendation_lines.append(line)
@@ -560,14 +711,14 @@ def generate_pdf(quotation_text: str, client_info: dict) -> BytesIO:
 
     # Pricing Summary
     elements.append(Spacer(1, 12))
-    elements.append(Paragraph("<b>📊 Pricing Summary</b>", styles["Heading3"]))
+    elements.append(Paragraph("<b>📊 "+t('pricing_summary')+"</b>", styles["Heading3"]))
     for qname, tprice in total_prices:
         elements.append(Paragraph(f"• {qname}: ¥{tprice}", styles["Normal"]))
 
     # Recommendation Section
     if recommendation_lines:
         elements.append(Spacer(1, 12))
-        elements.append(Paragraph("<b>✅ Best Recommendation</b>", styles["Heading3"]))
+        elements.append(Paragraph("<b>✅ "+t('best_reco')+"</b>", styles["Heading3"]))
         for line in recommendation_lines:
             elements.append(Paragraph(line, highlight_style))
 
@@ -589,28 +740,38 @@ def load_whisper_local(model_name: str = "base"):
     return WhisperModel(model_name, device=device, compute_type=compute_type, local_files_only=False)
 
 def transcribe_audio(wav_input) -> str:
-    wav_bytes = wav_input.get("bytes",b"") if isinstance(wav_input,dict) else wav_input or b""
-    if not wav_bytes: return ""
-    with tempfile.NamedTemporaryFile(suffix=".wav",delete=False) as tmp: tmp.write(wav_bytes); path=tmp.name
+    wav_bytes = wav_input.get("bytes", b"") if isinstance(wav_input, dict) else wav_input or b""
+    if not wav_bytes:
+        return ""
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+        tmp.write(wav_bytes); path = tmp.name
     try:
-        segs,_ = load_whisper_local().transcribe(path, beam_size=5, suppress_blank=True)
+        lang_code = st.session_state.get("lang_code", "en")
+        segs, _ = load_whisper_local().transcribe(path, beam_size=5,
+                                                  suppress_blank=True,
+                                                  language=lang_code)
         return "".join(s.text for s in segs).strip()
-    finally: os.remove(path)
+    finally:
+        os.remove(path)
 
-def _preprocess_for_tts(raw: str)->str:
-    ls=[] 
+def _preprocess_for_tts(raw: str) -> str:
+    lines = []
     for line in raw.splitlines():
-        line=line.strip().lstrip("#").lstrip("-*•").strip()
-        if line: ls.append(line)
-    return ".  ".join(ls)
+        line = line.strip().lstrip("#").lstrip("-*•").strip()
+        if line:
+            lines.append(line)
+    return ".  ".join(lines)
 
-def tts_stream(text:str,lang="en",tld="co.uk")->BytesIO:
-    proc=_preprocess_for_tts(text)
-    mp3=BytesIO(); gTTS(text=proc,lang=lang,tld=tld,slow=False).write_to_fp(mp3); mp3.seek(0)
+def tts_stream(text: str) -> BytesIO:
+    code = st.session_state.get("lang_code", "en")
+    tld  = "co.jp" if code == "ja" else "co.uk"
+    mp3  = BytesIO()
+    gTTS(text=_preprocess_for_tts(text), lang=code, tld=tld, slow=False).write_to_fp(mp3)
+    mp3.seek(0)
     return mp3
 
-def speak_async(text:str)->None:
-    threading.Thread(target=lambda: speaker.Speak(text),daemon=True).start()
+# def speak_async(text:str)->None:
+#     threading.Thread(target=lambda: speaker.Speak(text),daemon=True).start()
 
 
 # --- LangGraph App Logic ---
@@ -636,6 +797,7 @@ def generate(state: State):
         print(question_with_feedback)
         state["question"]= question_with_feedback
 
+    prompt = build_prompt()
     messages = prompt.invoke({"question": state["question"], "context": docs_content})
     print(state["question"])
     response = llm.invoke(messages)
@@ -704,42 +866,58 @@ st.markdown(
 
 # ---------- Title ----------
 st.markdown('<div class="main-title">', unsafe_allow_html=True)
-st.title("💻 Computer Hardware Sales Assistant")
+# st.title("💻 Computer Hardware Sales Assistant")
+st.title(t("title"))
 st.markdown('</div>', unsafe_allow_html=True)
 
+# ---------- Language switcher ----------
+selected_lang = st.sidebar.radio("Language / 言語", list(LANGUAGES.keys()))
+if "lang_code" not in st.session_state or st.session_state.lang_code != LANGUAGES[selected_lang]:
+    st.session_state.lang_code = LANGUAGES[selected_lang]
+    st.rerun()
+
+
 # ---------- Sidebar: Sessions ----------
-st.sidebar.header("📁 Chat Sessions")
+st.sidebar.header(t("sidebar_sessions"))
 session_files = [f for f in os.listdir(LOG_DIR) if f.endswith(".csv")]
-selected_session = st.sidebar.selectbox("Load previous session", [""] + session_files)
+selected_session = st.sidebar.selectbox(t("load_session"), [""] + session_files)
 
 if selected_session:
     df = pd.read_csv(os.path.join(LOG_DIR, selected_session))
-    st.sidebar.markdown("### 🗂 Loaded Session Data")
+    st.sidebar.markdown(t("loaded_data_hdr"))
     st.sidebar.dataframe(df)
 
 # ---------- Initialize session state ----------
-for key in ["result", "feedback", "user_query", "active", "pdf_bytes", "slide_bytes", "chat_history"]:
+# for key in ["result", "feedback", "user_query", "active", "pdf_bytes", "slide_bytes", "chat_history"]:
+#     if key not in st.session_state:
+#         st.session_state[key] = None if key != "chat_history" else []
+
+# ---------- Initialize session state ----------
+for key in [
+    "result", "feedback", "user_query", "active",
+    "pdf_bytes", "slide_bytes", "chat_history",
+    "tts_mp3"          # <─---- NEW
+]:
     if key not in st.session_state:
-        st.session_state[key] = None if key != "chat_history" else []
+        st.session_state[key] = None if key not in ["chat_history","tts_mp3"] else ([] if key=="chat_history" else None)
 
 
+# helper just before the expander, keeps the emojis
+def ci(lbl_en: str, lbl_ja: str) -> str:
+    return _l(lbl_en, lbl_ja)
 
-# ---------- Client Information ----------
-with st.expander("📋 Fill Client Information", expanded=True):
+with st.expander(t("client_expander"), expanded=True):
     col1, col2 = st.columns(2)
     with col1:
-        client_name = st.text_input("👤 Client Name", placeholder="e.g., John Doe")
-        client_email = st.text_input("📧 Email", placeholder="e.g., john@example.com")
+        client_name  = st.text_input( f"👤 {ci('Client Name','お名前')}", placeholder=t("name_ph") )
+        client_email = st.text_input( f"📧 {ci('Email','メール')}",                         placeholder=t("email_ph") )
     with col2:
-        client_company = st.text_input("🏢 Company", placeholder="e.g., ABC Corp")
-        client_phone = st.text_input("📞 Phone", placeholder="e.g., +1-234-567-890")
+        client_company = st.text_input( f"🏢 {ci('Company','会社名')}",    placeholder=t("company_ph") )
+        client_phone   = st.text_input( f"📞 {ci('Phone','電話')}",        placeholder=t("phone_ph") )
 
-    st.session_state.client_info = {
-        "name": client_name,
-        "company": client_company,
-        "email": client_email,
-        "phone": client_phone
-    }
+    st.session_state.client_info = {"name": client_name, "company": client_company,
+                                    "email": client_email, "phone": client_phone}
+
 
 
 # Initialize session state for STT/TTS
@@ -750,12 +928,13 @@ for key in ["text_query", "just_transcribed", "tts_play", "tts_mp3","feedback_te
 
 # ---------- Query Input ----------
 st.divider()
-st.header("How can I help you today? 😊")
+# st.header("How can I help you today? 😊")
+st.header(t("help_header"))
 
 # microphone
 audio_main = mic_recorder(start_prompt="🎤", stop_prompt="⏹", key="recorder_main")
 if audio_main and not st.session_state.just_transcribed:
-    with st.spinner("Transcribing…"):
+    with st.spinner(t("transcribing")):
         spoken = transcribe_audio(audio_main)
         if spoken:
             st.session_state.text_query = spoken
@@ -770,17 +949,17 @@ if "selected_sample_query" not in st.session_state:
 # Sample query buttons
 col1, col2, col3 = st.columns(3)
 with col1:
-    if st.button("💼 Lightweight business laptop"):
+    if st.button(t("sample1")):
         st.session_state.selected_sample_query = "Suggest me a lightweight business laptop"
         st.session_state.trigger_sample_query = True
         st.rerun()
 with col2:
-    if st.button("🎮 Good gaming mouse"):
+    if st.button(t("sample2")):
         st.session_state.selected_sample_query = "Suggest me a good gaming mouse"
         st.session_state.trigger_sample_query = True
         st.rerun()
 with col3:
-    if st.button("📸 4K webcam for reels"):
+    if st.button(t("sample3")):
         st.session_state.selected_sample_query = "Help me with a 4K webcam for making reel shots"
         st.session_state.trigger_sample_query = True
         st.rerun()
@@ -789,18 +968,28 @@ with col3:
 
 # user_query = st.text_input("Enter your query:", placeholder="E.g., Best PC setup for video editing...")
 
+# user_query = st.text_input(
+#     "Enter your query:",
+#     value=st.session_state.selected_sample_query,
+#     placeholder="E.g., Best PC setup for video editing…",
+#     key = "text_query"
+# )
+
 user_query = st.text_input(
-    "Enter your query:",
+    t("query_placeholder"),
     value=st.session_state.selected_sample_query,
-    placeholder="E.g., Best PC setup for video editing…",
-    key = "text_query"
+    placeholder=t("query_placeholder"),
+    key="text_query"
 )
 
 # Handle query trigger from sample button
 if st.session_state.trigger_sample_query and st.session_state.selected_sample_query:
-    with st.spinner("Finding the best products for you"):
+    with st.spinner(t("finding")):
         st.session_state.user_query = st.session_state.selected_sample_query
         st.session_state.result = graph.invoke({"question": st.session_state.user_query})
+        recom = extract_recommendation_text(st.session_state.result["answer"])
+        tts_bytes_obj = tts_stream(recom)
+        st.session_state.tts_mp3 = tts_bytes_obj
         st.session_state.active = True
         st.session_state.feedback = None
         st.session_state.chat_history.append({
@@ -811,10 +1000,13 @@ if st.session_state.trigger_sample_query and st.session_state.selected_sample_qu
         st.session_state.trigger_sample_query = False  # Reset the trigger
 
 # ---------- On Query Submit ----------
-if user_query and st.button("💬 Get Recommendation"):
-    with st.spinner("Finding the best products for you"):
+if user_query and st.button(t("get_reco")):
+    with st.spinner(t("finding")):
         st.session_state.user_query = user_query
         st.session_state.result = graph.invoke({"question": user_query})  # <-- Replace with your model
+        recom = extract_recommendation_text(st.session_state.result["answer"])
+        tts_bytes_obj = tts_stream(recom)
+        st.session_state.tts_mp3 = tts_bytes_obj
         st.session_state.active = True
         st.session_state.feedback = None
 
@@ -827,7 +1019,7 @@ if user_query and st.button("💬 Get Recommendation"):
 
 # ---------- Result Display ----------
 if st.session_state.result:
-    st.subheader("💡Quotation tailored to your needs")
+    st.subheader(t("quotation_header"))
     ans = st.session_state.result["answer"]
     st.write(st.session_state.result["answer"])
 
@@ -842,18 +1034,18 @@ if st.session_state.result:
     st.session_state.slide_bytes = generate_slides(st.session_state.result["answer"], st.session_state.client_info)
 
     # Export options
-    st.markdown("### 📎 Export Options")
+    st.markdown(t("export_header"))
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.download_button("📄 Download PDF", data=st.session_state.pdf_bytes, file_name="hardware_quotation.pdf", mime="application/pdf")
+        st.download_button(t("export_pdf"), data=st.session_state.pdf_bytes, file_name="hardware_quotation.pdf", mime="application/pdf")
     with col2:
-        st.download_button("📊 Download PPTX", data=st.session_state.slide_bytes, file_name="hardware_quotation.pptx", mime="application/vnd.openxmlformats-officedocument.presentationml.presentation")
+        st.download_button(t("export_ppt"), data=st.session_state.slide_bytes, file_name="hardware_quotation.pptx", mime="application/vnd.openxmlformats-officedocument.presentationml.presentation")
     with col3:
-        if st.button("📧 Email Quotation"):
+        if st.button(t("email_quote")):
             if not client_email:
-                st.error("Please enter the client's email above.")
+                st.error(t("email_err"))
             else:
-                with st.spinner("Sending email..."):
+                with st.spinner(t("sending_email")):
                     success, msg = send_email_with_attachment(
                         to_email=client_email,
                         subject="Hardware Quotation from Otsuka Shokai",
@@ -862,51 +1054,60 @@ if st.session_state.result:
                     st.success(msg) if success else st.error(msg)
 
 
-    if st.button("🔊 Speak this quotation"):
-        with st.spinner("Generating speech…"):
-            recom=extract_recommendation_text(ans)
-            print(f"Ans {recom}")
-            mp3 = tts_stream(recom)
-            st.audio(mp3.read(), format="audio/mp3")
+    # if st.button("🔊 Speak this quotation"):
+    #     with st.spinner("Generating speech…"):
+    #         recom=extract_recommendation_text(ans)
+    #         print(f"Ans {recom}")
+    #         mp3 = tts_stream(recom)
+    #         st.audio(mp3.read(), format="audio/mp3")
+
+    # ----- Speak button -----
+    if st.button(t("speak_btn")):
+        if st.session_state.tts_mp3 is None:
+            st.warning(t("audio_wait"))
+        else:
+            st.audio(st.session_state.tts_mp3, format="audio/mp3")
+
 
 
     # ---------- Feedback Loop ----------
     if st.session_state.active:
         st.markdown("---")
-        st.subheader("Any changes or feedback?")
+        st.subheader(t("feedback_header"))
 
 
 
         audio_fb = mic_recorder(start_prompt="🎤", stop_prompt="⏹", key="recorder_fb")
         if audio_fb and not st.session_state.just_transcribed_fb:
-            with st.spinner("Transcribing feedback…"):
+            with st.spinner(t("transcribing_fb")):
                 fb_spoken = transcribe_audio(audio_fb)
                 if fb_spoken:
                     st.session_state.feedback_text = fb_spoken
                     st.session_state.just_transcribed_fb = True
 
         feedback_text = st.text_area(
-            "Suggest changes or type 'thanks' to finalize:",
+            t("feedback_placeholder"),
             value=st.session_state.feedback_text,
             key="feedback_text",
-            # on_change=lambda: st.session_state._setitem_("just_transcribed_fb", False)
+            # on_change=lambda: st.session_state.setitem("just_transcribed_fb", False)
         )
 
 
 
         # feedback_text = st.text_area("Suggest changes or type 'thanks' to finalize:")
 
-        if st.button("🔁 Submit Feedback"):
+        if st.button(t("submit_feedback")):
             if feedback_text:
                 if "thank" in feedback_text.lower():
-                    st.success("🎉 Thank you! Quotation finalized.")
+                    st.success(t("thank_finalized"))
+
                     st.session_state.active = False
                     # ---------- Save Session ----------
                     
 
 # Add this near the bottom of your script (e.g., after "Save Session" button)
                 else:
-                    with st.spinner("Incorporating your feedback..."):
+                    with st.spinner(t("incorporating")):
                         st.session_state.feedback = feedback_text
                         st.session_state.user_query += f"\n {feedback_text}"
                         #st.session_state.user_query+= f"\n {feedback_text}"
@@ -915,6 +1116,10 @@ if st.session_state.result:
                             "feedback": feedback_text
                         })
 
+                        recom = extract_recommendation_text(st.session_state.result["answer"])
+                        tts_bytes_obj = tts_stream(recom)
+                        st.session_state.tts_mp3 = tts_bytes_obj
+
                         # Save revised answer
                         st.session_state.chat_history.append({
                             "message": st.session_state.user_query,
@@ -922,7 +1127,7 @@ if st.session_state.result:
                             "feedback": feedback_text
                         })
 
-                    st.subheader("💡 Revised Quotation")
+                    st.subheader(t("revised_quotation"))
                     st.write(st.session_state.result["answer"])
                     input_tokens = len(enc.encode(st.session_state.user_query))
                     output_tokens = len(enc.encode(st.session_state.result["answer"]))
@@ -930,23 +1135,23 @@ if st.session_state.result:
                     st.session_state.pdf_bytes = generate_pdf(st.session_state.result["answer"], st.session_state.client_info)
                     st.session_state.slide_bytes = generate_slides(st.session_state.result["answer"], st.session_state.client_info)
                     st.rerun()
-if st.button("💾 Save This Chat Session"):
+if st.button(t("save_chat")):
     if st.session_state.chat_history:
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         name_user= st.session_state.client_info["name"]
         filename = f"{LOG_DIR}/session_{name_user}.csv"
         pd.DataFrame(st.session_state.chat_history).to_csv(filename, index=False)
-        st.success(f"Session saved as {filename}")
+        st.success(t("session_saved").format(file=filename))
         st.rerun()
     else:
-        st.warning("No chat history to save.")
+        st.warning(t("no_chat_warning"))
 
-if st.button("🔄 Restart Session"):
+if st.button(t("restart")):
     # Clear all session state variables relevant to this chat
     keys_to_clear = [
         "result", "feedback", "user_query", "active", 
         "pdf_bytes", "slide_bytes", "chat_history", 
-        "client_info"
+        "client_info", "tts_mp3"
     ]
     for key in keys_to_clear:
         if key in st.session_state:
