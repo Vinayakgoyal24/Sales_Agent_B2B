@@ -16,7 +16,7 @@ import csv
 import os
 from fastapi import Body
 from datetime import datetime
-
+from language_detector import detect_lang
 
 
 
