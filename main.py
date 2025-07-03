@@ -94,10 +94,30 @@ def parse_llm_output(response: str):
     }
 
 
+PROMPTS = {
+    "en-US": {
+        "name": "May I know your name?",
+        "company": "Which company are you representing?",
+        "email": "Could you share your email so I can send the quotation?",
+        "contact": "May I have your contact number?",
+        "requirement": "What product are you looking for?",
+        "quantity": "How many units do you need?",
+    },
+    "ja-JP": {
+        "name": "お名前を教えていただけますか？",
+        "company": "ご所属の会社名を教えてください。",
+        "email": "見積もりを送付するためメールアドレスを教えてください。",
+        "contact": "ご連絡先番号を教えていただけますか？",
+        "requirement": "ご希望の商品を教えてください。",
+        "quantity": "必要な数量を教えてください。",
+    },
+}
+
 class ChatQueryRequest(BaseModel):
     question: str
     step: Optional[str] = None
     collected_info: Optional[Dict[str, str]] = {}
+    language: str = "en-US"
 
 @app.post("/query")
 def smart_query_handler(req: ChatQueryRequest):
@@ -105,14 +125,8 @@ def smart_query_handler(req: ChatQueryRequest):
     user_input = req.question.lower()
 
     steps = ["name", "company", "email", "contact", "requirement", "quantity"]
-    prompts = {
-        "name": "May I know your name?",
-        "company": "Can you please share your company name?",
-        "email": "Thanks for sharing! Please provide your email address.",
-        "contact": "Great, Thanks! Can I know your contact number?",
-        "requirement": "Thanks for the information! Please tell me what products you are looking for?",
-        "quantity": "Great! I will definitely help you get the best quotation! How many units do you need by the way?",
-    }
+    lang = req.language if req.language in PROMPTS else "en-US"
+    prompts = PROMPTS[lang]
 
     current_step = req.step or steps[0]
 
