@@ -15,3 +15,7 @@ numpy
 langchain-text-splitters
 cryptography
 reportlab
+langdetect
+nltk
+regex
+python-multipart

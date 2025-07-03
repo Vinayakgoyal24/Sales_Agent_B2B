@@ -7,6 +7,12 @@ from email_validator import validate_email, EmailNotValidError
 # In-memory session storage
 session_store = {}
 
+def get_session(session_id: str):
+    return session_store.setdefault(
+        session_id,
+        {"info": {}, "preferred_lang": "en"}
+    )
+
 required_fields = ["name", "company", "email", "phone", "requirement", "quantity"]
 
 def extract_email(text):

@@ -8,7 +8,7 @@ from email_utils import send_email_with_attachment
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
-from query_handler import update_collected_info, get_next_question, session_store
+from query_handler import update_collected_info, get_next_question, session_store, get_session
 from ppt_utils import generate_slides# Make sure you import it
 from fastapi.responses import StreamingResponse
 from io import BytesIO
@@ -16,6 +16,11 @@ import csv
 import os
 from fastapi import Body
 from datetime import datetime
+
+from language_router import resolve_langs
+from fastapi import UploadFile, File
+from stt_utils import transcribe_wav        # new
+
 
 
 
@@ -96,11 +101,31 @@ class ChatQueryRequest(BaseModel):
     question: str
     step: Optional[str] = None
     collected_info: Optional[Dict[str, str]] = {}
+    session_id: str
 
 @app.post("/query")
 def smart_query_handler(req: ChatQueryRequest):
+
+    sess = get_session(req.session_id)
+
+
+    # guarantee a default language in the session
+    if "preferred_lang" not in sess:
+        sess["preferred_lang"] = "en"
+
     info = req.collected_info or {}
     user_input = req.question.lower()
+
+    # query_lang, answer_lang = resolve_langs(req.question)
+
+    personal_steps = {"name", "company", "email", "contact", "quantity"}
+
+    if req.step not in personal_steps:          # i.e., requirement or later feedback
+        _, detected_lang = resolve_langs(req.question)
+        sess["preferred_lang"] = detected_lang   # lock / update
+                                                # (explicit override handled inside resolver)
+
+    answer_lang = sess["preferred_lang"]  
 
     steps = ["name", "company", "email", "contact", "requirement", "quantity"]
     prompts = {
@@ -121,13 +146,15 @@ def smart_query_handler(req: ChatQueryRequest):
         # Treat input as feedback and regenerate quotation
         full_query = f"{info['requirement']} - Quantity: {info['quantity']}"
         context = retrieve_relevant_chunks(full_query, req.question)  # using feedback here
-        response_text = generate_answer(full_query, context, req.question)
-
+        response_text = generate_answer(full_query, context, feedback=req.question, lang=answer_lang)
+        print("\n===== RAW LLM RESPONSE =====\n", response_text, "\n============================\n")
+        
         return {
             "response": response_text,
             "has_quotation": True,
             "done": True,
             "collected_info": info,
+            "answer_lang": answer_lang,     
         }
 
     # 🔽 Normal flow below (collecting info step-by-step)
@@ -139,12 +166,13 @@ def smart_query_handler(req: ChatQueryRequest):
     if next_index >= len(steps):
         full_query = f"{info['requirement']} - Quantity: {info['quantity']}"
         context = retrieve_relevant_chunks(full_query, "")
-        response_text = generate_answer(full_query, context, "")
+        response_text = generate_answer(full_query, context, feedback="", lang=answer_lang)
         return {
             "response": response_text,
             "has_quotation": True,
             "done": True,
             "collected_info": info,
+            "answer_lang": answer_lang,
         }
     else:
         next_step = steps[next_index]
@@ -182,6 +210,21 @@ def generate_pdf_endpoint(data: PDFRequest):
         )
     except Exception as e:
         return {"status": "error", "message": str(e)}
+    
+@app.post("/stt")
+async def stt_endpoint(file: UploadFile = File(...)):
+    """
+    Upload an audio clip (WAV / WebM / Ogg).
+    Returns {"text": "...", "detected_lang": "..."} on success,
+    or {"status": "error", "message": "..."} on failure.
+    """
+    try:
+        raw = await file.read()               # bytes
+        result = transcribe_wav(raw)          # → dict(text, detected_lang)
+        return result
+    except Exception as e:                    # minimal catch-all
+        return {"status": "error", "message": str(e)}
+
 
 @app.post("/generate-slides")
 def generate_slides_endpoint(data: PDFRequest):
