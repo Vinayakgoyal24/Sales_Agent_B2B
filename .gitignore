@@ -12,3 +12,5 @@ statics/
 
 
 tech-sales-whisperer-bot/
+venv/
+__pycache__/
