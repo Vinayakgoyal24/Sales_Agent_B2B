@@ -5,13 +5,14 @@ from email_validator import validate_email, EmailNotValidError
 
 
 # In-memory session storage
-session_store = {}
+session_store: dict[str, dict] = {}
 
 def get_session(session_id: str):
-    return session_store.setdefault(
-        session_id,
-        {"info": {}, "preferred_lang": "en"}
-    )
+    """
+    Create / return a session record.  Leave language unset so the back-end
+    can decide later (EN/JA toggle or auto-detect).
+    """
+    return session_store.setdefault(session_id, {"info": {}})
 
 required_fields = ["name", "company", "email", "phone", "requirement", "quantity"]
 

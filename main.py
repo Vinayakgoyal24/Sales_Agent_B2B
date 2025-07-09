@@ -102,16 +102,16 @@ class ChatQueryRequest(BaseModel):
     step: Optional[str] = None
     collected_info: Optional[Dict[str, str]] = {}
     session_id: str
+    preferred_lang: Optional[str] = None   # "en" | "ja"
 
 @app.post("/query")
 def smart_query_handler(req: ChatQueryRequest):
 
     sess = get_session(req.session_id)
 
-
-    # guarantee a default language in the session
-    if "preferred_lang" not in sess:
-        sess["preferred_lang"] = "en"
+    if req.preferred_lang in {"en", "ja"}:                 # user picked a fixed mode
+        sess["preferred_lang"] = req.preferred_lang        # → lock it
+     
 
     info = req.collected_info or {}
     user_input = req.question.lower()
@@ -120,22 +120,36 @@ def smart_query_handler(req: ChatQueryRequest):
 
     personal_steps = {"name", "company", "email", "contact", "quantity"}
 
-    if req.step not in personal_steps:          # i.e., requirement or later feedback
+    print("outside")
+    if("preferred_lang" in sess):
+        print("already set", sess["preferred_lang"])
+    if req.step == "requirement" and "preferred_lang" not in sess:          # i.e., requirement or later feedback
+        print("inside")
         _, detected_lang = resolve_langs(req.question)
         sess["preferred_lang"] = detected_lang   # lock / update
                                                 # (explicit override handled inside resolver)
+        print("detected_lang", detected_lang)
 
-    answer_lang = sess["preferred_lang"]  
+    answer_lang = sess.get("preferred_lang", "en") 
 
     steps = ["name", "company", "email", "contact", "requirement", "quantity"]
-    prompts = {
+    prompts_en = {
         "name": "May I know your name?",
-        "company": "Can you please share your company name?",
-        "email": "Thanks for sharing! Please provide your email address.",
-        "contact": "Great, Thanks! Can I know your contact number?",
-        "requirement": "Thanks for the information! Please tell me what products you are looking for?",
-        "quantity": "Great! I will definitely help you get the best quotation! How many units do you need by the way?",
+        "company": "Could you share your company name?",
+        "email": "Thanks! Please provide your email address.",
+        "contact": "Thanks! May I have your contact number?",
+        "requirement": "Great! What products are you looking for?",
+        "quantity": "How many units do you need?",
     }
+    prompts_ja = {
+        "name": "お名前を教えていただけますか？",
+        "company": "会社名を教えていただけますか？",
+        "email": "ありがとうございます。メールアドレスを教えてください。",
+        "contact": "ありがとうございます。お電話番号を教えてください。",
+        "requirement": "ありがとうございます。ご希望の製品を教えてください。",
+        "quantity": "何台ご希望でしょうか？",
+    }
+    prompts = prompts_ja if answer_lang == "ja" else prompts_en
 
     current_step = req.step or steps[0]
 
@@ -143,6 +157,11 @@ def smart_query_handler(req: ChatQueryRequest):
     all_info_collected = all(k in info for k in steps)
 
     if all_info_collected:
+        if req.preferred_lang == "auto":
+            # If user didn't specify preferred language, use the session's preferred language
+            _, detected_lang = resolve_langs(req.question)
+            sess["preferred_lang"] = detected_lang
+            answer_lang = sess.get("preferred_lang", "en") 
         # Treat input as feedback and regenerate quotation
         full_query = f"{info['requirement']} - Quantity: {info['quantity']}"
         context = retrieve_relevant_chunks(full_query, req.question)  # using feedback here
