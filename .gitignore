@@ -14,3 +14,5 @@ tech-sales-whisperer-bot/
 
 venv/
 __pycache__/
+
+statics/
