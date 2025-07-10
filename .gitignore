@@ -13,4 +13,6 @@ statics/
 
 tech-sales-whisperer-bot/
 venv/
+debug_audio/
+debug_scripts/
 __pycache__/
