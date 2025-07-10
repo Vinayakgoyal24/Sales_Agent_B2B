@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Form
 from pydantic import BaseModel, EmailStr
 from typing import List, Dict, Optional
-from rag_module import retrieve_relevant_chunks, generate_answer
+from rag_module import retrieve_relevant_chunks, generate_answer, generate_avatar_script
 from pydantic import BaseModel, validator
 from pdf_utils import generate_pdf # Replace with actual import
 from email_utils import send_email_with_attachment
@@ -18,18 +18,65 @@ from fastapi import Body
 from datetime import datetime
 from language_detector import detect_lang
 
+from ai_metrics import start_metrics_server, HTTP_REQS, HTTP_LAT
+from time import time
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST  # +two helpers
+from fastapi import Response
+
+from fastapi import FastAPI, Form, Request, BackgroundTasks   # ← add BackgroundTasks
+from gtts import gTTS                                         # ← NEW
+import uuid, re, os, csv, json, shutil
+import logging                              # uuid & re already exist
+
+from fastapi.responses import StreamingResponse, FileResponse, Response
+
+
+logging.basicConfig(level=logging.INFO,
+                    format="%(asctime)s [%(levelname)s] %(message)s")
+
+
+
+# ▼ ADD START: gTTS helper
+def _make_tts_mp3(text: str, lang_code: str = "en") -> str:
+    """Generate temporary MP3 with gTTS and return its path."""
+    tmp_path = f"/tmp/{uuid.uuid4().hex}.mp3"
+    gTTS(text=text, lang=lang_code).save(tmp_path)
+    return tmp_path
+# ▲ ADD END
 
 
 
 app = FastAPI()
+start_metrics_server(9100)      # <──── listens on /metrics
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8080"],  # Updated for your Vite port
+    allow_origins=["http://localhost:8080",
+                    "http://localhost:5173", ],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
+
+@app.middleware("http")
+async def _prom_mw(request: Request, call_next):
+    t0 = time()
+    resp: Response | None = None                        # ← ensure defined
+    try:
+        resp = await call_next(request)
+        return resp
+    finally:
+        dur = time() - t0
+        status = getattr(resp, "status_code", 500)      # if resp is None
+        HTTP_REQS.labels(request.method, request.url.path, status).inc()
+        HTTP_LAT.labels(request.method, request.url.path).observe(dur)
+
 
 class RetrieveRequest(BaseModel):
     query: str
@@ -221,4 +268,57 @@ def send_email_endpoint(email_data: EmailRequest):
     )
     status = "success" if success else "error"
     return {"status": status, "message": message}
+
+
+class AvatarScriptRequest(BaseModel):
+    query: str
+    recommendation: str
+    feedback: str = ""
+
+@app.post("/generate-avatar-script")
+def avatar_script_endpoint(data: AvatarScriptRequest):
+    script = generate_avatar_script(
+        data.query,
+        data.recommendation,
+        data.feedback,
+    )
+
+    # ▼ ADD START
+    logging.info("Avatar pitch script ↓\n%s\n-------------------------------", script)
+
+    # optional: dump to file
+    dbg_dir = "debug_scripts"
+    os.makedirs(dbg_dir, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    fname = f"pitch_{timestamp}.txt"
+    with open(os.path.join(dbg_dir, fname), "w", encoding="utf-8") as f:
+        f.write(script)
+    # ▲ ADD END
+
+    return {"script": script}
+
+
+# audio endpoint
+class AudioRequest(BaseModel):
+    script: str
+
+@app.post("/generate-avatar-audio")
+def avatar_audio_ep(req: AudioRequest, background_tasks: BackgroundTasks):
+    lang = "ja" if re.search(r"[\u3040-\u30FF\u4E00-\u9FFF]", req.script) else "en"
+    mp3_path = _make_tts_mp3(req.script, lang)
+
+    # ▼ ADD START
+    debug_audio_dir = "debug_audio"
+    os.makedirs(debug_audio_dir, exist_ok=True)
+    debug_copy = os.path.join(debug_audio_dir,
+                          f"pitch_{uuid.uuid4().hex}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.mp3")
+    shutil.copy(mp3_path, debug_copy)
+    logging.info("Saved debug MP3 → %s", debug_copy)
+    # ▲ ADD END
+
+    # keep cleanup of the temp file
+    background_tasks.add_task(os.remove, mp3_path)
+    return FileResponse(mp3_path,
+                        media_type="audio/mpeg",
+                        filename="avatar.mp3")
 

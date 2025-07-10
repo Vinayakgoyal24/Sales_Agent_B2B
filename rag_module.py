@@ -11,6 +11,10 @@ import pandas as pd
 from dotenv import load_dotenv
 import time
 
+# Prometheus AI-metrics
+from ai_metrics import AG_REQS, AG_LAT, TOKENS, ACTIVE_MODEL
+
+
 load_dotenv()
 
 
@@ -103,6 +107,8 @@ from langchain.schema import SystemMessage, HumanMessage
 
 def generate_answer(query: str, context: List[str], feedback: str = "", lang: str = "en") -> str:
     startg = time.time()
+    ACTIVE_MODEL.labels("gpt-4o").set(1)
+
     full_context = "\n\n".join(context)
 
     if feedback:
@@ -166,11 +172,23 @@ def generate_answer(query: str, context: List[str], feedback: str = "", lang: st
         "context": full_context
     })
 
-    response = llm.invoke(messages)
-    print(response)
-    elapsedg = time.time() - startg
-    print(f"Generator time: {elapsedg}")
-    return response.content
+    try:
+        response = llm.invoke(messages)
+        # ── record tokens & latency
+        if hasattr(response, "usage"):
+            TOKENS.labels("prompt").observe(getattr(response.usage, "prompt_tokens", 0))
+            TOKENS.labels("completion").observe(getattr(response.usage, "completion_tokens", 0))
+        AG_REQS.labels("success").inc()
+        AG_LAT.observe(time.time() - startg)
+        print(response)
+        elapsedg = time.time() - startg
+        print(f"Generator time: {elapsedg}")
+        return response.content
+    except Exception:
+        AG_REQS.labels("error").inc()
+        raise
+    finally:
+        ACTIVE_MODEL.labels("gpt-4o").set(0)
 
 
 
@@ -180,3 +198,25 @@ def extract_recommendation_text(response: str) -> str:
     if match:
         return match.group(1).strip()
     return ""
+
+
+
+def generate_avatar_script(query, recommendation, feedback=""):
+    avatar_prompt = f"""
+    You are a digital sales avatar. Create a friendly and persuasive 1-minute pitch based on this:
+
+    Recommendation:
+    {recommendation}
+
+    User Query & Feedback:
+    {query}
+    {feedback}
+
+    Speak naturally and professionally.
+    """
+    messages = [
+        SystemMessage(content="You are a professional sales avatar."),
+        HumanMessage(content=avatar_prompt)
+    ]
+    response = llm.invoke(messages)
+    return response.content

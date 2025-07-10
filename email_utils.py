@@ -5,8 +5,11 @@ from email.mime.multipart import MIMEMultipart  # ✅ this one is required
 from email.mime.base import MIMEBase
 from email import encoders
 import os
-
+from time import time
+# Prometheus business metrics
+from ai_metrics import EMAIL_SENT, EMAIL_LAT
 def send_email_with_attachment(to_emails: List[str], subject: str, body: str):
+    start_ts = time()  
     smtp_port = 587
     smtp_server = "smtp.gmail.com"
     sender_email = "vinayak.otsuka@gmail.com"
@@ -43,7 +46,14 @@ def send_email_with_attachment(to_emails: List[str], subject: str, body: str):
         print("Successfully connected to server")
 
         TIE_server.sendmail(sender_email, to_emails, text)
+        EMAIL_SENT.labels("success").inc()
+
         TIE_server.quit()
         return True, f"Email successfully sent to {', '.join(to_emails)}"
     except Exception as e:
+        EMAIL_SENT.labels("error").inc()
         return False, f"Failed to send email. Error: {e}"
+    
+    finally:
+        # ─── Prometheus: observe latency regardless of success/failure
+        EMAIL_LAT.observe(time() - start_ts)
