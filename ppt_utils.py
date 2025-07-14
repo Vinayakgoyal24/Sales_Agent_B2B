@@ -4,6 +4,7 @@ import pandas as pd
 import tiktoken
 from dotenv import load_dotenv
 from io import BytesIO
+import requests
 import time
 import streamlit as st
 from langchain_community.document_loaders import TextLoader
@@ -43,6 +44,48 @@ from pptx.enum.text import PP_ALIGN
 from io import BytesIO
 import os
 import re
+
+
+def search_image_url_serpapi(product_name: str) -> str:
+    print(f"🔍 Searching image for: {product_name}")
+    serp_api_key = os.getenv("SERPAPI_KEY")
+    if not serp_api_key:
+        print("⚠️ SERPAPI_KEY missing in environment. Please set it in your .env file.")
+        return ""
+    params = {
+        "engine": "google_images",
+        "q": product_name,
+        "api_key": serp_api_key,
+        "num": 1,
+        "safe": "active",
+        "hl": "en",
+    }
+    try:
+        response = requests.get("https://serpapi.com/search.json", params=params)
+        response.raise_for_status()
+        data = response.json()
+        if data.get("images_results"):
+            image_url = data["images_results"][0]["original"]
+            print(f"✅ Found image: {image_url}")
+            return image_url
+        else:
+            print(f"❌ No image results found for: {product_name}")
+    except Exception as e:
+        print(f"[Image Search Error for '{product_name}']: {e}")
+    return ""
+
+
+def download_image(image_url: str) -> BytesIO or None:
+    try:
+        start = time.time()
+        response = requests.get(image_url, timeout=5)
+        response.raise_for_status()
+        print(f"📥 Downloaded image in {time.time() - start:.2f} sec")
+        return BytesIO(response.content)
+    except Exception as e:
+        print(f"[Image Download Error] {e}")
+        return None
+
 
 def contains_japanese(text: str) -> bool:
     return bool(re.search(r"[\u3040-\u30FF\u4E00-\u9FFF]", text))
@@ -103,6 +146,7 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
             p.font.size = Pt(28)
 
     def add_quotation_slide(prs, title, table_data, price_qty_list, index):
+        print(f"\n📄 Creating slide: {title}")
         slide = prs.slides.add_slide(prs.slide_layouts[5])
         set_slide_bg_color(slide)
         slide.shapes.title.text = title
@@ -115,6 +159,10 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
 
         for col_index in range(cols):
             table.columns[col_index].width = Inches(2.2)
+
+        image_y_offset = top + height + Inches(0.3)
+        image_height = Inches(1.3)
+        image_gap = Inches(0.2)
 
         for r in range(rows):
             for c in range(cols):
@@ -130,8 +178,37 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
                 else:
                     para.font.color.rgb = RGBColor(0, 0, 0)
 
+        # 🖼 Add product images below table
+        for i in range(1, rows):  # Skip header row
+            product_name = table_data[i][0]
+            image_url = search_image_url_serpapi(product_name)
+            if image_url:
+                image_data = download_image(image_url)
+                if image_data:
+                    try:
+                        slide.shapes.add_picture(image_data, Inches(0.5), image_y_offset, height=image_height)
+                        print(f"🖼️ Inserted image for: {product_name}")
+                        image_y_offset += image_height + image_gap
+                    except Exception as e:
+                        print(f"[Image Insert Error] {product_name}: {e}")
+                else:
+                    print(f"⚠️ Could not download image for {product_name}")
+            else:
+                print(f"⚠️ No image URL found for {product_name}")
+
+        # 💰 Total price
         total = sum(p * q for p, q in price_qty_list)
-        txBox = slide.shapes.add_textbox(Inches(6.5), top + height + Inches(0.3), Inches(2.5), Inches(0.8))
+        print(f"💰 Total Price for slide: ¥{total:,.0f}")
+
+        # Estimate slide bottom margin
+        slide_bottom_limit = Inches(7.2)  # Safe vertical limit to not overflow
+
+        # Decide where to place price box
+        price_top = image_y_offset + Inches(0.3)
+        if price_top + Inches(0.5) > slide_bottom_limit:
+            price_top = top + height + Inches(0.2)  # move it directly under table
+
+        txBox = slide.shapes.add_textbox(Inches(6.5), price_top, Inches(2.5), Inches(0.8))
         tf = txBox.text_frame
         p = tf.add_paragraph()
         p.text = f"Total: ¥{total:,.0f}"
@@ -143,6 +220,8 @@ def generate_slides(quotation_text: str, client_info: dict) -> BytesIO:
         add_logo(slide)
         add_footer(slide, index)
         return slide
+
+
 
     slide_index = 1
 

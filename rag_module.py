@@ -10,6 +10,8 @@ from langchain.schema import Document
 import pandas as pd
 from dotenv import load_dotenv
 import time
+from metrics import RETRIEVER_LATENCY, GENERATOR_LATENCY, PROMPT_LENGTH, TOKENS_GENERATED, LLM_RESPONSE_COUNT
+
 
 load_dotenv()
 
@@ -43,6 +45,22 @@ def load_csv_as_documents(folder_path="data"):
                 content = "\n".join([f"{k}: {v}" for k, v in row.items()])
                 documents.append(Document(page_content=content, metadata={"source": file_name}))
     return documents
+
+
+import tiktoken
+
+def count_tokens(text: str) -> int:
+    if not isinstance(text, str):
+        print("⚠️ Prompt token counting failed: input is not a string")
+        return 0
+
+    try:
+        encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")  # or your model
+        return len(encoding.encode(text))
+    except Exception as e:
+        print(f"⚠️ Token counting failed: {e}")
+        return 0
+
 
 # If vector store is empty, populate it
 if vector_store._collection.count() == 0:
@@ -89,10 +107,12 @@ Keep tone professional and brief. Do not fabricate information if context is ins
 
 # Retrieval Function
 def retrieve_relevant_chunks(query: str, feedback: str = "") -> List[str]:
+    from metrics import RETRIEVER_LATENCY
     starttime=time.time()
     if feedback:
         query += f"\nAdditional feedback: {feedback}"
     results = vector_store.similarity_search(query)
+    RETRIEVER_LATENCY.observe(time.time()-starttime)
     elapsed=  time.time() - starttime
     print(f"Retrieval: {elapsed}")
     return [doc.page_content for doc in results]
@@ -102,6 +122,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.schema import SystemMessage, HumanMessage
 
 def generate_answer(query: str, context: List[str], feedback: str = "", lang: str = "en") -> str:
+    from metrics import GENERATOR_LATENCY, PROMPT_LENGTH
     startg = time.time()
     full_context = "\n\n".join(context)
 
@@ -160,6 +181,14 @@ def generate_answer(query: str, context: List[str], feedback: str = "", lang: st
         ("system", system_prompt),
         ("human", "Question: {question}\n\nContext:\n{context}")
     ])
+    
+    try:
+        import tiktoken
+        enc = tiktoken.encoding_for_model("gpt-3.5-turbo")
+        token_count = len(enc.encode(query + "\n\n" + full_context))
+        PROMPT_LENGTH.observe(token_count)
+    except Exception as e:
+        print("⚠️ Prompt token counting failed:", e)
 
     messages = prompt.invoke({
         "question": query,
@@ -167,7 +196,17 @@ def generate_answer(query: str, context: List[str], feedback: str = "", lang: st
     })
 
     response = llm.invoke(messages)
+    GENERATOR_LATENCY.observe(time.time() - startg)
+
     print(response)
+    try:
+        import tiktoken
+        enc = tiktoken.encoding_for_model("gpt-3.5-turbo")
+        token_count_re = len(enc.encode(response.content))
+        TOKENS_GENERATED.inc(token_count_re)
+        LLM_RESPONSE_COUNT.inc()
+    except Exception as e:
+        print("⚠️ Prompt token counting failed:", e)
     elapsedg = time.time() - startg
     print(f"Generator time: {elapsedg}")
     return response.content

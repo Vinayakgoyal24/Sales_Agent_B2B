@@ -5,6 +5,7 @@ chat_logs/
 static/
 data/
 statics/
+prometheus/
 .env
 # Ignore SQLite files
 *.sqlite3
