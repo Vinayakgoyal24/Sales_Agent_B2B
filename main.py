@@ -30,6 +30,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 
 
+
 app = FastAPI()
 
 app.add_middleware(
@@ -225,6 +226,25 @@ PROMPTS = {
     },
 }
 
+PROMPTS = {
+    "en-US": {
+        "name": "May I know your name?",
+        "company": "Which company are you representing?",
+        "email": "Could you share your email so I can send the quotation?",
+        "contact": "May I have your contact number?",
+        "requirement": "What product are you looking for?",
+        "quantity": "How many units do you need?",
+    },
+    "ja-JP": {
+        "name": "お名前を教えていただけますか？",
+        "company": "ご所属の会社名を教えてください。",
+        "email": "見積もりを送付するためメールアドレスを教えてください。",
+        "contact": "ご連絡先番号を教えていただけますか？",
+        "requirement": "ご希望の商品を教えてください。",
+        "quantity": "必要な数量を教えてください。",
+    },
+}
+
 class ChatQueryRequest(BaseModel):
     question: str
     step: Optional[str] = None
@@ -235,6 +255,7 @@ class ChatQueryRequest(BaseModel):
 def smart_query_handler(req: ChatQueryRequest):
     QUERY_REQUESTS.inc()
     start_time = time.time()
+
 
     try:
         info = req.collected_info or {}
@@ -295,6 +316,10 @@ def smart_query_handler(req: ChatQueryRequest):
         QUERY_FAILURES.inc()
         QUERY_DURATION.observe(time.time() - start_time)
         raise e
+
+    steps = ["name", "company", "email", "contact", "requirement", "quantity"]
+    lang = req.language if req.language in PROMPTS else "en-US"
+    prompts = PROMPTS[lang]
 
 
 class PDFRequest(BaseModel):
