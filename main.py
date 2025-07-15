@@ -103,6 +103,10 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
+    name = Column(String)
+    company = Column(String)
+    contact = Column(String)
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -214,6 +218,9 @@ PROMPTS = {
         "email": "Could you share your email so I can send the quotation?",
         "contact": "May I have your contact number?",
         "requirement": "What product are you looking for?",
+        "use-case": "What do you need the product for?",
+        "preference": "Do you have any model prefernce or any specific sepec you are looking for?",
+        "price_range": "Do you have any budget or price range in mind?",
         "quantity": "How many units do you need?",
     },
     "ja-JP": {
@@ -222,25 +229,9 @@ PROMPTS = {
         "email": "見積もりを送付するためメールアドレスを教えてください。",
         "contact": "ご連絡先番号を教えていただけますか？",
         "requirement": "ご希望の商品を教えてください。",
-        "quantity": "必要な数量を教えてください。",
-    },
-}
-
-PROMPTS = {
-    "en-US": {
-        "name": "May I know your name?",
-        "company": "Which company are you representing?",
-        "email": "Could you share your email so I can send the quotation?",
-        "contact": "May I have your contact number?",
-        "requirement": "What product are you looking for?",
-        "quantity": "How many units do you need?",
-    },
-    "ja-JP": {
-        "name": "お名前を教えていただけますか？",
-        "company": "ご所属の会社名を教えてください。",
-        "email": "見積もりを送付するためメールアドレスを教えてください。",
-        "contact": "ご連絡先番号を教えていただけますか？",
-        "requirement": "ご希望の商品を教えてください。",
+        "use-case": "その製品は何のために必要ですか？",
+        "preference": "ご希望のモデルや、探している特定の仕様はありますか？",
+        "price_range": "ご予算や希望価格帯はありますか？",
         "quantity": "必要な数量を教えてください。",
     },
 }
@@ -251,26 +242,67 @@ class ChatQueryRequest(BaseModel):
     collected_info: Optional[Dict[str, str]] = {}
     language: str = "en-US"
 
+from fastapi.security import OAuth2PasswordBearer
+from fastapi import Header
+
 @app.post("/query")
-def smart_query_handler(req: ChatQueryRequest):
+def smart_query_handler(
+    req: ChatQueryRequest,
+    token: Optional[str] = Depends(oauth2_scheme),
+    db: SessionLocal = Depends(get_db)
+):
     QUERY_REQUESTS.inc()
     start_time = time.time()
 
-
     try:
         info = req.collected_info or {}
-        user_input = req.question.lower()
 
-        steps = ["name", "company", "email", "contact", "requirement", "quantity"]
+        # ✅ Auto-fill user profile if token present and data is missing
+        if token:
+            try:
+                payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+                email = payload.get("sub")
+                user = get_user_by_email(db, email)
+                if user:
+                    info.setdefault("name", user.name)
+                    info.setdefault("company", user.company)
+                    info.setdefault("email", user.email)
+                    info.setdefault("contact", user.contact)
+            except JWTError:
+                pass  # Token invalid, skip autofill
+
+        # ✅ Full step flow including new conversational fields
+        steps = [
+            "name",
+            "company",
+            "email",
+            "contact",
+            "requirement",
+            "use-case",
+            "preference",
+            "price_range",
+            "quantity",
+        ]
+
         lang = req.language if req.language in PROMPTS else "en-US"
         prompts = PROMPTS[lang]
 
-        current_step = req.step or steps[0]
-        all_info_collected = all(k in info for k in steps)
+        # 🧠 Determine current step
+        for step in steps:
+            if step not in info:
+                current_step = step
+                break
+        else:
+            current_step = None
 
-        if all_info_collected:
+        if current_step is None:
+            # ✅ All steps done → generate quotation
             QUERY_COMPLETED.inc()
-            full_query = f"{info['requirement']} - Quantity: {info['quantity']}"
+            full_query = (
+                f"{info['requirement']} - Use-case: {info['use-case']}, "
+                f"Preference: {info['preference']}, Budget: {info['price_range']}, "
+                f"Quantity: {info['quantity']}"
+            )
             context = retrieve_relevant_chunks(full_query, req.question)
             response_text = generate_answer(full_query, context, req.question)
             track_recommended_products(response_text)
@@ -283,17 +315,22 @@ def smart_query_handler(req: ChatQueryRequest):
                 "collected_info": info,
             }
 
-        if current_step in steps:
-            info[current_step] = req.question
+        # Save the response for the current step
+        info[current_step] = req.question
 
-        next_index = steps.index(current_step) + 1 if current_step in steps else 0
-
+        # ➕ Determine next step
+        next_index = steps.index(current_step) + 1
         if next_index >= len(steps):
             QUERY_COMPLETED.inc()
-            full_query = f"{info['requirement']} - Quantity: {info['quantity']}"
+            full_query = (
+                f"{info['requirement']} - Use-case: {info['use-case']}, "
+                f"Preference: {info['preference']}, Budget: {info['price_range']}, "
+                f"Quantity: {info['quantity']}"
+            )
             context = retrieve_relevant_chunks(full_query, "")
             response_text = generate_answer(full_query, context, "")
             track_recommended_products(response_text)
+
             QUERY_DURATION.observe(time.time() - start_time)
             return {
                 "response": response_text,
@@ -317,9 +354,6 @@ def smart_query_handler(req: ChatQueryRequest):
         QUERY_DURATION.observe(time.time() - start_time)
         raise e
 
-    steps = ["name", "company", "email", "contact", "requirement", "quantity"]
-    lang = req.language if req.language in PROMPTS else "en-US"
-    prompts = PROMPTS[lang]
 
 
 class PDFRequest(BaseModel):
@@ -405,6 +439,10 @@ def metrics():
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
+    name: str
+    company: str
+    contact: str
+
 
 @app.post("/signup")
 def signup(user: UserCreate, db: SessionLocal = Depends(get_db)):
@@ -412,7 +450,13 @@ def signup(user: UserCreate, db: SessionLocal = Depends(get_db)):
         raise HTTPException(status_code=409, detail="User already exists")
 
     hashed = hash_password(user.password)
-    new_user = User(email=user.email, hashed_password=hashed)
+    new_user = User(
+        email=user.email,
+        hashed_password=hashed,
+        name=user.name,
+        company=user.company,
+        contact=user.contact,
+    )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -422,6 +466,7 @@ def signup(user: UserCreate, db: SessionLocal = Depends(get_db)):
     DAILY_SESSIONS.labels(day=today_str()).inc()
 
     return {"msg": "User created successfully"}
+
 
 
 @app.post("/login")
@@ -446,7 +491,13 @@ def read_me(token: str = Depends(oauth2_scheme), db: SessionLocal = Depends(get_
         user = get_user_by_email(db, email)
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
-        return {"email": user.email}
+        return {
+                    "email": user.email,
+                    "name": user.name,
+                    "company": user.company,
+                    "contact": user.contact,
+                }
+
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
