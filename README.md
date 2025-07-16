@@ -10,9 +10,8 @@
 7. [Installation](#installation)
 8. [Configuration](#configuration)
 9. [Usage](#usage)
-10. [API Documentation](#api-documentation)
-11. [Contributing](#contributing)
-12. [License](#license)
+10. [Contributing](#contributing)
+11. [License](#license)
 
 ## Overview
 
@@ -30,7 +29,7 @@ This AI Sales Agent backend is a comprehensive system designed to streamline sal
 - **User Authentication**: Secure user management with JWT tokens and bcrypt password hashing
 
 ### Technical Features
-- RESTful API architecture
+- FAST API architecture
 - Secure authentication and authorization
 - Multi-format document generation
 - Real-time chat capabilities
@@ -99,14 +98,7 @@ Our RAG system underwent comprehensive evaluation using RAGAS (Retrieval-Augment
 - **Similarity Search**: Dense vector similarity using cosine similarity
 - **Hybrid Search**: Combination of BM25 and dense retrieval
 
-**Results**:
-| Method | Context Precision | Context Recall | Overall Score |
-|--------|------------------|----------------|---------------|
-| BM25 | 0.65 | 0.72 | 0.68 |
-| Similarity Search | **0.84** | **0.89** | **0.87** |
-| Hybrid Search | 0.78 | 0.81 | 0.80 |
-
-**Conclusion**: Similarity search (dense retrieval) provided the best results with highest context precision (0.84) and context recall (0.89), making it our chosen approach.
+**Conclusion**: Similarity search (dense retrieval) provided the best results with highest context precision  and context recall, making it our chosen approach.
 
 ### Experiment 2: Reranker Comparison
 
@@ -118,15 +110,7 @@ Our RAG system underwent comprehensive evaluation using RAGAS (Retrieval-Augment
 - **MiniLM**: Lightweight sentence transformer
 - **BGE**: Beijing Academy of AI's embedding model
 
-**Results**:
-| Reranker | Relevance Score | Latency (ms) | Memory Usage |
-|----------|----------------|--------------|--------------|
-| **T5** | **0.92** | 145 | Medium |
-| ColBERT | 0.88 | 120 | High |
-| MiniLM | 0.79 | 85 | Low |
-| BGE | 0.85 | 110 | Medium |
-
-**Conclusion**: T5 reranker achieved the highest relevance score (0.92) with acceptable latency, making it optimal for our quality-focused application.
+**Conclusion**: T5 reranker achieved the highest relevance score with acceptable latency, making it optimal for our quality-focused application.
 
 ### Experiment 3: Hyperparameter Optimization
 
@@ -140,15 +124,7 @@ Our RAG system underwent comprehensive evaluation using RAGAS (Retrieval-Augment
 - Top-K = 15
 - Top-K = 20
 
-**Results**:
-| Top-K | Context Precision | Context Recall | Response Quality | Latency (ms) |
-|-------|------------------|----------------|------------------|--------------|
-| 5 | 0.82 | 0.79 | 0.80 | 95 |
-| 10 | 0.85 | 0.84 | 0.85 | 125 |
-| **15** | **0.89** | **0.87** | **0.88** | 180 |
-| 20 | 0.88 | 0.88 | 0.87 | 245 |
-
-**Conclusion**: Top-K = 15 provided the optimal balance between retrieval quality and system performance, with the highest context precision (0.89) and excellent response quality (0.88).
+**Conclusion**: Top-K = 15 provided the optimal balance between retrieval quality and system performance, with the highest context precision and excellent response quality.
 
 ### Final Optimized Configuration
 
@@ -163,23 +139,13 @@ Based on experimental results, our production system uses:
 
 ### Data Sources
 - **Product Catalogs**: Comprehensive product information and specifications
-- **Sales Documentation**: Historical sales data, pricing, and quotations
-- **Customer Interactions**: Past customer queries and support tickets
 - **Technical Specifications**: Detailed product technical documentation
-- **Company Policies**: Sales policies, terms, and conditions
 
 ### Data Preprocessing
 - **Language Processing**: Bilingual data (English/Japanese) normalization
 - **Document Structuring**: Hierarchical organization of product information
 - **Metadata Extraction**: Category, price, availability, and specification tagging
 - **Quality Assurance**: Data validation and consistency checks
-
-### Dataset Statistics
-- **Total Documents**: 50,000+ processed documents
-- **Chunk Count**: 500,000+ semantic chunks
-- **Language Distribution**: 60% English, 40% Japanese
-- **Update Frequency**: Daily incremental updates
-- **Data Quality Score**: 94% accuracy after preprocessing
 
 ## Installation
 
@@ -227,11 +193,6 @@ CHROMA_DB_PATH=./chroma_db
 CHROMA_DB_HOST=localhost
 CHROMA_DB_PORT=8000
 
-# JWT Configuration
-JWT_SECRET_KEY=your_jwt_secret_key
-JWT_ALGORITHM=HS256
-JWT_EXPIRATION_TIME=24h
-
 # Email Configuration
 SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=587
@@ -255,7 +216,7 @@ CUSTOM_METRICS_ENDPOINT=/metrics
 
 ```bash
 # Start the development server
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uvicorn main:app --reload 
 
 # Or use the startup script
 python run_server.py
@@ -277,198 +238,6 @@ python run_server.py
 - `POST /generate-slides` - Generate PowerPoint presentations
 - `POST /send-email` - Send email with generated attachments
 
-## API Documentation
-
-### Smart Query Handler Example
-
-```json
-POST /query
-{
-  "message": "I need a quote for 100 units of product X",
-  "language": "en",
-  "user_id": "user123"
-}
-
-Response:
-{
-  "response": "I can help you with that quote. Let me retrieve the current pricing for product X...",
-  "context_sources": ["product_catalog.pdf", "pricing_sheet.xlsx"],
-  "confidence_score": 0.92
-}
-```
-
-### Authentication Examples
-
-#### Signup
-```json
-POST /signup
-{
-  "username": "john_doe",
-  "email": "john@example.com",
-  "password": "secure_password123"
-}
-
-Response:
-{
-  "message": "User created successfully",
-  "user_id": "user123"
-}
-```
-
-#### Login
-```json
-POST /login
-{
-  "email": "john@example.com",
-  "password": "secure_password123"
-}
-
-Response:
-{
-  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "token_type": "bearer",
-  "user_id": "user123"
-}
-```
-
-#### Get User Profile
-```json
-GET /me
-Headers: Authorization: Bearer <access_token>
-
-Response:
-{
-  "user_id": "user123",
-  "username": "john_doe",
-  "email": "john@example.com",
-  "created_at": "2024-01-15T10:30:00Z"
-}
-```
-
-### Document Generation Examples
-
-#### PDF Generation
-```json
-POST /generate-pdf
-{
-  "quote_data": {
-    "products": [
-      {
-        "name": "Product X",
-        "quantity": 100,
-        "unit_price": 500,
-        "total": 50000
-      }
-    ],
-    "customer_info": {
-      "name": "ABC Corporation",
-      "email": "contact@abc.com"
-    },
-    "total_amount": 50000
-  },
-  "template": "standard_quote"
-}
-
-Response:
-{
-  "pdf_url": "/downloads/quote_20240115_123456.pdf",
-  "file_size": "2.5MB",
-  "generated_at": "2024-01-15T10:30:00Z"
-}
-```
-
-#### Slides Generation
-```json
-POST /generate-slides
-{
-  "presentation_data": {
-    "title": "Sales Quotation - Product X",
-    "products": [...],
-    "customer_info": {...},
-    "total_amount": 50000
-  },
-  "template": "professional_quote"
-}
-
-Response:
-{
-  "slides_url": "/downloads/presentation_20240115_123456.pptx",
-  "file_size": "8.2MB",
-  "slide_count": 12,
-  "generated_at": "2024-01-15T10:30:00Z"
-}
-```
-
-#### Email Sending
-```json
-POST /send-email
-{
-  "recipient": "customer@example.com",
-  "subject": "Your Product Quote - ABC Corporation",
-  "body": "Please find attached your requested quotation.",
-  "attachments": [
-    "/downloads/quote_20240115_123456.pdf",
-    "/downloads/presentation_20240115_123456.pptx"
-  ]
-}
-
-Response:
-{
-  "message": "Email sent successfully",
-  "email_id": "email_123456",
-  "sent_at": "2024-01-15T10:35:00Z"
-}
-```
-
-### System Metrics Example
-
-```json
-GET /metrics
-Headers: Authorization: Bearer <access_token>
-
-Response:
-{
-  "system_health": {
-    "status": "healthy",
-    "uptime": "5d 12h 34m",
-    "last_updated": "2024-01-15T10:30:00Z"
-  },
-  "rag_performance": {
-    "average_response_time": "1.2s",
-    "context_precision": 0.89,
-    "context_recall": 0.87,
-    "total_queries": 15420
-  },
-  "document_generation": {
-    "pdfs_generated": 342,
-    "slides_generated": 189,
-    "emails_sent": 298
-  },
-  "database_metrics": {
-    "chroma_db_size": "2.3GB",
-    "total_embeddings": 500000,
-    "active_connections": 12
-  },
-  "monitoring_metrics": {
-    "prometheus_targets": 5,
-    "grafana_dashboards": 4,
-    "alert_rules": 12,
-    "last_scrape": "2024-01-15T10:30:00Z"
-  },
-  "user_analytics": {
-    "new_users_today": 23,
-    "active_sessions": 145,
-    "avg_session_duration": "12m 34s",
-    "total_queries_today": 2847
-  },
-  "ai_metrics": {
-    "tokens_used_today": 125430,
-    "avg_tokens_per_query": 234,
-    "embedding_cache_hit_rate": 0.78,
-    "model_response_time": "0.8s"
-  }
-}
-```
 
 ## Contributing
 
