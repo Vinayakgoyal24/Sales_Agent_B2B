@@ -43,21 +43,21 @@ This dashboard is built to provide unified, real-time visibility into system per
 
 ---
 
+<img width="1855" height="633" alt="Screenshot 2025-07-16 131655" src="https://github.com/user-attachments/assets/f7b36a8a-1723-443d-a7fb-37ef79c73a03" />
+
+
 ## 🎯 Benefits for Each Team
 
 ### 🚀 Product Teams
 - Strategic decision making based on live product usage
 - Feature prioritization driven by real customer behavior
-- In-depth user journey analysis for UX improvements
 
 ### 🛠️ Engineering Teams
 - Proactive system monitoring and management
 - Performance optimization with alert-driven diagnostics
-- Infrastructure and cost optimization via usage trends
 
 ### 💼 Sales Teams
 - Customer success insights and usage patterns
-- Lead qualification using behavioral metrics
 - Sales performance transparency and quota tracking
 
 ### 🧑‍💼 Executive Stakeholders
@@ -74,25 +74,6 @@ This dashboard is built to provide unified, real-time visibility into system per
 - 🛒 **35% increase in conversion rates**
 - 🔒 **99.9% uptime with 50% drop in unplanned downtime**
 
----
-
-## 🧩 Value Proposition
-
-### 🔍 Transparency & Trust
-- Builds confidence with stakeholders through open metrics
-- Helps identify system bottlenecks and aligns teams on priorities
-
-### ⚙️ Operational Excellence
-- Predictive maintenance and root cause analysis
-- Resource allocation optimization and workload balancing
-- Continuous performance improvement over time
-
-### 📈 Business Growth
-- Assists in scalability planning and infrastructure upgrades
-- Tracks feature success and adoption across releases
-- Enables customer success by highlighting pain points and wins
-
----
 
 ## ⚙️ Implementation Benefits
 
@@ -106,16 +87,6 @@ This dashboard is built to provide unified, real-time visibility into system per
 - Role-based access for secure data visibility
 - Mobile-friendly dashboards and custom reporting
 
----
-
-## 📊 Success Metrics
-
-- ⏱️ **System Uptime**: 99.9% with predictive alerting
-- 💵 **Cost Efficiency**: 30–50% infra cost reduction with usage analytics
-- 🚀 **Performance**: Load times reduced by 45%
-- 📈 **Business Growth**: Increased retention by 25% via actionable insights
-
----
 
 This dashboard is designed to scale with your business and help you make smarter, faster, and more confident decisions.
 
@@ -124,9 +95,8 @@ This dashboard is designed to scale with your business and help you make smarter
 
 ### System Components
 
-```
-User Query → Authentication → RAG Pipeline → Response Generation → Output Format
-```
+<img width="1607" height="770" alt="Screenshot 2025-07-16 131430" src="https://github.com/user-attachments/assets/4dbac33b-d42a-4b56-ac56-36f5d77db2d9" />
+
 
 ### Core Technologies
 
