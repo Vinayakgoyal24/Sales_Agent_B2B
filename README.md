@@ -37,6 +37,8 @@ This AI Sales Agent backend is a comprehensive system designed to streamline sal
 - Scalable database integration
 - **Comprehensive Monitoring Dashboard**: Real-time system monitoring and analytics using Grafana and Prometheus
 
+## Monitoring Dashboard
+
 ## RAG Architecture
 
 ### System Components
