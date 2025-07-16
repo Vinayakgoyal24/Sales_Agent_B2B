@@ -27,7 +27,7 @@ This AI Sales Agent backend is a comprehensive system designed to streamline sal
 - **Voice Support**: Windows-based voice interaction capabilities for hands-free operation
 - **Bilingual Support**: Full support for English and Japanese queries and responses
 - **User Authentication**: Secure user management with JWT tokens and bcrypt password hashing
-
+---
 ### Technical Features
 - FAST API architecture
 - Secure authentication and authorization
@@ -274,7 +274,7 @@ uvicorn main:app --reload
 # Or use the startup script
 python run_server.py
 ```
-
+---
 ### API Endpoints
 
 #### Authentication
