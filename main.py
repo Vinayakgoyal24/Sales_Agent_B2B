@@ -321,4 +321,3 @@ def avatar_audio_ep(req: AudioRequest, background_tasks: BackgroundTasks):
     return FileResponse(mp3_path,
                         media_type="audio/mpeg",
                         filename="avatar.mp3")
-
